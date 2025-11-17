@@ -8,6 +8,11 @@ error_reporting(E_ALL);
 require_once('./commons/env.php');
 require_once('./commons/function.php');
 require_once("./controllers/CattocContronler.php");
+require_once("./controllers/CategoryController.php");
+require_once("./controllers/DichVuController.php");
+require_once("./models/DichVuModel.php");
+require_once("./models/CategoryModel.php");
+
 
 //route
 
@@ -26,7 +31,22 @@ match ($act) {
     'chondichvu' => chondichvuClien(),
     //phần hiển thị giao diện admin
     'homeadmin' => homeAdmin(),
-    'qlydanhmuc' => qlyDanhmuc(),
+    'qlydanhmuc' => (new CategoryController())->quanlydanhmuc(),
+    'create_danhmuc' => (new CategoryController())->createdanhmuc(),
+    'store_danhmuc' => (new CategoryController())->store(),
+    'show_danhmuc' => (new CategoryController())->show(),
+    'edit_danhmuc' => (new CategoryController())->edit(),
+    'update_danhmuc' => (new CategoryController())->update(),
+    'delete_danhmuc' => (new CategoryController())->delete(),
+    // dich vụ
+    'qlydichvu' => (new DichVuController())->quanlydichvu(),
+    'createdichvu' => (new DichVuController())->createdichvu(),
+    'store_dichvu' => (new DichVuController())->store(),
+    'show_dichvu' => (new DichVuController())->show(),
+    'edit_dichvu' => (new DichVuController())->edit(),
+    'update_dichvu' => (new DichVuController())->update(),
+    'delete_dichvu' => (new DichVuController())->delete(),
+
     // phần hiển thị chức năng của quản lý dịch vụ
     default => notFound(),
 }
