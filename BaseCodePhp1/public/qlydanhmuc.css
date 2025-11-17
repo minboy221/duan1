@@ -276,8 +276,8 @@ body{
 }
 
 .content nav .profile img{
-    width: 36px;
-    height: 36px;
+    width: 46px;
+    height: 46px;
     object-fit: cover;
     border-radius: 50%;
 }
@@ -417,6 +417,7 @@ body{
     margin-top: 24px;
     width: 100%;
     color: var(--dark);
+    text-align: center;
 }
 
 .content main .bottom-data>div{
@@ -450,13 +451,13 @@ body{
 
 .content main .bottom-data .orders table{
     width: 100%;
+    text-align: center;
     border-collapse: collapse;
 }
 
 .content main .bottom-data .orders table th{
     padding-bottom: 12px;
     font-size: 13px;
-    text-align: center;
     border-bottom: 1px solid var(--grey);
 }
 
@@ -465,14 +466,15 @@ body{
     text-align: center;
 }
 
-.content main .bottom-data .orders table tr td:first-child{
+.content main .bottom-data .orders table tr td{
     display: flex;
     align-items: center;
     grid-gap: 12px;
     padding-left: 6px;
 }
 
-.content main .bottom-data .orders table tbody tr{
+.orders table tbody tr{
+    align-items: center;
     cursor: pointer;
     transition: all 0.3s ease;
 }

@@ -18,9 +18,9 @@
             <div class="logo-name"><span>31</span>Shine</div>
         </a>
         <ul class="side-menu">
-            <li class="active"><a href="#">Thống Kê</a></li>
-            <li><a href="#">Quản Lý Danh Mục</a></li>
-            <li><a href="#">Quản Lý Dịch Vụ</a></li>
+            <li class="active"><a href="?act=homeadmin">Thống Kê</a></li>
+            <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
+            <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
             <li><a href="#">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Khung Giờ</a></li>

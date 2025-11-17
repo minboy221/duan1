@@ -31,7 +31,9 @@
             </div>
             <aside class="aside">
                 <div class="logo">
-                    <img src="/duan1(chinh)/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
+                    <a href="<?= BASE_URL ?>?act=home">
+                        <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
+                    </a>
                 </div>
                 <div class="menu">
                     <ul>
@@ -63,7 +65,7 @@
                 </div>
             </aside>
             <div class="banner">
-                <img src="/duan1(chinh)/BaseCodePhp1/anhmau/dichvucatoc.076Z.png" alt="">
+                <img src="/duan1/BaseCodePhp1/anhmau/dichvucatoc.076Z.png" alt="">
                 <div class="banner-text">
                     <h1>Dịch Vụ</h1>
                 </div>
@@ -72,7 +74,7 @@
     </div>
     <div class="conten">
         <div class="background">
-            <img src="/duan1(chinh)/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
+            <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
         </div>
         <main>
             <div class="thanhloc">
@@ -105,7 +107,7 @@
                     <div class="cattocbo">
                         <div class="cattoccon">
                             <a href="">
-                                <img src="/duan1(chinh)/BaseCodePhp1/anhmau/anhdichvutoc.png" alt="">
+                                <img src="/duan1/BaseCodePhp1/anhmau/anhdichvutoc.png" alt="">
                             </a>
                             <div class="infor">
                                 <h4>Cắt Tóc</h4>
@@ -113,12 +115,12 @@
                                     <p class="gia">
                                         Giá Chỉ Từ <span>194.000VNĐ</span>
                                     </p>
-                                    <a href="#">Tìm Hiểu Thêm </a>
+                                    <a href="<?= BASE_URL ?>?act=chitietdichvu">Tìm Hiểu Thêm </a>
                                 </div>
                             </div>
                         </div>
                         <div class="cattoccon">
-                            <img src="/duan1(chinh)/BaseCodePhp1/anhmau/anhnhuomtoc.201Z.png" alt="">
+                            <img src="/duan1/BaseCodePhp1/anhmau/anhnhuomtoc.201Z.png" alt="">
                             <div class="infor">
                                 <h4>Thay Đổi Màu Tóc</h4>
                                 <div class="baogia">
@@ -138,7 +140,7 @@
                         <div class="cattocbo">
                             <div class="cattoccon">
                                 <a href="">
-                                    <img src="/duan1(chinh)/BaseCodePhp1/anhmau/goidauthugian.679Z.png" alt="">
+                                    <img src="/duan1/BaseCodePhp1/anhmau/goidauthugian.679Z.png" alt="">
                                 </a>
                                 <div class="infor">
                                     <h4>Cắt Tóc</h4>
@@ -151,7 +153,7 @@
                                 </div>
                             </div>
                             <div class="cattoccon">
-                                <img src="/duan1(chinh)/BaseCodePhp1/anhmau/laydaytai.161Z.png" alt="">
+                                <img src="/duan1/BaseCodePhp1/anhmau/laydaytai.161Z.png" alt="">
                                 <div class="infor">
                                     <h4>Thay Đổi Màu Tóc</h4>
                                     <div class="baogia">
@@ -170,7 +172,7 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-column">
-                <img src="/duan1(chinh)/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
+                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
                     class="footer-logo">
                 <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam. Chúng tôi giúp bạn luôn tự tin và phong độ
                     mỗi ngày.</p>

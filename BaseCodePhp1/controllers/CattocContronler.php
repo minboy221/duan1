@@ -12,7 +12,21 @@ function DichvuClien(){
 function NhanvienClien(){
     require_once './views/clien/NhanvienView.php';
 }
-
+function DangkyClien(){
+    require_once './views/clien/DangkyView.php';
+}
+function DangnhapClien(){
+    require_once './views/clien/DangnhapView.php';
+}
+function DichvuchitietClien(){
+    require_once './views/clien/DichvuchitietView.php';
+}
+function DatlichClien(){
+    require_once './views/clien/DatlichView.php';
+}
+function chondichvuClien(){
+    require_once './views/clien/ChondichvuClien.php';
+}
 //phần chỉ để hiển thị giao diện admin
 function homeAdmin(){
     require_once './views/admin/HomeAdmin.php';

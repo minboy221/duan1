@@ -19,10 +19,15 @@ match ($act) {
     'about' => aboutClien(),
     'dichvu' => DichvuClien(),
     'nhanvien' => NhanvienClien(),
+    'dangky' => DangkyClien(),
+    'dangnhap' => DangnhapClien(),
+    'chitietdichvu' => DichvuchitietClien(),
+    'datlich' => DatlichClien(),
+    'chondichvu' => chondichvuClien(),
     //phần hiển thị giao diện admin
     'homeadmin' => homeAdmin(),
     'qlydanhmuc' => qlyDanhmuc(),
-
+    // phần hiển thị chức năng của quản lý dịch vụ
     default => notFound(),
 }
     ?>

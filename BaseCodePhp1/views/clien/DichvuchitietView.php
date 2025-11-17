@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nhân Viên | 31Shine</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/nhanvien.css">
+    <title>Chi Tiết Dịch Vụ | 31Shine</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/dichvuchitiet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
 </head>
@@ -67,9 +67,9 @@
                 </div>
             </aside>
             <div class="banner">
-                <img src="/duan1/BaseCodePhp1/anhmau/anhbannernhanvien.411Z.png" alt="">
+                <img src="/duan1/BaseCodePhp1/anhmau/dichvucatoc.076Z.png" alt="">
                 <div class="banner-text">
-                    <h1>Nhân Viên</h1>
+                    <h1>Dịch Vụ nao thêm tên vào đây</h1>
                 </div>
             </div>
         </header>
@@ -79,81 +79,33 @@
             <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
         </div>
         <main>
-            <div class="baonhanvien">
-                <div class="titlenoidung1">
-                    <h2>GẶP GỠ NHỮNG THỢ CẮT TÓC ƯNG Ý <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"
-                            fill="#f5c542" class="bi bi-star-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg></h2>
-                    <p>Đội ngũ dày dặn kinh nghiệm trong việc chăm sóc tóc của bạn.</p>
-                </div>
-                <div class="baothocattoc">
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho1.png" alt="">
-                        <div class="infotho">
-                            <div class="ten">
-                                <p>Việt Hùng</p>
+            <div class="baocattoc">
+                <h2>Cắt Tóc</h2>
+                <p>Trải nghiệm cắt tóc phong cách dành riêng cho phái mạnh, vừa tiện lợi vừa thư giãn tại đây</p>
+                <div class="cattocbo">
+                    <div class="cattoc">
+                        <div class="infor">
+                            <h3>Cắt xả tạo kiểu</h3>
+                            <p>Cắt xả tạo kiểu, xả sạch tóc con.</p>
+                            <div class="baogia">
+                                <p class="thoigian">
+                                    30 phút
+                                </p>
+                                <p class="gia">
+                                    94,000 VNĐ
+                                </p>
                             </div>
                         </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho2.png" alt="">
-                        <div class="ten">
-                            <p>Mạnh Dũng</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho3.png" alt="">
-                        <div class="ten">
-                            <p>Công Huy</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho4.png" alt="">
-                        <div class="ten">
-                            <p>Nhật Minh</p>
-                        </div>
+                        <img src="/duan1/BaseCodePhp1/anhmau/anhdichvutoc.png" alt="">
                     </div>
                 </div>
             </div>
-            <div class="baonhanviennu">
-                <div class="titlenoidung1">
-                    <h2>31Shine’s Angels <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#f5c542"
-                            class="bi bi-star-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg></h2>
-                    <p>Đội ngũ Skinner xinh đẹp hết lòng vì khách hàng.</p>
-                </div>
-                <div class="baothocattoc">
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/thogoi1.192Z.png" alt="">
-                        <div class="infotho">
-                            <div class="ten">
-                                <p>Việt Hùng</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/thogoi2.792Z.png" alt="">
-                        <div class="ten">
-                            <p>Mạnh Dũng</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/thonu2.493Z.png" alt="">
-                        <div class="ten">
-                            <p>Công Huy</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/goidauthugian.679Z.png" alt="">
-                        <div class="ten">
-                            <p>Nhật Minh</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="datlich">
+                <a href="<?= BASE_URL ?>?act=datlich">
+                    <button type="submit">
+                        ĐẶT LỊCH NGAY
+                    </button>
+                </a>
             </div>
         </main>
     </div>
@@ -162,8 +114,7 @@
             <div class="footer-column">
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
                     class="footer-logo">
-                <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam. Chúng tôi giúp bạn luôn tự tin và phong
-                    độ
+                <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam. Chúng tôi giúp bạn luôn tự tin và phong độ
                     mỗi ngày.</p>
             </div>
             <div class="footer-column">
@@ -196,5 +147,6 @@
     </footer>
 </body>
 <script src="<?= BASE_URL ?>public/main.js"></script>
+
 
 </html>
