@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="<?= BASE_URL ?>public/qlydanhmuc.css">
-    <title>Chi Tiết Danh Mục</title>
+    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 
@@ -62,7 +62,7 @@
                         <ul style="margin-top:10px;padding-left:20px;">
                             <?php foreach ($services as $sv): ?>
                                 <li>
-                                    <?= htmlspecialchars($sv['name']) ?> 
+                                    <?= htmlspecialchars($sv['name']) ?>
                                     — <b><?= number_format($sv['price']) ?> đ</b>
                                 </li>
                             <?php endforeach; ?>
@@ -77,4 +77,5 @@
     </div>
 
 </body>
+
 </html>

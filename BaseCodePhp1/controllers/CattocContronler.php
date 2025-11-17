@@ -1,37 +1,72 @@
 <?php
 //phần chỉ để hiện giao diện
-function homeClient(){
-    require_once './views/clien/HomeView.php';
-}
-function aboutClien(){
+require_once './models/CategoryModel.php';
+require_once './models/DichVuModel.php';
+function aboutClien()
+{
     require_once './views/clien/AboutView.php';
 }
-function DichvuClien(){
+function DichvuClien()
+{
     require_once './views/clien/DichvuView.php';
 }
-function NhanvienClien(){
+function NhanvienClien()
+{
     require_once './views/clien/NhanvienView.php';
 }
-function DangkyClien(){
+function DangkyClien()
+{
     require_once './views/clien/DangkyView.php';
 }
-function DangnhapClien(){
+function DangnhapClien()
+{
     require_once './views/clien/DangnhapView.php';
 }
-function DichvuchitietClien(){
+function DichvuchitietClien()
+{
     require_once './views/clien/DichvuchitietView.php';
 }
-function DatlichClien(){
+function DatlichClien()
+{
     require_once './views/clien/DatlichView.php';
 }
-function chondichvuClien(){
+function chondichvuClien()
+{
     require_once './views/clien/ChondichvuClien.php';
 }
 //phần chỉ để hiển thị giao diện admin
-function homeAdmin(){
+function homeAdmin()
+{
     require_once './views/admin/HomeAdmin.php';
 }
-function qlyDanhmuc(){
+function qlyDanhmuc()
+{
     require_once './views/admin/Qlydanhmuc.php';
 }
+
+//phần để hiện thị các dữ liệu ra clien
+class CattocContronler
+{
+    public $categoryModel;
+    public $dichvuModel;
+
+    public function __construct()
+    {
+        $this->categoryModel = new CategoryModel();
+        $this->dichvuModel = new DichVuModel();
+    }
+    //phần hiển thị danh mục
+    public function hienthidanhmuc()
+    {
+        $categories = $this->categoryModel->all();
+        require_once './views/clien/HomeView.php';
+    }
+    //phần hiển thị dịch vụ
+    public function hienthidichvu(){
+        $categories = $this -> categoryModel ->all();
+        $services = $this -> dichvuModel -> all();
+        require_once './views/clien/HomeView.php';
+    }
+}
+
 ?>

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="<?= BASE_URL ?>public/qlydanhmuc.css">
+    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
     <title>Trang Quản Lý Danh Mục | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 </head>
@@ -43,7 +44,7 @@
 
         <!-- Navbar -->
         <nav>
-         <i class='bx bx-menu'></i>
+            <i class='bx bx-menu'></i>
 
             <form action="#">
                 <div class="form-input">
@@ -62,7 +63,7 @@
 
             <a href="#" class="profile">
                 <img src="./anh/logochinh.424Z.png">
-            </a>   
+            </a>
         </nav>
         <!-- End Navbar -->
 
@@ -111,10 +112,9 @@
 
                                         <a class="btnsua" href="?act=edit_danhmuc&id=<?= $cat['id'] ?>">Sửa</a>
 
-                                        <a class="btnxoa"
-                                           onclick="return confirm('Bạn chắc chắn muốn xoá danh mục này?')"
-                                           href="?act=delete_danhmuc&id=<?= $cat['id'] ?>">
-                                           Xoá
+                                        <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá danh mục này?')"
+                                            href="?act=delete_danhmuc&id=<?= $cat['id'] ?>">
+                                            Xoá
                                         </a>
                                     </td>
                                 </tr>
@@ -140,4 +140,5 @@
     <script src="<?= BASE_URL ?>public/admin.js"></script>
 
 </body>
+
 </html>

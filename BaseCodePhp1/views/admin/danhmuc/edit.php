@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/qlydanhmuc.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/createdanhmuc.css">
+    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
     <title>Sửa Danh Mục</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -65,7 +68,7 @@
                 <a href="?act=qlydanhmuc" class="btnthem" style="background:#ccc;color:#000">← Quay lại</a>
             </div>
 
-            <div class="bottom-data">
+            <div class="form-wrapper">
                 <div class="orders" style="padding:20px;">
 
                     <?php if (!empty($category)): ?>
@@ -76,12 +79,14 @@
 
                             <div class="form-group">
                                 <label>Tên danh mục</label>
-                                <input type="text" name="name" value="<?= htmlspecialchars($category['name'] ?? '') ?>" required>
+                                <input type="text" name="name" value="<?= htmlspecialchars($category['name'] ?? '') ?>"
+                                    required>
                             </div>
 
                             <div class="form-group">
                                 <label>Mô tả</label>
-                                <textarea name="description" rows="4"><?= htmlspecialchars($category['description'] ?? '') ?></textarea>
+                                <textarea name="description"
+                                    rows="4"><?= htmlspecialchars($category['description'] ?? '') ?></textarea>
                             </div>
 
                             <button class="btnthem" style="padding:10px 25px;">Lưu thay đổi</button>
@@ -95,6 +100,8 @@
 
         </main>
     </div>
+    <script src="<?= BASE_URL ?>public/admin.js"></script>
 
 </body>
+
 </html>

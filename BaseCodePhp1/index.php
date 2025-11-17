@@ -10,9 +10,14 @@ require_once('./commons/function.php');
 require_once("./controllers/CattocContronler.php");
 require_once("./controllers/CategoryController.php");
 require_once("./controllers/DichVuController.php");
+
 require_once("./models/DichVuModel.php");
 require_once("./models/CategoryModel.php");
 
+// --- KHỞI TẠO CONTROLLER ---
+$clientController = new CattocContronler();
+$adminCategoryController = new CategoryController();
+$adminDichVuController = new DichVuController();
 
 //route
 
@@ -20,7 +25,7 @@ $act = $_GET['act'] ?? 'home';
 
 match ($act) {
     // phần hiển thị giao diện trang clien
-    'home' => homeClient(),
+    'home' => $clientController->hienthidanhmuc(),
     'about' => aboutClien(),
     'dichvu' => DichvuClien(),
     'nhanvien' => NhanvienClien(),
@@ -29,6 +34,8 @@ match ($act) {
     'chitietdichvu' => DichvuchitietClien(),
     'datlich' => DatlichClien(),
     'chondichvu' => chondichvuClien(),
+    //phần hiển thị dữ liệu ra clien
+    'hienthidanhmuc' => (new CategoryController())->hienthidanhmuc(),
     //phần hiển thị giao diện admin
     'homeadmin' => homeAdmin(),
     'qlydanhmuc' => (new CategoryController())->quanlydanhmuc(),
