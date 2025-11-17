@@ -43,7 +43,7 @@
 
         <!-- Navbar -->
         <nav>
-            <i class='bx bx-menu'></i>
+         <i class='bx bx-menu'></i>
 
             <form action="#">
                 <div class="form-input">
@@ -62,7 +62,7 @@
 
             <a href="#" class="profile">
                 <img src="./anh/logochinh.424Z.png">
-            </a>
+            </a>   
         </nav>
         <!-- End Navbar -->
 
