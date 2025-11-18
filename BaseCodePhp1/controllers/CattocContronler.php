@@ -55,16 +55,52 @@ class CattocContronler
         $this->categoryModel = new CategoryModel();
         $this->dichvuModel = new DichVuModel();
     }
-    //phần hiển thị danh mục
+
+    private function getCategorizedServices($limit = null)
+    {
+        $categories = $this->categoryModel->all($limit);
+        $dataForView = [];
+        foreach ($categories as $category) {
+            $services = $this->dichvuModel->getByCategory(($category['id']));
+            $category['services'] = $services;
+            $dataForView[] = $category;
+        }
+        return $dataForView;
+    }
+
+    //phần hiển thị danh mục cho trang home
     public function hienthidanhmuc()
     {
-        $categories = $this->categoryModel->all();
+        $categoriesWithServices = $this->getCategorizedServices(2);
+        $dataForView = [];
         require_once './views/clien/HomeView.php';
     }
-    //phần hiển thị dịch vụ
-    public function hienthidichvu(){
-        $categories = $this -> categoryModel ->all();
-        $services = $this -> dichvuModel -> all();
+
+    //phần hiển thị dịch vụ cho home
+    public function hienthidichvu()
+    {
+        $categoriesWithServices = $this->getCategorizedServices();
+        require_once './views/clien/HomeView.php';
+    }
+
+    //phần hiển thị danh mục cho trang dịch vụ
+    public function hienthidanhmuc1()
+    {
+        $categories = $this->categoryModel->all();
+        $dataForView = [];
+        foreach ($categories as $category) {
+            $services = $this->dichvuModel->getByCategory($category['id']);
+            $category['services'] = $services;
+            $dataForView[] = $category;
+        }
+        $categoriesWithServices = $dataForView;
+        require_once './views/clien/DichvuView.php';
+    }
+    //phần hiển thị dịch vụ cho home
+    public function hienthidichvu1()
+    {
+        $categories = $this->categoryModel->all();
+        $services = $this->dichvuModel->all();
         require_once './views/clien/HomeView.php';
     }
 }

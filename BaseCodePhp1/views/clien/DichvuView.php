@@ -101,72 +101,39 @@
                 </div>
             </div>
             <!-- phần hiển thị dịch vụ -->
-            <div class="baodichvubaogia">
-                <div class="baocattoc">
-                    <h2>DỊCH VỤ TÓC</h2>
-                    <div class="cattocbo">
-                        <div class="cattoccon">
-                            <a href="">
-                                <img src="/duan1/BaseCodePhp1/anhmau/anhdichvutoc.png" alt="">
-                            </a>
-                            <div class="infor">
-                                <h4>Cắt Tóc</h4>
-                                <div class="baogia">
-                                    <p class="gia">
-                                        Giá Chỉ Từ <span>194.000VNĐ</span>
-                                    </p>
-                                    <a href="<?= BASE_URL ?>?act=chitietdichvu">Tìm Hiểu Thêm </a>
+            <?php
+            if (!empty($categoriesWithServices)):
+                foreach ($categoriesWithServices as $category):
+                    if (!empty($category['services'])):
+                        ?>
+                        <div class="baodichvubaogia">
+                            <div class="baocattoc">
+                                <h2><?= htmlspecialchars($category['name']) ?></h2>
+                                <div class="cattocbo">
+                                    <?php foreach ($category['services'] as $p): ?>
+                                        <div class="cattoccon">
+                                            <a href="">
+                                                <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($p['image']) ?>"
+                                                    alt="<?= htmlspecialchars($p['name']) ?>">
+                                            </a>
+                                            <div class="infor">
+                                                <h4><?= htmlspecialchars($p['name']) ?></h4>
+                                                <div class="baogia">
+                                                    <p class="gia">
+                                                        Giá Chỉ Từ <span><?= number_format($p['price'] ?? 0) ?></span>
+                                                    </p>
+                                                    <a href="index.php?act=chitietdichvu&id=<?= $p['id'] ?>">Tìm Hiểu Thêm </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
-                        </div>
-                        <div class="cattoccon">
-                            <img src="/duan1/BaseCodePhp1/anhmau/anhnhuomtoc.201Z.png" alt="">
-                            <div class="infor">
-                                <h4>Thay Đổi Màu Tóc</h4>
-                                <div class="baogia">
-                                    <p class="gia">
-                                        Giá Chỉ Từ <span>194.000VNĐ</span>
-                                    </p>
-                                    <a href="#">Tìm Hiểu Thêm </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- phần dịch vụ thư giãn -->
-                <div class="baodichvubaogia">
-                    <div class="baocattoc">
-                        <h2>DỊCH VỤ THƯ GIÃN</h2>
-                        <div class="cattocbo">
-                            <div class="cattoccon">
-                                <a href="">
-                                    <img src="/duan1/BaseCodePhp1/anhmau/goidauthugian.679Z.png" alt="">
-                                </a>
-                                <div class="infor">
-                                    <h4>Cắt Tóc</h4>
-                                    <div class="baogia">
-                                        <p class="gia">
-                                            Giá Chỉ Từ <span>194.000VNĐ</span>
-                                        </p>
-                                        <a href="#">Tìm Hiểu Thêm </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cattoccon">
-                                <img src="/duan1/BaseCodePhp1/anhmau/laydaytai.161Z.png" alt="">
-                                <div class="infor">
-                                    <h4>Thay Đổi Màu Tóc</h4>
-                                    <div class="baogia">
-                                        <p class="gia">
-                                            Giá Chỉ Từ <span>194.000VNĐ</span>
-                                        </p>
-                                        <a href="#">Tìm Hiểu Thêm </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            <?php
+                    endif;
+                endforeach;
+            endif;
+            ?>
         </main>
     </div>
     <footer class="footer">

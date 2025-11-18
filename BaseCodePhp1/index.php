@@ -27,7 +27,7 @@ match ($act) {
     // phần hiển thị giao diện trang clien
     'home' => $clientController->hienthidanhmuc(),
     'about' => aboutClien(),
-    'dichvu' => DichvuClien(),
+    'dichvu' => $clientController->hienthidanhmuc1(),
     'nhanvien' => NhanvienClien(),
     'dangky' => DangkyClien(),
     'dangnhap' => DangnhapClien(),
@@ -35,7 +35,6 @@ match ($act) {
     'datlich' => DatlichClien(),
     'chondichvu' => chondichvuClien(),
     //phần hiển thị dữ liệu ra clien
-    'hienthidanhmuc' => (new CategoryController())->hienthidanhmuc(),
     //phần hiển thị giao diện admin
     'homeadmin' => homeAdmin(),
     'qlydanhmuc' => (new CategoryController())->quanlydanhmuc(),

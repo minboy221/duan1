@@ -10,8 +10,12 @@ class CategoryModel {
     }
 
     // Lấy tất cả danh mục
-    public function all() {
+    public function all($limit = null) {
         $sql = "SELECT * FROM danhmuc ORDER BY id DESC";
+        if($limit){
+            //int để $limit luôn là 1 số
+            $sql .= " LIMIT " . (int)$limit;
+        }
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
