@@ -20,20 +20,60 @@
                 <div class="title">
                     <h2>Đăng Nhập</h2>
                 </div>
-                <form>
+                <form action="?act=dangnhap_khachhang" method="POST" onsubmit="return validateLogin();">
                     <div class="field">
+
                         <label for="email">Email</label>
-                        <input id="email" type="email">
+                        <input id="email" type="text" name="username">
 
                         <label for="password">Mật Khẩu</label>
-                        <input id="password" type="password">
+                        <input id="password" type="password" name="password">
+
+                        <!-- Hiển thị lỗi -->
+                        <p id="error-msg" style="color:red; margin-top:10px;"></p>
                     </div>
+
                     <button class="btn" type="submit">Đăng Nhập</button>
 
                     <div class="footer">
-                        <a href="<?= BASE_URL ?>?act=dangky" class="link">Đăng Ký</a>
+                        <a href="<?= BASE_URL ?>?act=dangky_khachhang" class="link">Đăng Ký</a>
                     </div>
                 </form>
+
+                <!-- VALIDATE JAVASCRIPT -->
+                <script>
+                    function validateLogin() {
+                        let username = document.getElementById("email").value.trim();
+                        let password = document.getElementById("password").value.trim();
+                        let error = document.getElementById("error-msg");
+                        error.innerText = "";
+
+                        // 1. Nếu username là "admin" thì không cần validate email
+                        if (username === "admin") {
+                            if (password === "") {
+                                error.innerText = "Vui lòng nhập mật khẩu!";
+                                return false;
+                            }
+                            return true; // CHO PHÉP submit
+                        }
+
+                        // 2. Ngược lại: validate email cho khách hàng
+                        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test(username)) {
+                            error.innerText = "Email không hợp lệ!";
+                            return false;
+                        }
+
+                        if (password.length < 6) {
+                            error.innerText = "Mật khẩu phải ít nhất 6 ký tự!";
+                            return false;
+                        }
+
+                        return true;
+                    }
+                </script>
+
+
             </div>
         </main>
     </div>
