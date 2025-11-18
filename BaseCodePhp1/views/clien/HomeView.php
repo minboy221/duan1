@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <div class="dangky">
-                        <a href="<?= BASE_URL ?>?act=dangnhap">
+                        <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
                             <button>
                                 Đăng Nhập / Đăng Ký
                             </button>

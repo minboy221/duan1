@@ -10,9 +10,11 @@ require_once('./commons/function.php');
 require_once("./controllers/CattocContronler.php");
 require_once("./controllers/CategoryController.php");
 require_once("./controllers/DichVuController.php");
+require_once("./controllers/KhachHangController.php");
 
 require_once("./models/DichVuModel.php");
 require_once("./models/CategoryModel.php");
+require_once("./models/KhachHangModel.php");
 
 // --- KHỞI TẠO CONTROLLER ---
 $clientController = new CattocContronler();
@@ -30,7 +32,7 @@ match ($act) {
     'dichvu' => $clientController->hienthidanhmuc1(),
     'nhanvien' => NhanvienClien(),
     'dangky' => DangkyClien(),
-    'dangnhap' => DangnhapClien(),
+    // 'dangnhap' => DangnhapClien(),
     'chitietdichvu' => DichvuchitietClien(),
     'datlich' => DatlichClien(),
     'chondichvu' => chondichvuClien(),
@@ -52,6 +54,10 @@ match ($act) {
     'edit_dichvu' => (new DichVuController())->edit(),
     'update_dichvu' => (new DichVuController())->update(),
     'delete_dichvu' => (new DichVuController())->delete(),
+    //đăng nhập và đăng ký cho khách hàng
+    'dangky_khachhang' => (new KhachHangController())->register(),
+    'dangnhap_khachhang' => (new KhachHangController())->login(),
+    'logout' => (new KhachHangController())->logout(),
 
     // phần hiển thị chức năng của quản lý dịch vụ
     default => notFound(),
