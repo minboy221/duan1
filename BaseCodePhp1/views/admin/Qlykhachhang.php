@@ -22,11 +22,11 @@
         <ul class="side-menu">
             <li><a href="?act=homeadmin">Thống Kê</a></li>
             <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
-            <li class="active"><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
+            <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
             <li><a href="#">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Khung Giờ</a></li>
-            <li><a href="?act=qlytaikhoan">Quản Lý Tài Khoản Khách Hàng</a></li>
+            <li class="active"><a href="?act=qlytaikhoan">Quản Lý Tài Khoản Khách Hàng</a></li>
         </ul>
 
         <ul class="side-menu">
@@ -65,7 +65,7 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Quản Lý Dịch Vụ</h1>
+                    <h1>Quản Lý Người Dùng</h1>
                 </div>
             </div>
 
@@ -74,43 +74,28 @@
 
                     <div class="header">
                         <i class='bx bx-receipt'></i>
-                        <h3>Dịch Vụ</h3>
-
-                        <div class="btn">
-                            <a href="?act=createdichvu" class="btnthem">+ Thêm Dịch Vụ</a>
-                        </div>
+                        <h3>Người Dùng</h3>
                     </div>
-
-                    <?php if (!empty($services)): ?>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Ảnh</th>
-                                    <th>Tên Dịch Vụ</th>
-                                    <th>Mô Tả</th>
-                                    <th>Giá</th>
-                                    <th>Thời Gian (phút)</th>
-                                    <th>Danh Mục</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($services as $item): ?>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Họ Tên</th>
+                                <th>Email</th>
+                                <th>Số Điện Thoại</th>
+                                <th>Thời Gian Tạo Tài Khoản</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($taikhoan) && is_array($taikhoan)): ?>
+                                <?php foreach ($taikhoan as $p): ?>
                                     <tr>
-                                        <td>
-                                            <?php if (!empty($item['image'])): ?>
-                                                <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($item['image']) ?>" width="80"
-                                                    style="border-radius:8px">
-                                            <?php else: ?>
-                                                <span>Chưa có ảnh</span>
-                                            <?php endif; ?>
-                                        </td>
-
-                                        <td><?= htmlspecialchars($item['name'] ?? '') ?></td>
-                                        <td><?= htmlspecialchars(substr($item['description'] ?? '', 0, 50)) ?>...</td>
-                                        <td><?= !empty($item['price']) ? number_format($item['price']) . ' đ' : '' ?></td>
-                                        <td><?= htmlspecialchars($item['time'] ?? '') ?> phút</td>
-                                        <td><?= htmlspecialchars($item['category_name'] ?? '') ?></td>
+                                        <td><?= htmlspecialchars($p['id']) ?></td>
+                                        <td><?= htmlspecialchars($p['name']) ?></td>
+                                        <td><?= htmlspecialchars($p['email']) ?></td>
+                                        <td><?= htmlspecialchars($p['phone']) ?></td>
+                                        <td><?= htmlspecialchars($p['created_at']) ?></td>
                                         <td>
                                             <a class="btnsua"
                                                 href="?act=edit_dichvu&id=<?= htmlspecialchars($item['id']) ?>">Sửa</a>
@@ -122,13 +107,12 @@
                                             </a>
                                         </td>
                                     </tr>
-                                <?php endforeach; ?>
-                            </tbody>
+                                </tbody>
+                            <?php endforeach; ?>
                         </table>
                     <?php else: ?>
-                        <p>Chưa có dịch vụ nào trong hệ thống.</p>
+                        <p>Chưa có tài khoản nào trong hệ thống.</p>
                     <?php endif; ?>
-
                 </div>
             </div>
 

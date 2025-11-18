@@ -27,6 +27,7 @@
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
             <li><a href="#">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Khung Giờ</a></li>
+            <li><a href="?act=qlytaikhoan">Quản Lý Tài Khoản Khách Hàng</a></li>
         </ul>
 
         <ul class="side-menu">

@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -32,10 +32,13 @@ match ($act) {
     'dichvu' => $clientController->hienthidanhmuc1(),
     'nhanvien' => NhanvienClien(),
     'dangky' => DangkyClien(),
-    // 'dangnhap' => DangnhapClien(),
     'chitietdichvu' => DichvuchitietClien(),
     'datlich' => DatlichClien(),
     'chondichvu' => chondichvuClien(),
+    //đăng nhập và đăng ký cho khách hàng
+    'dangky_khachhang' => (new KhachHangController())->register(),
+    'dangnhap_khachhang' => (new KhachHangController())->login(),
+    'logout' => (new KhachHangController())->logout(),
     //phần hiển thị dữ liệu ra clien
     //phần hiển thị giao diện admin
     'homeadmin' => homeAdmin(),
@@ -54,10 +57,8 @@ match ($act) {
     'edit_dichvu' => (new DichVuController())->edit(),
     'update_dichvu' => (new DichVuController())->update(),
     'delete_dichvu' => (new DichVuController())->delete(),
-    //đăng nhập và đăng ký cho khách hàng
-    'dangky_khachhang' => (new KhachHangController())->register(),
-    'dangnhap_khachhang' => (new KhachHangController())->login(),
-    'logout' => (new KhachHangController())->logout(),
+    //phần tài khoản khách hàng ở admin
+    'qlytaikhoan' =>(new CattocContronler())->taikhoanuser(),
 
     // phần hiển thị chức năng của quản lý dịch vụ
     default => notFound(),

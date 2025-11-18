@@ -34,6 +34,12 @@
 
                         <label for="password">Mật Khẩu</label>
                         <input id="password" type="password" name="password">
+                        <!-- báo lỗi trùng email -->
+                        <?php if (!empty($error)): ?>
+                            <p style="color: red; font-style: italic; margin-top: 10px; font-weight: bold;">
+                                <i class="fa fa-exclamation-circle"></i> <?= $error ?>
+                            </p>
+                        <?php endif; ?>
 
                         <!-- Hiển thị lỗi -->
                         <p id="error-msg" style="color:red; margin-top:10px;"></p>
@@ -42,7 +48,7 @@
                     <button class="btn" type="submit">Đăng Ký</button>
 
                     <div class="footer">
-                        <a href="<?= BASE_URL ?>?act=dangnhap" class="link">Đăng Nhập</a>
+                        <a href="<?= BASE_URL ?>?act=dangnhap_khachhang" class="link">Đăng Nhập</a>
                     </div>
                 </form>
 
@@ -78,8 +84,8 @@
                         }
 
                         // Validate mật khẩu
-                        if (password.length < 6) {
-                            error.innerText = "Mật khẩu phải từ 6 ký tự trở lên!";
+                        if (password.length < 8) {
+                            error.innerText = "Mật khẩu phải từ 8 ký tự trở lên!";
                             return false;
                         }
 

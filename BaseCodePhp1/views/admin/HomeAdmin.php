@@ -19,16 +19,17 @@
             <div class="logo-name"><span>31</span>Shine</div>
         </a>
         <ul class="side-menu">
-            <li class="active"><a href="?act=homeadmin">Thống Kê</a></li>
+            <li><a href="?act=homeadmin">Thống Kê</a></li>
             <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
-            <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
+            <li class="active"><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
             <li><a href="#">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Khung Giờ</a></li>
+            <li><a href="?act=qlytaikhoan">Quản Lý Tài Khoản Khách Hàng</a></li>
         </ul>
         <ul class="side-menu">
             <li>
-                <a href="#" class="logout">
+                <a href="<?= BASE_URL ?>?act=logout" class="logout">
                     <i class='bx bx-log-out-circle'></i>
                     Đăng Xuất
                 </a>

@@ -2,6 +2,7 @@
 //phần chỉ để hiện giao diện
 require_once './models/CategoryModel.php';
 require_once './models/DichVuModel.php';
+require_once './models/Taikhoanuser.php';
 function aboutClien()
 {
     require_once './views/clien/AboutView.php';
@@ -49,11 +50,13 @@ class CattocContronler
 {
     public $categoryModel;
     public $dichvuModel;
+    public $thongtinuser;
 
     public function __construct()
     {
         $this->categoryModel = new CategoryModel();
         $this->dichvuModel = new DichVuModel();
+        $this->thongtinuser = new thongtinuser();
     }
 
     private function getCategorizedServices($limit = null)
@@ -102,6 +105,12 @@ class CattocContronler
         $categories = $this->categoryModel->all();
         $services = $this->dichvuModel->all();
         require_once './views/clien/HomeView.php';
+    }
+
+    //phần hiển thị tài khoản của người dùng ở admin
+    public function taikhoanuser(){
+        $taikhoan = $this->thongtinuser->alltaikhoan();
+        require_once './views/admin/Qlykhachhang.php';
     }
 }
 

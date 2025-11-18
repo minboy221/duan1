@@ -28,7 +28,13 @@
 
                         <label for="password">Mật Khẩu</label>
                         <input id="password" type="password" name="password">
-
+                        <!-- báo sai tài khoản mật khẩu -->
+                        <!-- báo lỗi trùng email -->
+                        <?php if (!empty($error)): ?>
+                            <p style="color: red; font-style: italic; margin-top: 10px; font-weight: bold;">
+                                <i class="fa fa-exclamation-circle"></i> <?= $error ?>
+                            </p>
+                        <?php endif; ?>
                         <!-- Hiển thị lỗi -->
                         <p id="error-msg" style="color:red; margin-top:10px;"></p>
                     </div>

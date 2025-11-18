@@ -57,12 +57,26 @@
                             <button type="submit"><i class="fa fa-arrow-right"></i></button>
                         </div>
                     </div>
+                    <!-- phần hiển thị các nút cho người dùng khi đã đăng nhập tài khoản -->
                     <div class="dangky">
-                        <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
-                            <button>
-                                Đăng Nhập / Đăng Ký
-                            </button>
-                        </a>
+                        <div class="dropdown">
+                            <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
+                                <button class="dropdown-btn">
+                                    Xin Chào,<?= htmlspecialchars($_SESSION['username']) ?><i
+                                        class="fa-solid fa-chevron-down"></i>
+                                </button>
+                                <div class="dropdown-content">
+                                    <a href="#">Lịch sử toả sáng</a>
+                                    <a href="<?= BASE_URL ?>?act=logout">Đăng xuất</a>
+                                </div>
+                            <?php else: ?>
+                                <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
+                                    <button>
+                                        Đăng Nhập / Đăng Ký
+                                    </button>
+                                </a>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </aside>
