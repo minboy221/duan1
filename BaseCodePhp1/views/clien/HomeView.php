@@ -253,7 +253,7 @@
                         <div class="cattocbo">
                             <?php foreach ($category['services'] as $p): ?>
                                 <div class="cattoccon">
-                                    <a href="">
+                                    <a href="index.php?act=chitietdichvu&id=<?= $p['id'] ?>">
                                         <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($p['image']) ?>"
                                             alt="<?= htmlspecialchars($p['name']) ?>">
                                     </a>

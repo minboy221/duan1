@@ -57,19 +57,33 @@
                             <button type="submit"><i class="fa fa-arrow-right"></i></button>
                         </div>
                     </div>
+                    <!-- phần hiển thị các nút cho người dùng khi đã đăng nhập tài khoản -->
                     <div class="dangky">
-                        <a href="<?= BASE_URL ?>?act=dangnhap">
-                            <button>
-                                Đăng Nhập / Đăng Ký
-                            </button>
-                        </a>
+                        <div class="dropdown">
+                            <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
+                                <button class="dropdown-btn">
+                                    Xin Chào,<?= htmlspecialchars($_SESSION['username']) ?><i
+                                        class="fa-solid fa-chevron-down"></i>
+                                </button>
+                                <div class="dropdown-content">
+                                    <a href="#">Lịch sử toả sáng</a>
+                                    <a href="<?= BASE_URL ?>?act=logout">Đăng xuất</a>
+                                </div>
+                            <?php else: ?>
+                                <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
+                                    <button>
+                                        Đăng Nhập / Đăng Ký
+                                    </button>
+                                </a>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </aside>
             <div class="banner">
                 <img src="/duan1/BaseCodePhp1/anhmau/dichvucatoc.076Z.png" alt="">
                 <div class="banner-text">
-                    <h1>Dịch Vụ nao thêm tên vào đây</h1>
+                    <h1><?= htmlspecialchars($category['name']) ?></h1>
                 </div>
             </div>
         </header>
@@ -80,32 +94,59 @@
         </div>
         <main>
             <div class="baocattoc">
-                <h2>Cắt Tóc</h2>
-                <p>Trải nghiệm cắt tóc phong cách dành riêng cho phái mạnh, vừa tiện lợi vừa thư giãn tại đây</p>
+                <h2><?= htmlspecialchars($category['name']) ?></h2>
+                <p><?= htmlspecialchars($category['description']) ?></p>
                 <div class="cattocbo">
                     <div class="cattoc">
                         <div class="infor">
-                            <h3>Cắt xả tạo kiểu</h3>
-                            <p>Cắt xả tạo kiểu, xả sạch tóc con.</p>
+                            <h3><?= htmlspecialchars($service['name']) ?></h3>
+                            <p><?= nl2br(htmlspecialchars($service['description'])) ?></p>
                             <div class="baogia">
                                 <p class="thoigian">
-                                    30 phút
+                                    <i class="fa-regular fa-clock"></i> <?= htmlspecialchars($service['time']) ?>
                                 </p>
                                 <p class="gia">
-                                    94,000 VNĐ
+                                    <?= number_format($service['price'] ?? 0) ?> VNĐ
                                 </p>
                             </div>
                         </div>
-                        <img src="/duan1/BaseCodePhp1/anhmau/anhdichvutoc.png" alt="">
+                        <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($service['image']) ?>"
+                            alt="<?= htmlspecialchars($service['name']) ?>">
                     </div>
                 </div>
             </div>
+            <!-- phần check người dùng đã có tài khoản chưa -->
+            <?php
+            $Dangnhap = BASE_URL . '?act=dangnhap_khachhang';
+            $isLoggedIn = isset($_SESSION['username']) && !empty($_SESSION['username']);
+            ?>
             <div class="datlich">
-                <a href="<?= BASE_URL ?>?act=datlich">
-                    <button type="submit">
-                        ĐẶT LỊCH NGAY
-                    </button>
-                </a>
+                <?php if ($isLoggedIn): ?>
+                    <a href="<?= BASE_URL ?>?act=datlich">
+                        <button type="submit">
+                            ĐẶT LỊCH NGAY
+                        </button>
+                    </a>
+                <?php else: ?>
+                    <div id="login-popup" class="popup-overlay" >
+                        <div class="popup-content">
+                            <div class="popup-header">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                <h3>Thông Báo</h3>
+                            </div>
+                            <div class="popup-body">
+                                <p>Bạn cần <strong>Đăng nhập</strong>hoặc <strong>Đăng ký</strong> tài khoản để thực hiện đặt lịch.</p>
+                                <p>Bạn có muốn đi đến trang đăng nhập không?</p>
+                            </div>
+                            <div class="popup-footer">
+                                <button onclick="closePopup()" class="btn-cancel">Để sau</button>
+                                <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
+                                    <button class="btn-confirm">Đăng nhập ngay</button>
+                                </a>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </main>
     </div>

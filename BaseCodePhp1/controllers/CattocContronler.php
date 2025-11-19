@@ -23,10 +23,6 @@ function DangnhapClien()
 {
     require_once './views/clien/DangnhapView.php';
 }
-function DichvuchitietClien()
-{
-    require_once './views/clien/DichvuchitietView.php';
-}
 function DatlichClien()
 {
     require_once './views/clien/DatlichView.php';
@@ -107,6 +103,34 @@ class CattocContronler
         require_once './views/clien/HomeView.php';
     }
 
+    //phần hiển thị dịch vụ chi tiết
+    public function hienthichitiet(){
+        $id = $_GET['id'] ?? null;
+        if(!$id){
+            echo "ID không hợp lệ";
+            return;
+        }
+        $service = $this->dichvuModel->find($id);
+        if(!$service){
+            echo "Dịch vụ không có hoặc không tồn tại";
+            return;
+        }
+        $category = $this -> categoryModel->find($service['danhmuc_id']);
+        require_once './views/clien/DichvuchitietView.php';
+    }
+
+    //phần hiển thị dịc vụ cho người dùng chọn
+    public function chondichvu(){
+        //kiểm tra tk
+        if(!isset($_SESSION['username'])){
+            header("Location: index.php?act=dangnhap_khachhang");
+            exit();
+        }
+        $categoriesWithServices= $this->getCategorizedServices();
+        $preSelectedId = $_GET['id'] ?? null;
+        require_once './views/clien/ChondichvuClien.php';
+    }
+    
     //phần hiển thị tài khoản của người dùng ở admin
     public function taikhoanuser(){
         $taikhoan = $this->thongtinuser->alltaikhoan();

@@ -2,15 +2,18 @@
 // models/DichVuModel.php
 require_once './commons/function.php';
 
-class DichVuModel {
+class DichVuModel
+{
     private $conn;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->conn = connectDB(); // PDO
     }
 
     // Lấy tất cả dịch vụ kèm tên danh mục (LEFT JOIN)
-    public function allWithCategory() {
+    public function allWithCategory()
+    {
         $sql = "SELECT d.*, dm.name AS category_name 
                 FROM dichvu d
                 LEFT JOIN danhmuc dm ON d.danhmuc_id = dm.id
@@ -21,15 +24,26 @@ class DichVuModel {
     }
 
     // Lấy tất cả dịch vụ (không join) - nếu cần
-    public function all() {
+    public function all()
+    {
         $sql = "SELECT * FROM dichvu ORDER BY id DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    //lấy dịch vụ theo ID
+    public function find($id)
+    {
+        $sql = "SELECT * FROM dichvu WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     // Lấy 1 dịch vụ (kèm tên danh mục)
-    public function findWithCategory($id) {
+    public function findWithCategory($id)
+    {
         $sql = "SELECT d.*, dm.name AS category_name 
                 FROM dichvu d
                 LEFT JOIN danhmuc dm ON d.danhmuc_id = dm.id
@@ -40,7 +54,8 @@ class DichVuModel {
     }
 
     // Thêm dịch vụ (có xử lý ảnh)
-    public function insert($data, $file) {
+    public function insert($data, $file)
+    {
         $name = $data['name'] ?? '';
         $desc = $data['description'] ?? null;
         $price = $data['price'] ?? 0;
@@ -60,7 +75,8 @@ class DichVuModel {
     }
 
     // Cập nhật dịch vụ
-    public function update($id, $data, $file) {
+    public function update($id, $data, $file)
+    {
         $name = $data['name'] ?? '';
         $desc = $data['description'] ?? null;
         $price = $data['price'] ?? 0;
@@ -83,14 +99,16 @@ class DichVuModel {
     }
 
     // Xoá dịch vụ
-    public function delete($id) {
+    public function delete($id)
+    {
         $sql = "DELETE FROM dichvu WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([$id]);
     }
 
     // Lấy dịch vụ theo danh mục (nếu muốn)
-    public function getByCategory($catId) {
+    public function getByCategory($catId)
+    {
         $sql = "SELECT * FROM dichvu WHERE danhmuc_id = ? ORDER BY id DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$catId]);

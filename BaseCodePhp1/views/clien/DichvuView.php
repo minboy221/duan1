@@ -57,10 +57,26 @@
                             <button><i class="fa fa-arrow-right"></i></button>
                         </div>
                     </div>
+                    <!-- phần hiển thị các nút cho người dùng khi đã đăng nhập tài khoản -->
                     <div class="dangky">
-                        <button>
-                            Đăng Nhập / Đăng Ký
-                        </button>
+                        <div class="dropdown">
+                            <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
+                                <button class="dropdown-btn">
+                                    Xin Chào,<?= htmlspecialchars($_SESSION['username']) ?><i
+                                        class="fa-solid fa-chevron-down"></i>
+                                </button>
+                                <div class="dropdown-content">
+                                    <a href="#">Lịch sử toả sáng</a>
+                                    <a href="<?= BASE_URL ?>?act=logout">Đăng xuất</a>
+                                </div>
+                            <?php else: ?>
+                                <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
+                                    <button>
+                                        Đăng Nhập / Đăng Ký
+                                    </button>
+                                </a>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </aside>
@@ -112,7 +128,7 @@
                                 <div class="cattocbo">
                                     <?php foreach ($category['services'] as $p): ?>
                                         <div class="cattoccon">
-                                            <a href="">
+                                            <a href="index.php?act=chitietdichvu&id=<?= $p['id'] ?>">
                                                 <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($p['image']) ?>"
                                                     alt="<?= htmlspecialchars($p['name']) ?>">
                                             </a>

@@ -32,9 +32,9 @@ match ($act) {
     'dichvu' => $clientController->hienthidanhmuc1(),
     'nhanvien' => NhanvienClien(),
     'dangky' => DangkyClien(),
-    'chitietdichvu' => DichvuchitietClien(),
+    'chitietdichvu' => $clientController->hienthichitiet(),
     'datlich' => DatlichClien(),
-    'chondichvu' => chondichvuClien(),
+    'chondichvu' => $clientController ->chondichvu(),
     //đăng nhập và đăng ký cho khách hàng
     'dangky_khachhang' => (new KhachHangController())->register(),
     'dangnhap_khachhang' => (new KhachHangController())->login(),
