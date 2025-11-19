@@ -26,7 +26,7 @@
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
             <li><a href="#">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Khung Giờ</a></li>
-            <li class="active"><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
+            <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
         </ul>
 
         <ul class="side-menu">
@@ -59,8 +59,8 @@
                 <span class="count">12</span>
             </a>
 
-            <a href="#" class="profile">
-                <img src="./anh/logochinh.424Z.png">
+            <a href="<?= BASE_URL ?>?act=logout" class="profile">
+                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
             </a>
         </nav>
         <!-- End Navbar -->

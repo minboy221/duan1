@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nhân Viên | 31Shine</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/nhanvien.css">
+    <title>Lịch Sử Cắt | 31Shine</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/lichsudatlich.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
 </head>
@@ -31,9 +31,7 @@
             </div>
             <aside class="aside">
                 <div class="logo">
-                    <a href="<?= BASE_URL ?>?act=home">
-                        <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
-                    </a>
+                    <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
                 </div>
                 <div class="menu">
                     <ul>
@@ -54,7 +52,7 @@
                         <i class="fa fa-search" id="timkiem"></i>
                         <div class="search-box" id="search-box">
                             <input type="text" placeholder="Tìm kiếm dịch vụ,giá dịch vụ...">
-                            <button type="submit"><i class="fa fa-arrow-right"></i></button>
+                            <button><i class="fa fa-arrow-right"></i></button>
                         </div>
                     </div>
                     <!-- phần hiển thị các nút cho người dùng khi đã đăng nhập tài khoản -->
@@ -80,12 +78,6 @@
                     </div>
                 </div>
             </aside>
-            <div class="banner">
-                <img src="/duan1/BaseCodePhp1/anhmau/anhbannernhanvien.411Z.png" alt="">
-                <div class="banner-text">
-                    <h1>Nhân Viên</h1>
-                </div>
-            </div>
         </header>
     </div>
     <div class="content">
@@ -93,80 +85,36 @@
             <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
         </div>
         <main>
-            <div class="baonhanvien">
-                <div class="titlenoidung1">
-                    <h2>GẶP GỠ NHỮNG THỢ CẮT TÓC ƯNG Ý <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"
-                            fill="#f5c542" class="bi bi-star-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg></h2>
-                    <p>Đội ngũ dày dặn kinh nghiệm trong việc chăm sóc tóc của bạn.</p>
-                </div>
-                <div class="baothocattoc">
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho1.png" alt="">
-                        <div class="infotho">
-                            <div class="ten">
-                                <p>Việt Hùng</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho2.png" alt="">
-                        <div class="ten">
-                            <p>Mạnh Dũng</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho3.png" alt="">
-                        <div class="ten">
-                            <p>Công Huy</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho4.png" alt="">
-                        <div class="ten">
-                            <p>Nhật Minh</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="baonhanviennu">
-                <div class="titlenoidung1">
-                    <h2>31Shine’s Angels <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#f5c542"
-                            class="bi bi-star-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg></h2>
-                    <p>Đội ngũ Skinner xinh đẹp hết lòng vì khách hàng.</p>
-                </div>
-                <div class="baothocattoc">
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/thogoi1.192Z.png" alt="">
-                        <div class="infotho">
-                            <div class="ten">
-                                <p>Việt Hùng</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/thogoi2.792Z.png" alt="">
-                        <div class="ten">
-                            <p>Mạnh Dũng</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/thonu2.493Z.png" alt="">
-                        <div class="ten">
-                            <p>Công Huy</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/goidauthugian.679Z.png" alt="">
-                        <div class="ten">
-                            <p>Nhật Minh</p>
-                        </div>
-                    </div>
+            <div class="lichsu">
+                <h2>LỊCH SỬ CẮT TÓC</h2>
+                <p>Xem lại các lần bạn đã cắt tóc tại 31Shine</p>
+
+                <div class="bang-lichsu">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Dịch vụ</th>
+                                <th>Thợ cắt</th>
+                                <th>Giờ hẹn</th>
+                                <th>Giá</th>
+                                <th>Trạng thái</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>05/11/2025</td>
+                                <td>Cắt tóc & gội đầu</td>
+                                <td>Việt Hùng</td>
+                                <td>14:00</td>
+                                <td>99.000đ</td>
+                                <td><span class="done">Hoàn thành</span></td>
+                                <td class="chitiet"> <a href="<?= BASE_URL ?>?act=lichsudatchitiet"><button>Xem Chi
+                                            Tiết</button></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>
@@ -176,8 +124,7 @@
             <div class="footer-column">
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
                     class="footer-logo">
-                <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam. Chúng tôi giúp bạn luôn tự tin và phong
-                    độ
+                <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam. Chúng tôi giúp bạn luôn tự tin và phong độ
                     mỗi ngày.</p>
             </div>
             <div class="footer-column">

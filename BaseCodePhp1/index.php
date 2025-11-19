@@ -35,6 +35,8 @@ match ($act) {
     'chitietdichvu' => $clientController->hienthichitiet(),
     'datlich' => DatlichClien(),
     'chondichvu' => $clientController ->chondichvu(),
+    'lichsudat' => Lichsudon(),
+    'lichsudatchitiet' => Lichsudonchitiet(),
     //đăng nhập và đăng ký cho khách hàng
     'dangky_khachhang' => (new KhachHangController())->register(),
     'dangnhap_khachhang' => (new KhachHangController())->login(),

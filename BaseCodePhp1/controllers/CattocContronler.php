@@ -31,6 +31,14 @@ function chondichvuClien()
 {
     require_once './views/clien/ChondichvuClien.php';
 }
+
+function Lichsudon(){
+    require_once './views/clien/Lichsudatlich.php';
+}
+
+function Lichsudonchitiet(){
+    require_once './views/clien/Lichsudat_chitiet.php';
+}
 //phần chỉ để hiển thị giao diện admin
 function homeAdmin()
 {

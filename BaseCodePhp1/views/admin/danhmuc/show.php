@@ -25,11 +25,11 @@
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
             <li><a href="#">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Khung Giờ</a></li>
-            <li class="active"><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
+            <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
         </ul>
 
         <ul class="side-menu">
-            <li><a href="#" class="logout"><i class="bx bx-log-out-circle"></i> Đăng Xuất</a></li>
+            <li><a href="<?= BASE_URL ?>?act=logout" class="logout"><i class="bx bx-log-out-circle"></i> Đăng Xuất</a></li>
         </ul>
     </div>
 
@@ -38,7 +38,7 @@
         <nav>
             <i class='bx bx-menu'></i>
             <a href="#" class="notif"><i class='bx bx-bell'></i><span class="count">12</span></a>
-            <a href="#" class="profile"><img src="./anh/logochinh.424Z.png"></a>
+            <a href="#" class="profile"><img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png"></a>
         </nav>
 
         <main>

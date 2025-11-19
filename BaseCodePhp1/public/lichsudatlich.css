@@ -132,6 +132,42 @@ body{
     width: 100%;
 }
 
+/* phần dropdown */
+.nav-item.dropdown {
+  position: relative;
+}
+
+/* Dropdown menu (ẩn mặc định) */
+.nav-item .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 120%;
+  left: 0;
+  flex-direction: column;
+  background-color: #222;
+  border-radius: 8px;
+  min-width: 180px;
+  padding: 10px 0;
+  z-index: 999;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+.dropdown-menu li {
+  width: 100%;
+}
+
+.dropdown-item {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: block;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
 /* Icon tìm kiếm */
 .search-box{
     position: absolute;
@@ -205,11 +241,6 @@ a, button, .icon i {
     cursor: pointer;
 }
 
-/* phần đăng ký/đăng nhập */
-.dangky{
-    padding: 10px;
-}
-
 /* phần menu dropdown nếu có tk */
 .dropdown {
     position: relative;
@@ -277,7 +308,6 @@ a, button, .icon i {
     color: #000;
 }
 
-
 /* Đáp ứng mobile */
 @media (max-width: 768px) {
     .aside {
@@ -308,230 +338,165 @@ a, button, .icon i {
     height: 100%;
     object-fit: cover;
 }
-
 /* phần nội dung */
 main {
     position: relative;
     z-index: 1;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.chondichvu{
-    margin-top: 100px;
-    width: 900px;
-    padding: 40px;
+/* Box lịch sử */
+.lichsu {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 40px 50px;
+    border-radius: 16px;
+    box-shadow: 0 0 25px rgba(245, 197, 66, 0.4);
+    max-width: 900px;
+    width: 90%;
+    color: #fff;
+    border: 1px solid #f5c542;
 }
 
-.tieude{
-    display: flex;
-    align-items: center;
+/* Tiêu đề */
+.lichsu h2 {
+    color: #f5c542;
+    font-size: 28px;
     text-align: center;
-    justify-content: space-between;
-    margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.tieude a svg{
-    background-color: #D6A354;
-    color: #fff;
-    border-radius: 50%;
-    padding: 5px;
+.lichsu p {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #ddd;
 }
 
-.tieude h2{
-    font-weight: 600;
-    color: #222;
+/* Bảng lịch sử */
+.bang-lichsu table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.search{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.search input{
-    padding: 10px 20px;
-    width: 800px;
-    border: none;
-    border-radius: 30px;
-    outline: none;
-    font-size: 16px;
-    transition: 0.3s ease;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-}
-
-.search button {
-    background:#D6A354;
-    color: #000;
-    border: none;
+.bang-lichsu th, .bang-lichsu td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 12px 15px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    font-size: 15px;
 }
 
-.search button:hover {
-    background: #e6c200;
-    transform: scale(1.05);
+.bang-lichsu th {
+    color: #f5c542;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.05);
 }
 
-.baodichvu{
-    margin-top: 20px;
-    width: 800px;
-    height: 100%;
-    background-color: #f2f2f2;
-    border-radius: 10px;
-    padding: 10px;
+.bang-lichsu tr:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transition: 0.3s;
 }
 
-.dichvu h3{
+/* Trạng thái */
+.done {
+    color: #00c851;
+    font-weight: 600;
+}
+
+.cancel {
+    color: #ff4444;
+    font-weight: 600;
+}
+
+.chitiet button{
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #f5c542;
+    background: transparent;
+    color: #fff;
+    transition: 0.3s;
+}
+
+.chitiet button:hover{
+    background-color: #f5c542;
+}
+
+/* phần footer */
+.footer {
+    background-color: #111; /* nền đen */
+    color: #f5c542; /* vàng sang trọng */
+    padding: 60px 20px 20px;
+    font-family: 'Poppins', sans-serif;
     position: relative;
-    font-size: 20px;
-    font-weight: 800;
-    color: #222;
-    text-transform: uppercase;
-    padding: 10px;
 }
 
-.dichvu h3::after{
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 40%;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 30px;
-    background-color: #f5c542; /* vÃ ng chá»§ Ä‘áº¡o */
-    border-radius: 3px;
-}
-
-.cacdichvu{
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    justify-content: space-between;
+    gap: 30px;
 }
 
-.dichvucon{
-    width: 250px;
-    height: 350px;
+.footer-column {
+    flex: 1 1 250px;
+}
+
+.footer-logo {
+    width: 150px;
+    margin-bottom: 15px;
+}
+
+.footer-column h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    border-left: 4px solid #f5c542;
+    padding-left: 10px;
+}
+
+.footer-column p,
+.footer-column a {
+    color: #ccc;
+    font-size: 15px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-column a:hover {
+    color: #f5c542;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin: 8px 0;
+}
+
+.social-icons {
     margin-top: 10px;
 }
 
-.baoanh {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
+.social-icons a {
+    color: #f5c542;
+    font-size: 20px;
+    margin-right: 12px;
+    transition: 0.3s;
 }
 
-.dichvucon img{
-    width: 100%;
-    object-fit: cover;
-    border-radius: 10px 10px 0 0;
-}
-
-.duration {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #D6A354;
+.social-icons a:hover {
     color: #fff;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 13px;
-    font-weight: 500;
 }
 
-.dichvucon .infor{
-    background-color: #222;
-    margin-top: -10px;
-    position: relative;
-    border-radius: 0 0 10px 10px;
-    color: #fff;
-    padding: 10px;
+.footer-bottom {
     text-align: center;
-}
-
-.infor p{
-    font-size: 15px;
-    font-weight: 600;
-}
-
-.infor-gia span{
-    font-size: 10px;
-}
-
-.infor button{
-    margin-top: 5px;
-    padding: 10px 90px;
-    border-radius: 10px;
-    border: none;
-    background-color: #D6A354;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 700;
-    transition:  0.3s;
-}
-
-.infor button:hover{
-    background-color: #000;
-    color: #fff;
-}
-
-.dachon{
-    margin-top: 80px;
-    position: fixed;
-    bottom: 0;
-    background: #000;
-    color: #fff;
-    padding: 12px 20px;
-    z-index: 1000;
-    width: 850px;
-    border-radius: 10px;
-}
-
-.danhsach {
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.danhsach p {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.tong-tien {
-    text-align: right;
-}
-
-.tong-tien span {
-    display: block;
-    font-size: 18px;
-    font-weight: bold;
-    color: #ffde59;
-}
-
-.danhsach button {
-    background: #D6A354;
-    color: #fff;
-    border: none;
-    padding: 10px 25px;
-    font-size: 16px;
-    font-weight: 500;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.danhsach button:hover {
-    background: #e6c200;
+    border-top: 1px solid #333;
+    padding-top: 15px;
+    margin-top: 30px;
+    color: #999;
+    font-size: 14px;
 }

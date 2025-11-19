@@ -37,7 +37,7 @@
                 </div>
                 <div class="menu">
                     <ul>
-                        <li class="active1">
+                        <li>
                             <a href="<?= BASE_URL ?>?act=home">Trang Chủ</a>
                         </li>
                         <li>
@@ -66,7 +66,7 @@
                                         class="fa-solid fa-chevron-down"></i>
                                 </button>
                                 <div class="dropdown-content">
-                                    <a href="#">Lịch sử toả sáng</a>
+                                    <a href="<?= BASE_URL ?>?act=lichsudat">Lịch sử toả sáng</a>
                                     <a href="<?= BASE_URL ?>?act=logout">Đăng xuất</a>
                                 </div>
                             <?php else: ?>

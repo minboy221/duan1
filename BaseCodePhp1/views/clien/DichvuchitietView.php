@@ -66,7 +66,7 @@
                                         class="fa-solid fa-chevron-down"></i>
                                 </button>
                                 <div class="dropdown-content">
-                                    <a href="#">Lịch sử toả sáng</a>
+                                    <a href="<?= BASE_URL ?>?act=lichsudat">Lịch sử toả sáng</a>
                                     <a href="<?= BASE_URL ?>?act=logout">Đăng xuất</a>
                                 </div>
                             <?php else: ?>
@@ -128,14 +128,15 @@
                         </button>
                     </a>
                 <?php else: ?>
-                    <div id="login-popup" class="popup-overlay" >
+                    <div id="login-popup" class="popup-overlay">
                         <div class="popup-content">
                             <div class="popup-header">
                                 <i class="fa-solid fa-circle-exclamation"></i>
                                 <h3>Thông Báo</h3>
                             </div>
                             <div class="popup-body">
-                                <p>Bạn cần <strong>Đăng nhập</strong>hoặc <strong>Đăng ký</strong> tài khoản để thực hiện đặt lịch.</p>
+                                <p>Bạn cần <strong>Đăng nhập</strong>hoặc <strong>Đăng ký</strong> tài khoản để thực hiện
+                                    đặt lịch.</p>
                                 <p>Bạn có muốn đi đến trang đăng nhập không?</p>
                             </div>
                             <div class="popup-footer">

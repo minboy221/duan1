@@ -67,7 +67,7 @@
                                         class="fa-solid fa-chevron-down"></i>
                                 </button>
                                 <div class="dropdown-content">
-                                    <a href="#">Lịch sử toả sáng</a>
+                                    <a href="<?= BASE_URL ?>?act=lichsudat">Lịch sử toả sáng</a>
                                     <a href="<?= BASE_URL ?>?act=logout">Đăng xuất</a>
                                 </div>
                             <?php else: ?>
@@ -136,7 +136,7 @@
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
-                            <?php
+                                <?php
                             endif; // End if services check
                         endforeach; // End foreach categories
                     else:

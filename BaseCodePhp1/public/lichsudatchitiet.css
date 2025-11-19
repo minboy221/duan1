@@ -132,6 +132,42 @@ body{
     width: 100%;
 }
 
+/* phần dropdown */
+.nav-item.dropdown {
+  position: relative;
+}
+
+/* Dropdown menu (ẩn mặc định) */
+.nav-item .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 120%;
+  left: 0;
+  flex-direction: column;
+  background-color: #222;
+  border-radius: 8px;
+  min-width: 180px;
+  padding: 10px 0;
+  z-index: 999;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+.dropdown-menu li {
+  width: 100%;
+}
+
+.dropdown-item {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: block;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
 /* Icon tìm kiếm */
 .search-box{
     position: absolute;
@@ -205,11 +241,6 @@ a, button, .icon i {
     cursor: pointer;
 }
 
-/* phần đăng ký/đăng nhập */
-.dangky{
-    padding: 10px;
-}
-
 /* phần menu dropdown nếu có tk */
 .dropdown {
     position: relative;
@@ -277,7 +308,6 @@ a, button, .icon i {
     color: #000;
 }
 
-
 /* Đáp ứng mobile */
 @media (max-width: 768px) {
     .aside {
@@ -313,225 +343,232 @@ a, button, .icon i {
 main {
     position: relative;
     z-index: 1;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.chondichvu{
-    margin-top: 100px;
-    width: 900px;
-    padding: 40px;
+/* Khung chứa hóa đơn */
+.baohoadon {
+  background: rgba(35, 86, 128, 0.1);
+  backdrop-filter: blur(15px);
+  padding: 40px;
+  border-radius: 20px;
+  width: 800px;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  margin-top: 480px;
 }
 
-.tieude{
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: space-between;
-    margin-top: 10px;
-    margin-bottom: 10px;
+.baohoadon h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #ffd700;
 }
 
-.tieude a svg{
-    background-color: #D6A354;
-    color: #fff;
-    border-radius: 50%;
-    padding: 5px;
+/* Các khối thông tin */
+.thongtin-donhang,
+.chititethoadon {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 20px 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  border-left: 4px solid #ffd700;
 }
 
-.tieude h2{
-    font-weight: 600;
-    color: #222;
+.thongtin-donhang h2,
+.chititethoadon h3 {
+  color: #ffd700;
+  margin-bottom: 15px;
+  font-size: 20px;
 }
 
-.search{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+/* Dòng thông tin */
+.infor-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  font-size: 16px;
 }
 
-.search input{
-    padding: 10px 20px;
-    width: 800px;
-    border: none;
-    border-radius: 30px;
-    outline: none;
-    font-size: 16px;
-    transition: 0.3s ease;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+.infor-row p {
+  flex: 1;
 }
 
-.search button {
-    background:#D6A354;
-    color: #000;
-    border: none;
-    padding: 12px 15px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+/* Trạng thái đơn */
+.trangthai {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
-.search button:hover {
-    background: #e6c200;
-    transform: scale(1.05);
+.trangthai.paid {
+  background: #28a745;
+  color: white;
 }
 
-.baodichvu{
-    margin-top: 20px;
-    width: 800px;
-    height: 100%;
-    background-color: #f2f2f2;
-    border-radius: 10px;
-    padding: 10px;
+.trangthai.pending {
+  background: #ffc107;
+  color: #333;
 }
 
-.dichvu h3{
+.trangthai.cancelled {
+  background: #dc3545;
+  color: white;
+}
+
+/* Stylist */
+.infor-row img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffd700;
+}
+
+.stylist-infor {
+  flex: 1;
+}
+
+/* Bảng dịch vụ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+table thead {
+  background: rgba(255, 215, 0, 0.2);
+}
+
+th,
+td {
+  padding: 12px 16px;
+  text-align: left;
+}
+
+th {
+  color: #ffd700;
+  font-size: 16px;
+  border-bottom: 2px solid #ffd700;
+}
+
+td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+tfoot td {
+  border-top: 2px solid #ffd700;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Nút hành động */
+.action {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btn {
+  background: #ffd700;
+  color: #000;
+  border: none;
+  padding: 10px 25px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background: #e6c200;
+  transform: translateY(-2px);
+}
+
+/* phần footer */
+.footer {
+    margin-top: 330px;
+    background-color: #111; /* nền đen */
+    color: #f5c542; /* vàng sang trọng */
+    padding: 60px 20px 20px;
+    font-family: 'Poppins', sans-serif;
     position: relative;
-    font-size: 20px;
-    font-weight: 800;
-    color: #222;
-    text-transform: uppercase;
-    padding: 10px;
 }
 
-.dichvu h3::after{
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 40%;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 30px;
-    background-color: #f5c542; /* vÃ ng chá»§ Ä‘áº¡o */
-    border-radius: 3px;
-}
-
-.cacdichvu{
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
-}
-
-.dichvucon{
-    width: 250px;
-    height: 350px;
-    margin-top: 10px;
-}
-
-.baoanh {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-}
-
-.dichvucon img{
-    width: 100%;
-    object-fit: cover;
-    border-radius: 10px 10px 0 0;
-}
-
-.duration {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #D6A354;
-    color: #fff;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 13px;
-    font-weight: 500;
-}
-
-.dichvucon .infor{
-    background-color: #222;
-    margin-top: -10px;
-    position: relative;
-    border-radius: 0 0 10px 10px;
-    color: #fff;
-    padding: 10px;
-    text-align: center;
-}
-
-.infor p{
-    font-size: 15px;
-    font-weight: 600;
-}
-
-.infor-gia span{
-    font-size: 10px;
-}
-
-.infor button{
-    margin-top: 5px;
-    padding: 10px 90px;
-    border-radius: 10px;
-    border: none;
-    background-color: #D6A354;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 700;
-    transition:  0.3s;
-}
-
-.infor button:hover{
-    background-color: #000;
-    color: #fff;
-}
-
-.dachon{
-    margin-top: 80px;
-    position: fixed;
-    bottom: 0;
-    background: #000;
-    color: #fff;
-    padding: 12px 20px;
-    z-index: 1000;
-    width: 850px;
-    border-radius: 10px;
-}
-
-.danhsach {
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 15px;
-    flex-wrap: wrap;
+    gap: 30px;
 }
 
-.danhsach p {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 500;
+.footer-column {
+    flex: 1 1 250px;
 }
 
-.tong-tien {
-    text-align: right;
+.footer-logo {
+    width: 150px;
+    margin-bottom: 15px;
 }
 
-.tong-tien span {
-    display: block;
+.footer-column h3 {
+    margin-bottom: 15px;
     font-size: 18px;
-    font-weight: bold;
-    color: #ffde59;
+    border-left: 4px solid #f5c542;
+    padding-left: 10px;
 }
 
-.danhsach button {
-    background: #D6A354;
+.footer-column p,
+.footer-column a {
+    color: #ccc;
+    font-size: 15px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-column a:hover {
+    color: #f5c542;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin: 8px 0;
+}
+
+.social-icons {
+    margin-top: 10px;
+}
+
+.social-icons a {
+    color: #f5c542;
+    font-size: 20px;
+    margin-right: 12px;
+    transition: 0.3s;
+}
+
+.social-icons a:hover {
     color: #fff;
-    border: none;
-    padding: 10px 25px;
-    font-size: 16px;
-    font-weight: 500;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
 }
 
-.danhsach button:hover {
-    background: #e6c200;
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #333;
+    padding-top: 15px;
+    margin-top: 30px;
+    color: #999;
+    font-size: 14px;
 }

@@ -19,13 +19,13 @@
             <div class="logo-name"><span>31</span>Shine</div>
         </a>
         <ul class="side-menu">
-            <li><a href="?act=homeadmin">Thống Kê</a></li>
+            <li class="active"><a href="?act=homeadmin">Thống Kê</a></li>
             <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
-            <li class="active"><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
+            <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
             <li><a href="#">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Khung Giờ</a></li>
-            <li class="active"><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
+            <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
         </ul>
         <ul class="side-menu">
             <li>
@@ -56,7 +56,7 @@
                 <span class="count">12</span>
             </a>
             <a href="#" class="profile">
-                <img src="./anh/logochinh.424Z.png">
+                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
             </a>
         </nav>
 
@@ -131,7 +131,6 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <img src="images/profile-1.jpg">
                                     <p>John Doe</p>
                                 </td>
                                 <td>14-08-2023</td>
@@ -139,7 +138,6 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <img src="images/profile-1.jpg">
                                     <p>John Doe</p>
                                 </td>
                                 <td>14-08-2023</td>
@@ -147,7 +145,6 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <img src="images/profile-1.jpg">
                                     <p>John Doe</p>
                                 </td>
                                 <td>14-08-2023</td>
