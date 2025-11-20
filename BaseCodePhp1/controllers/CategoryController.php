@@ -17,9 +17,17 @@ class CategoryController
     // danh sách
     public function quanlydanhmuc()
     {
-        $categories = $this->model->all();
-        include 'views/admin/danhmuc/list.php'; // bạn tạo view tương ứng
+        $keyword = $_GET['keyword'] ?? null;
+
+        if ($keyword) {
+            $categories = $this->model->search($keyword);
+        } else {
+            $categories = $this->model->all();
+        }
+
+        include 'views/admin/danhmuc/list.php';
     }
+
 
     // form create
     public function createdanhmuc()
@@ -38,7 +46,8 @@ class CategoryController
     }
 
     // form edit
-    public function edit() {
+    public function edit()
+    {
         $id = $_GET['id'] ?? null;
         if (!$id) {
             echo "ID danh mục không hợp lệ";
@@ -49,7 +58,8 @@ class CategoryController
     }
 
     // update
-    public function update() {
+    public function update()
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header("Location: index.php?act=qlydanhmuc");
             exit();
@@ -65,14 +75,22 @@ class CategoryController
     }
 
     // delete
-    public function delete() {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            $this->model->delete($id);
+    public function delete()
+    {
+        $id = $_GET['id'];
+
+        $result = $this->model->delete($id);
+
+        if (!$result) {
+            $_SESSION['error'] = "Không thể xoá danh mục vì vẫn còn dịch vụ thuộc danh mục này!";
+            header("Location: ?act=qlydanhmuc");
+            exit;
         }
-        header("Location: index.php?act=qlydanhmuc");
-        exit();
+
+        $_SESSION['success'] = "Xoá danh mục thành công!";
+        header("Location: ?act=qlydanhmuc");
     }
+
 
     // show (xem chi tiết 1 danh mục + danh sách dịch vụ trong đó)
     // controllers/CategoryController.php

@@ -144,6 +144,62 @@ class CattocContronler
         $taikhoan = $this->thongtinuser->alltaikhoan();
         require_once './views/admin/Qlykhachhang.php';
     }
+    // phần tìm kiếm
+    public function searchUser()
+{
+    $keyword = $_GET['keyword'] ?? '';
+
+    if ($keyword !== '') {
+        $taikhoan = $this->thongtinuser->search($keyword);
+    } else {
+        $taikhoan = $this->thongtinuser->alltaikhoan();
+    }
+
+    require_once './views/admin/Qlykhachhang.php';
+}
+// phần tìm kiếm cliên
+// Tìm kiếm dịch vụ theo danh mục, giá và từ khóa
+public function searchClient() {
+    $categoryId = $_GET['category_id'] ?? '';
+    $priceRange = $_GET['price_range'] ?? '';
+    $keyword = $_GET['keyword'] ?? '';
+
+    $categories = $this->categoryModel->all();
+    $dataForView = [];
+
+    foreach ($categories as $category) {
+        $services = $this->dichvuModel->getByCategory($category['id']);
+
+        // Lọc theo danh mục
+        if ($categoryId && $category['id'] != $categoryId) {
+            $services = [];
+        }
+
+        // Lọc theo giá
+        if ($priceRange && !empty($services)) {
+            [$minPrice, $maxPrice] = explode('-', $priceRange);
+            $services = array_filter($services, function($s) use ($minPrice, $maxPrice) {
+                return $s['price'] >= $minPrice && $s['price'] <= $maxPrice;
+            });
+        }
+
+        // Lọc theo từ khóa
+        if ($keyword && !empty($services)) {
+            $services = array_filter($services, function($s) use ($keyword) {
+                return stripos($s['name'], $keyword) !== false; // không phân biệt hoa thường
+            });
+        }
+
+        $category['services'] = $services;
+        $dataForView[] = $category;
+    }
+
+    $categoriesWithServices = $dataForView;
+    require_once './views/clien/DichvuView.php';
+}
+
+
+
 }
 
 ?>
