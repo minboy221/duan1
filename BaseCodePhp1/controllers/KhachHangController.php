@@ -35,6 +35,13 @@ class KhachHangController
             } else {
                 $md5Pass = md5($password);
                 $user = $this->khachhang->login($username);
+                // Kiểm tra tài khoản bị khóa
+                if ($user && isset($user['status']) && $user['status'] == 0) {
+                    $error = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên!";
+                    require_once './views/clien/DangnhapView.php';
+                    return;
+                }
+
 
                 if ($user && $user['password'] === $md5Pass) {
                     $_SESSION['is_logged_in'] = true;
@@ -105,4 +112,3 @@ class KhachHangController
         exit();
     }
 }
-?>

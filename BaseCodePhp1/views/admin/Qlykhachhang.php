@@ -127,22 +127,23 @@
                                         <td><?= htmlspecialchars($p['phone']) ?></td>
                                         <td><?= htmlspecialchars($p['created_at']) ?></td>
                                         <td>
-                                            <a class="btnsua"
-                                                href="?act=edit_dichvu&id=<?= htmlspecialchars($p['id']) ?>">Sửa</a>
                                             <a class="btnxem" href="?act=admin-user-comment&id=<?= $p['id'] ?>"
                                                 class="btn btn-info">Xem bình luận</a>
-                                            <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá dịch vụ này?')"
-                                                href="?act=delete_dichvu&id=<?= htmlspecialchars($p['id']) ?>">
-                                                Xoá
-                                            </a>
+
+                                            <?php if ($p['status'] == 1): ?>
+                                                <a class="btnxoa" href="?act=lock_user&id=<?= $p['id'] ?>">Khóa</a>
+                                            <?php else: ?>
+                                                <a class="btnsua" href="?act=unlock_user&id=<?= $p['id'] ?>">Mở khóa</a>
+                                            <?php endif; ?>
+
                                         </td>
                                     </tr>
-                                </tbody>
-                            <?php endforeach; ?>
-                        </table>
-                    <?php else: ?>
-                        <p>Chưa có tài khoản nào trong hệ thống.</p>
-                    <?php endif; ?>
+                        </tbody>
+                    <?php endforeach; ?>
+                    </table>
+                <?php else: ?>
+                    <p>Chưa có tài khoản nào trong hệ thống.</p>
+                <?php endif; ?>
                 </div>
             </div>
 

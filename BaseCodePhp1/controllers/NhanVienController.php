@@ -43,4 +43,5 @@ class NhanVienController
         $this->lichModel->updateStatus($id, 2);
         header("location: index.php?act=nv-dashboard");
     }
+    
 }

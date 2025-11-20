@@ -48,12 +48,21 @@
         <nav>
             <i class='bx bx-menu'></i>
 
-            <form action="#">
+            <form action="" method="GET">
+                <input type="hidden" name="act" value="search_tho">
+
                 <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                    <input type="search"
+                        name="keyword"
+                        placeholder="Tìm thợ theo tên..."
+                        value="<?= $_GET['keyword'] ?? '' ?>">
+                    <button class="search-btn" type="submit">
+                        <i class='bx bx-search'></i>
+                    </button>
                 </div>
             </form>
+
+
 
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>

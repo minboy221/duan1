@@ -77,6 +77,10 @@ match ($act) {
     'delete_dichvu' => (new DichVuController())->delete(),
     //phần tài khoản khách hàng ở admin
     'qlytaikhoan' => (new CattocContronler())->taikhoanuser(),
+    // khóa
+    'lock_user' => (new CattocContronler())->lockUser(),
+    'unlock_user' => (new CattocContronler())->unlockUser(),
+
 
     // phần quản lý đánh giá
     'admin-user-comment' => (new BinhLuanUserController())->detail(),
@@ -90,6 +94,9 @@ match ($act) {
     'nv-chitiet' => (new NhanVienController())->chitiet(),
     'nv-xacnhan' => (new NhanVienController())->xacnhan(),
     'nv-huy' => (new NhanVienController())->huy(),
+    // tìm kiếm nhan viên
+    'admin-nhanvien-search' => (new NhanVienAdminController())->search(),
+
 
     // PHẦN QUẢN LÝ THỢ
     'qlytho' => (new ThoController())->index(),
@@ -97,7 +104,6 @@ match ($act) {
     'qlytho_create' => (new ThoController())->create(),
     'qlytho_edit' => (new ThoController())->edit(),
     'qlytho_delete' => (new ThoController())->delete(),
-    'updatetho' => (new ThoController())->update(),
 
     //NHÂN VIÊN (Admin quản lý + phân quyền) 
     'admin-nhanvien' => $adminNhanVienAdminController->index(),
@@ -110,4 +116,4 @@ match ($act) {
     // phần hiển thị chức năng của quản lý dịch vụ
     default => notFound(),
 }
-    ?>
+?>

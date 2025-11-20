@@ -32,11 +32,13 @@ function chondichvuClien()
     require_once './views/clien/ChondichvuClien.php';
 }
 
-function Lichsudon(){
+function Lichsudon()
+{
     require_once './views/clien/Lichsudatlich.php';
 }
 
-function Lichsudonchitiet(){
+function Lichsudonchitiet()
+{
     require_once './views/clien/Lichsudat_chitiet.php';
 }
 //phần chỉ để hiển thị giao diện admin
@@ -112,94 +114,118 @@ class CattocContronler
     }
 
     //phần hiển thị dịch vụ chi tiết
-    public function hienthichitiet(){
+    public function hienthichitiet()
+    {
         $id = $_GET['id'] ?? null;
-        if(!$id){
+        if (!$id) {
             echo "ID không hợp lệ";
             return;
         }
         $service = $this->dichvuModel->find($id);
-        if(!$service){
+        if (!$service) {
             echo "Dịch vụ không có hoặc không tồn tại";
             return;
         }
-        $category = $this -> categoryModel->find($service['danhmuc_id']);
+        $category = $this->categoryModel->find($service['danhmuc_id']);
         require_once './views/clien/DichvuchitietView.php';
     }
 
     //phần hiển thị dịc vụ cho người dùng chọn
-    public function chondichvu(){
+    public function chondichvu()
+    {
         //kiểm tra tk
-        if(!isset($_SESSION['username'])){
+        if (!isset($_SESSION['username'])) {
             header("Location: index.php?act=dangnhap_khachhang");
             exit();
         }
-        $categoriesWithServices= $this->getCategorizedServices();
+        $categoriesWithServices = $this->getCategorizedServices();
         $preSelectedId = $_GET['id'] ?? null;
         require_once './views/clien/ChondichvuClien.php';
     }
-    
+
     //phần hiển thị tài khoản của người dùng ở admin
-    public function taikhoanuser(){
+    public function taikhoanuser()
+    {
         $taikhoan = $this->thongtinuser->alltaikhoan();
         require_once './views/admin/Qlykhachhang.php';
     }
     // phần tìm kiếm
     public function searchUser()
-{
-    $keyword = $_GET['keyword'] ?? '';
+    {
+        $keyword = $_GET['keyword'] ?? '';
 
-    if ($keyword !== '') {
-        $taikhoan = $this->thongtinuser->search($keyword);
-    } else {
-        $taikhoan = $this->thongtinuser->alltaikhoan();
+        if ($keyword !== '') {
+            $taikhoan = $this->thongtinuser->search($keyword);
+        } else {
+            $taikhoan = $this->thongtinuser->alltaikhoan();
+        }
+
+        require_once './views/admin/Qlykhachhang.php';
+    }
+    // phần tìm kiếm cliên
+    // Tìm kiếm dịch vụ theo danh mục, giá và từ khóa
+    public function searchClient()
+    {
+        $categoryId = $_GET['category_id'] ?? '';
+        $priceRange = $_GET['price_range'] ?? '';
+        $keyword = $_GET['keyword'] ?? '';
+
+        $categories = $this->categoryModel->all();
+        $dataForView = [];
+
+        foreach ($categories as $category) {
+            $services = $this->dichvuModel->getByCategory($category['id']);
+
+            // Lọc theo danh mục
+            if ($categoryId && $category['id'] != $categoryId) {
+                $services = [];
+            }
+
+            // Lọc theo giá
+            if ($priceRange && !empty($services)) {
+                [$minPrice, $maxPrice] = explode('-', $priceRange);
+                $services = array_filter($services, function ($s) use ($minPrice, $maxPrice) {
+                    return $s['price'] >= $minPrice && $s['price'] <= $maxPrice;
+                });
+            }
+
+            // Lọc theo từ khóa
+            if ($keyword && !empty($services)) {
+                $services = array_filter($services, function ($s) use ($keyword) {
+                    return stripos($s['name'], $keyword) !== false; // không phân biệt hoa thường
+                });
+            }
+
+            $category['services'] = $services;
+            $dataForView[] = $category;
+        }
+
+        $categoriesWithServices = $dataForView;
+        require_once './views/clien/DichvuView.php';
+    }
+    // KHÓA TÀI KHOẢN
+    public function lockUser()
+    {
+        $id = $_GET['id'] ?? null;
+        if (!$id) return;
+
+        $this->thongtinuser->updateStatus($id, 0);
+
+        $_SESSION['success'] = "Đã khóa tài khoản!";
+        header("Location: ?act=qlytaikhoan");
+        exit;
     }
 
-    require_once './views/admin/Qlykhachhang.php';
-}
-// phần tìm kiếm cliên
-// Tìm kiếm dịch vụ theo danh mục, giá và từ khóa
-public function searchClient() {
-    $categoryId = $_GET['category_id'] ?? '';
-    $priceRange = $_GET['price_range'] ?? '';
-    $keyword = $_GET['keyword'] ?? '';
+    // MỞ KHÓA
+    public function unlockUser()
+    {
+        $id = $_GET['id'] ?? null;
+        if (!$id) return;
 
-    $categories = $this->categoryModel->all();
-    $dataForView = [];
+        $this->thongtinuser->updateStatus($id, 1);
 
-    foreach ($categories as $category) {
-        $services = $this->dichvuModel->getByCategory($category['id']);
-
-        // Lọc theo danh mục
-        if ($categoryId && $category['id'] != $categoryId) {
-            $services = [];
-        }
-
-        // Lọc theo giá
-        if ($priceRange && !empty($services)) {
-            [$minPrice, $maxPrice] = explode('-', $priceRange);
-            $services = array_filter($services, function($s) use ($minPrice, $maxPrice) {
-                return $s['price'] >= $minPrice && $s['price'] <= $maxPrice;
-            });
-        }
-
-        // Lọc theo từ khóa
-        if ($keyword && !empty($services)) {
-            $services = array_filter($services, function($s) use ($keyword) {
-                return stripos($s['name'], $keyword) !== false; // không phân biệt hoa thường
-            });
-        }
-
-        $category['services'] = $services;
-        $dataForView[] = $category;
+        $_SESSION['success'] = "Đã mở khóa tài khoản!";
+        header("Location: ?act=qlytaikhoan");
+        exit;
     }
-
-    $categoriesWithServices = $dataForView;
-    require_once './views/clien/DichvuView.php';
 }
-
-
-
-}
-
-?>

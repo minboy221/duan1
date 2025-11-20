@@ -54,3 +54,56 @@ toggler.addEventListener('change', function () {
         document.body.classList.remove('dark');
     }
 });
+// Số user trên mỗi trang
+const usersPerPage = 5;
+
+// Lấy bảng
+const table = document.getElementById("userTable");
+const rows = table.querySelectorAll("tbody tr");
+const totalRows = rows.length;
+
+// Tính số trang
+const totalPages = Math.ceil(totalRows / usersPerPage);
+
+// Tạo thanh phân trang
+const pagination = document.createElement("div");
+pagination.classList.add("pagination");
+pagination.style.margin = "20px";
+pagination.style.textAlign = "center";
+document.querySelector(".orders").appendChild(pagination);
+
+function showPage(page) {
+    // Ẩn toàn bộ
+    rows.forEach(r => r.style.display = "none");
+
+    // Vị trí bắt đầu – kết thúc
+    const start = (page - 1) * usersPerPage;
+    const end = start + usersPerPage;
+
+    // Hiển thị đúng 5 user
+    for (let i = start; i < end && i < totalRows; i++) {
+        rows[i].style.display = "";
+    }
+
+    // Active nút
+    document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
+    document.getElementById("page-" + page).classList.add("active");
+}
+
+// Render nút phân trang
+for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement("button");
+    btn.innerText = i;
+    btn.id = "page-" + i;
+    btn.classList.add("page-btn");
+    btn.style.margin = "3px";
+    btn.style.padding = "8px 14px";
+    btn.style.borderRadius = "5px";
+    btn.style.border = "1px solid #ccc";
+    btn.style.cursor = "pointer";
+    btn.onclick = () => showPage(i);
+    pagination.appendChild(btn);
+}
+
+// Hiển thị trang đầu tiên
+showPage(1);

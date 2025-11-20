@@ -66,5 +66,14 @@ class ThoModel
             return false;
         }
     }
+    // tìm kiếm thợ theo tên
+    public function search($keyword)
+{
+    $sql = "SELECT * FROM tho WHERE name LIKE :keyword";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['keyword' => '%' . $keyword . '%']);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }
 ?>
