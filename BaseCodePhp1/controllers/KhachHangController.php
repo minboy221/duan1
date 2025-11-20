@@ -68,7 +68,7 @@ class KhachHangController
                 $result = $this->khachhang->register($name, $email, $phone, $password_md5);
 
                 if ($result) {
-                    echo "<script>alert('Đăng ký thành công! Vui lòng đăng nhập.'); window.location.href='index.php?act=dangnhap';</script>";
+                    echo "<script>alert('Đăng ký thành công! Vui lòng đăng nhập.'); window.location.href='index.php?act=dangnhap_khachhang';</script>";
                     exit();
                 } else {
                     $error = "Đăng ký thất bại.";

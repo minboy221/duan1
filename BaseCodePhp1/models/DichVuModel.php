@@ -114,4 +114,32 @@ class DichVuModel
         $stmt->execute([$catId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    // Tìm kiếm dịch vụ theo từ khoá
+    // models/DichVuModel.php
+    public function search($keyword)
+    {
+        $sql = "SELECT * FROM dichvu 
+            WHERE name LIKE :kw 
+               OR price LIKE :kw
+               OR time LIKE :kw
+            ORDER BY id DESC";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['kw' => '%' . $keyword . '%']);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    // Tìm kiếm dịch vụ cho client
+    public function searchClient($keyword)
+{
+    $sql = "SELECT * FROM dichvu 
+            WHERE name LIKE :kw 
+               OR price LIKE :kw 
+               OR time LIKE :kw
+            ORDER BY id DESC";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['kw' => '%' . $keyword . '%']);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }

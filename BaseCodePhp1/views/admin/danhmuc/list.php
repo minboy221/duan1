@@ -9,6 +9,8 @@
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
     <title>Trang Quản Lý Danh Mục | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -47,9 +49,11 @@
         <nav>
             <i class='bx bx-menu'></i>
 
-            <form action="#">
+           <form method="GET" action="">
                 <div class="form-input">
-                    <input type="search" placeholder="Search...">
+                    <input type="hidden" name="act" value="qlydanhmuc">
+                    <input type="text" name="keyword" placeholder="Tìm danh mục..."
+                        value="<?= $_GET['keyword'] ?? '' ?>">
                     <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
                 </div>
             </form>
@@ -66,7 +70,30 @@
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
             </a>
         </nav>
-        <!-- End Navbar -->
+        <?php if (!empty($_SESSION['error'])): ?>
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '<?= $_SESSION['error']; ?>',
+                    confirmButtonColor: '#d33'
+                });
+            </script>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+
+        <?php if (!empty($_SESSION['success'])): ?>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: '<?= $_SESSION['success']; ?>',
+                    confirmButtonColor: '#28a745'
+                });
+            </script>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+
 
         <main>
             <div class="header">
@@ -112,11 +139,10 @@
                                         <a class="btnxem" href="?act=show_danhmuc&id=<?= $cat['id'] ?>">Xem chi tiết</a>
 
                                         <a class="btnsua" href="?act=edit_danhmuc&id=<?= $cat['id'] ?>">Sửa</a>
-
-                                        <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá danh mục này?')"
-                                            href="?act=delete_danhmuc&id=<?= $cat['id'] ?>">
+                                        <a class="btnxoa" href="?act=delete_danhmuc&id=<?= $cat['id'] ?>" onclick="return confirmDelete(event)">
                                             Xoá
                                         </a>
+
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -139,6 +165,29 @@
     </div>
 
     <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script>
+        function confirmDelete(e) {
+            e.preventDefault();
+            const url = e.currentTarget.getAttribute('href');
+
+            Swal.fire({
+                title: 'Bạn chắc muốn xoá?',
+                text: "Không thể hoàn tác!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Xoá luôn',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+
+            return false;
+        }
+    </script>
 
 </body>
 

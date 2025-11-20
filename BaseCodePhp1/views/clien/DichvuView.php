@@ -53,10 +53,14 @@
                     <div class="icon">
                         <i class="fa fa-search" id="timkiem"></i>
                         <div class="search-box" id="search-box">
-                            <input type="text" placeholder="Tìm kiếm dịch vụ,giá dịch vụ...">
-                            <button><i class="fa fa-arrow-right"></i></button>
+                            <form action="" method="GET">
+                                <input type="hidden" name="act" value="search_client">
+                                <input type="text" name="keyword" placeholder="Tìm kiếm dịch vụ, giá dịch vụ..." value="<?= $_GET['keyword'] ?? '' ?>">
+                                <button type="submit"><i class="fa fa-arrow-right"></i></button>
+                            </form>
                         </div>
                     </div>
+
                     <!-- phần hiển thị các nút cho người dùng khi đã đăng nhập tài khoản -->
                     <div class="dangky">
                         <div class="dropdown">
@@ -95,25 +99,32 @@
         <main>
             <div class="thanhloc">
                 <div class="baothanhloc">
-                    <form action="">
+                    <form action="" method="GET">
+                        <input type="hidden" name="act" value="search_client">
+
                         <div class="locdichvu">
-                            <select>
+                            <select name="category_id">
                                 <option value="">Chọn Dịch Vụ</option>
-                                <option value="1">Dịch vụ cắt tóc</option>
-                                <option value="2">Dịch vụ thư giãn</option>
+                                <?php foreach ($categoriesWithServices as $cat): ?>
+                                    <option value="<?= $cat['id'] ?>" <?= (isset($_GET['category_id']) && $_GET['category_id'] == $cat['id']) ? 'selected' : '' ?>><?= htmlspecialchars($cat['name']) ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
+
                         <div class="locgia">
-                            <select>
+                            <select name="price_range">
                                 <option value="">Chọn Giá</option>
-                                <option value="1">50.000VNĐ</option>
-                                <option value="2">99.000VNĐ</option>
+                                <option value="0-50000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '0-50000') ? 'selected' : '' ?>>0 - 50.000VNĐ</option>
+                                <option value="50001-100000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '50001-100000') ? 'selected' : '' ?>>50.001 - 100.000VNĐ</option>
+                                <option value="100001-200000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '100001-200000') ? 'selected' : '' ?>>100.001 - 200.000VNĐ</option>
                             </select>
                         </div>
+
                         <div class="btn">
                             <button type="submit"><i class="fa fa-arrow-right"></i></button>
                         </div>
                     </form>
+
                 </div>
             </div>
             <!-- phần hiển thị dịch vụ -->
@@ -121,7 +132,7 @@
             if (!empty($categoriesWithServices)):
                 foreach ($categoriesWithServices as $category):
                     if (!empty($category['services'])):
-                        ?>
+            ?>
                         <div class="baodichvubaogia">
                             <div class="baocattoc">
                                 <h2><?= htmlspecialchars($category['name']) ?></h2>
@@ -145,11 +156,11 @@
                                     <?php endforeach; ?>
                                 </div>
                             </div>
-                            <?php
+                <?php
                     endif;
                 endforeach;
             endif;
-            ?>
+                ?>
         </main>
     </div>
     <footer class="footer">

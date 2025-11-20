@@ -15,12 +15,15 @@ require_once("./controllers/DichVuController.php");
 require_once("./controllers/KhachHangController.php");
 require_once("./controllers/NhanVienController.php"); 
 require_once("./controllers/NhanVienAdminController.php");
+require_once("./controllers/BinhLuanUserController.php");
 
+require_once("./models/DanhGiaModel.php");
 require_once("./models/DichVuModel.php");
 require_once("./models/CategoryModel.php");
 require_once("./models/KhachHangModel.php");
 require_once("./models/NhanVienModel.php");
 require_once("./models/NhanVienAdminModel.php");
+
 
 // --- KHỞI TẠO CONTROLLER ---
 $clientController = new CattocContronler();
@@ -69,6 +72,12 @@ match ($act) {
     'delete_dichvu' => (new DichVuController())->delete(),
     //phần tài khoản khách hàng ở admin
     'qlytaikhoan' =>(new CattocContronler())->taikhoanuser(),
+    // phần quản lý đánh giá
+    'admin-user-comment' => (new BinhLuanUserController())->detail(),
+    // tìm kiếm khách hàng
+    'search_user' => (new CattocContronler())->searchUser(),
+    // tìm kiếm khách hàng clien
+    'search_client' => (new CattocContronler())->searchClient(),
 
      // NHÂN VIÊN (Dashboard) 
     'nv-login'=> (new NhanVienController())->loginForm(),
