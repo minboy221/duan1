@@ -97,6 +97,7 @@ match ($act) {
     'qlytho_create' => (new ThoController())->create(),
     'qlytho_edit' => (new ThoController())->edit(),
     'qlytho_delete' => (new ThoController())->delete(),
+    'updatetho' => (new ThoController())->update(),
 
     //NHÂN VIÊN (Admin quản lý + phân quyền) 
     'admin-nhanvien' => $adminNhanVienAdminController->index(),

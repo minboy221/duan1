@@ -129,7 +129,7 @@
                                             <?= htmlspecialchars($tho['lylich']) ?>
                                         </td>
                                         <td>
-                                            <a class="btnsua" href="?act=qlytho_edit&id=<?= $cat['id'] ?>">Sửa</a>
+                                            <a class="btnsua" href="?act=qlytho_edit&id=<?= $tho['id'] ?>">Sửa</a>
 
                                             <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá thợ này?')"
                                                 href="?act=qlytho_delete&id=<?= $tho['id'] ?>">

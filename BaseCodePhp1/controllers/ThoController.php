@@ -37,11 +37,16 @@ class ThoController
         require_once './views/admin/tho/edit.php';
     }
     //phần hàm update
+    // Hàm xử lý cập nhật vào Database
     public function update()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
+
+            // Gọi model để update (truyền cả $_FILES để xử lý ảnh)
             $this->model->update($id, $_POST, $_FILES);
+
+            // Cập nhật xong thì quay về trang danh sách
             header("Location: index.php?act=qlytho");
             exit();
         }

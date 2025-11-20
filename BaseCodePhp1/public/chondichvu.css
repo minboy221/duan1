@@ -490,7 +490,7 @@ main {
     color: #fff;
     padding: 12px 20px;
     z-index: 1000;
-    width: 850px;
+    width: 100%;
     border-radius: 10px;
 }
 

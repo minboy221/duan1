@@ -22,11 +22,11 @@
         <ul class="side-menu">
             <li><a href="?act=homeadmin">Thống Kê</a></li>
             <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
-            <li class="active"><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
+            <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
             <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Khung Giờ</a></li>
-            <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
+            <li class="active"><a href="?act=qlytho">Quản Lý Thợ</a></li>
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
         </ul>
 
@@ -71,17 +71,29 @@
             </div>
 
             <div class="form-wrapper">
-                <form action="index.php?act=storetho" method="POST" enctype="multipart/form-data">
-                    <label>Tên thợ:</label>
-                    <input type="text" name="name" required class="form-control">
+                <form id="formTho" action="index.php?act=storetho" method="POST" enctype="multipart/form-data"
+                    class="form-add">
 
-                    <label>Ảnh đại diện:</label>
-                    <input type="file" name="image" class="form-control">
+                    <div class="form-group">
+                        <label for="name">Tên thợ</label>
+                        <input type="text" name="name" id="name" placeholder="Nhập tên thợ..." required>
+                        <span class="error-msg"></span>
+                    </div>
 
-                    <label>Lý lịch:</label>
-                    <textarea name="lylich" class="form-control"></textarea>
+                    <div class="form-group">
+                        <label for="image">Ảnh đại diện</label>
+                        <input type="file" name="image" id="image" class="form-control" style="padding: 5px;">
+                        <span class="error-msg"></span>
+                    </div>
 
-                    <button type="submit">Thêm Mới</button>
+                    <div class="form-group">
+                        <label for="lylich">Lý lịch / Kinh nghiệm</label>
+                        <textarea name="lylich" id="lylich" rows="4"
+                            placeholder="Nhập lý lịch, kinh nghiệm..."></textarea>
+                        <span class="error-msg"></span>
+                    </div>
+
+                    <button class="btnthem btn-submit" type="submit">Thêm Mới</button>
                 </form>
             </div>
         </main>
