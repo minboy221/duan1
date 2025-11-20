@@ -17,9 +17,17 @@ class DichVuController
     // danh sách dịch vụ
     public function quanlydichvu()
     {
-        $services = $this->model->allWithCategory();
+        $keyword = $_GET['keyword'] ?? '';
+
+        if ($keyword !== '') {
+            $services = $this->model->search($keyword);
+        } else {
+            $services = $this->model->all();
+        }
+
         include 'views/admin/dichvu/list.php';
     }
+
 
     // form tạo
     public function createdichvu()

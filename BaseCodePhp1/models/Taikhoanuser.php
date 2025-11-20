@@ -30,6 +30,21 @@ class thongtinuser
             debug('lỗi' . $e->getMessage());
         }
     }
-}
+    // tìm kiếm tài khoản theo email hoặc số điện thoại
+    public function search($keyword)
+    {
+        try {
+            $sql = "SELECT * FROM khachhang 
+                WHERE email LIKE :kw 
+                   OR phone LIKE :kw
+                ORDER BY id DESC";
 
-?>
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['kw' => '%' . $keyword . '%']);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            debug("Lỗi tìm kiếm: " . $e->getMessage());
+            return [];
+        }
+    }
+}
