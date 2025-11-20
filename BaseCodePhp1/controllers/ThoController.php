@@ -56,6 +56,20 @@ class ThoController
         header("Location:index.php?act=qlytho");
         exit();
     }
+    //phần tìm kiếm thợ
+    public function search()
+{
+    $keyword = $_GET['keyword'] ?? '';
+    
+    if ($keyword == '') {
+        $thoList = $this->model->all(); // Nếu không nhập gì thì trả về tất cả
+    } else {
+        $thoList = $this->model->search($keyword);
+    }
+
+    require_once './views/admin/tho/List.php';
+}
+
 }
 
 ?>

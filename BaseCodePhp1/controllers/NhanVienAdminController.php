@@ -22,7 +22,6 @@ class NhanVienAdminController
         // $nv không tồn tại → thêm mới
         $roles = $this->model->allRoles();
         require_once './views/admin/nhanvien/role.php';
-
     }
 
     public function create()
@@ -89,5 +88,13 @@ class NhanVienAdminController
         header("Location: index.php?act=admin-nhanvien");
         exit;
     }
+    public function search()
+    {
+        $keyword = $_GET['keyword'] ?? '';
+
+        $nhanviens = $this->model->search($keyword);
+        $roles = $this->model->allRoles();
+
+        require_once './views/admin/nhanvien/list.php';
+    }
 }
-?>

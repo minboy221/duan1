@@ -123,5 +123,29 @@ class NhanVienAdminModel
         $stmt2 = $this->conn->prepare($sql2);
         return $stmt2->execute(['id' => $id]);
     }
+    // Tìm kiếm nhân viên theo tên hoặc email
+    // Tìm kiếm nhân viên theo tên, email hoặc số điện thoại
+public function search($keyword)
+{
+    $keyword = "%$keyword%";
+
+    $sql = "
+        SELECT nv.*, r.id AS role_id, r.name AS role_name
+        FROM nhanvien nv
+        LEFT JOIN user_role ur ON ur.user_id = nv.id
+        LEFT JOIN role r ON r.id = ur.role_id
+        WHERE nv.name LIKE :kw
+           OR nv.email LIKE :kw
+           OR nv.phone LIKE :kw
+        ORDER BY nv.id DESC
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['kw' => $keyword]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+    
 }
 ?>
