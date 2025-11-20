@@ -99,16 +99,18 @@
                     </a>
                     <h2>Chọn dịch vụ</h2>
                 </div>
+
                 <div class="search">
-                    <input type="text" placeholder="Tìm kiếm dịch vụ">
-                    <button><i class="fa fa-arrow-right"></i></button>
+                    <input type="text" placeholder="Tìm kiếm dịch vụ...">
+                    <button><i class="fa fa-search"></i></button>
                 </div>
+
                 <form action="<?= BASE_URL ?>?act=xacnhan_datlich" method="POST" id="bookingForm"></form>
+
                 <div class="baodichvu">
                     <?php if (!empty($categoriesWithServices)):
                         foreach ($categoriesWithServices as $category):
-                            if (!empty(($category['services']))):
-                                ?>
+                            if (!empty(($category['services']))): ?>
                                 <div class="dichvu">
                                     <h3><?= htmlspecialchars($category['name']) ?></h3>
                                     <div class="cacdichvu">
@@ -117,41 +119,39 @@
                                                 <div class="baoanh">
                                                     <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($service['image']) ?>"
                                                         alt="<?= htmlspecialchars($service['name']) ?>">
-                                                    <span class="duration">30p</span>
+                                                    <span class="duration"><?= htmlspecialchars($service['time']) ?>p</span>
                                                 </div>
                                                 <div class="infor">
-                                                    <p><?= htmlspecialchars($service['name']) ?></p>
-                                                    <div class="infor-gia">
-                                                        <span>Giá tiêu chuẩn</span>
-                                                        <p><?= number_format($service['price']) ?> VNĐ</p>
+                                                    <div>
+                                                        <p><?= htmlspecialchars($service['name']) ?></p>
+                                                        <div class="infor-gia">
+                                                            <span>Giá tiêu chuẩn</span>
+                                                            <p><?= number_format($service['price']) ?> VNĐ</p>
+                                                        </div>
                                                     </div>
-                                                    <div class="btn">
-                                                        <button type="button" class="btn-select" data-id="<?= $service['id'] ?>"
-                                                            data-price="<?= $service['price'] ?>">
-                                                            Chọn
-                                                        </button>
-                                                    </div>
+                                                    <button type="button" class="btn-select" data-id="<?= $service['id'] ?>"
+                                                        data-price="<?= $service['price'] ?>">
+                                                        CHỌN
+                                                    </button>
                                                 </div>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
-                                <?php
-                            endif; // End if services check
-                        endforeach; // End foreach categories
-                    else:
-                        ?>
+                            <?php endif;
+                        endforeach;
+                    else: ?>
                         <p style="text-align: center; padding: 20px;">Hiện chưa có dịch vụ nào.</p>
                     <?php endif; ?>
                 </div>
             </div>
+
             <div class="dachon">
                 <div class="danhsach">
-                    <p>Đã chọn dịch vụ <strong id="total-count">0</strong></p>
-                    <p>Tổng thanh toán</p>
+                    <p>Đã chọn: <strong id="total-count">0</strong></p>
                     <span><strong id="total-price">0</strong> VNĐ</span>
-                    <button type="submit">
-                        Xong
+                    <button type="submit" form="bookingForm">
+                        HOÀN TẤT
                     </button>
                 </div>
             </div>

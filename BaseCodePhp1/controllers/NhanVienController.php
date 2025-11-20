@@ -13,33 +13,6 @@ class NhanVienController
         $this->lichModel = new LichDatModel();
     }
 
-    // form login
-    public function loginForm()
-    {
-        include 'views/nhanvien/login.php';
-    }
-
-    // xử lý login
-    public function login()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-
-            $nv = $this->nvModel->findByEmail($email);
-
-            if (!$nv || !password_verify($password, $nv['password'])) {
-                $_SESSION['error'] = "Sai email hoặc mật khẩu!";
-                header("location: index.php?act=nv-login");
-                exit;
-            }
-
-            $_SESSION['nhanvien'] = $nv;
-            header("location: index.php?act=nv-dashboard");
-            exit;
-        }
-    }
-
     // giao diện dashboard
     public function dashboard()
     {

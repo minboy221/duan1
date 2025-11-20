@@ -7,6 +7,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="<?= BASE_URL ?>public/qlydanhmuc.css">
     <title>Quản Lý Dịch Vụ | 31Shine</title>
+    <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 </head>
 
@@ -24,11 +25,11 @@
             <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
             <li class="active"><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
-            <li><a href="#">Quản Lý Nhân Viên</a></li>
+            <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Khung Giờ</a></li>
+            <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
         </ul>
-
         <ul class="side-menu">
             <li>
                 <a href="<?= BASE_URL ?>?act=logout" class="logout">

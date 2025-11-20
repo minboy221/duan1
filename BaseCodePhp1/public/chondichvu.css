@@ -311,17 +311,17 @@ a, button, .icon i {
 
 /* phần nội dung */
 main {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    background-color: #fff;
+    min-height: 100vh;
+    padding-bottom: 100px;
 }
 
 .chondichvu{
-    margin-top: 100px;
-    width: 900px;
-    padding: 40px;
+    max-width: 1200px;
+    width: 95%;
+    margin: 80px auto 0;
+    padding: 20px;
 }
 
 .tieude{

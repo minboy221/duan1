@@ -1,11 +1,15 @@
 <?php
+require_once './models/KhachHangModel.php';
+require_once './models/NhanVienModel.php';
 class KhachHangController
 {
     private $khachhang;
+    private $nhanvien;
 
     public function __construct()
     {
         $this->khachhang = new Khachhang();
+        $this->nhanvien = new NhanVienModel();
     }
     public function login()
     {
@@ -29,21 +33,33 @@ class KhachHangController
             if (!filter_var($username, FILTER_VALIDATE_EMAIL)) {
                 $error = 'Email không hợp lệ!';
             } else {
+                $md5Pass = md5($password);
                 $user = $this->khachhang->login($username);
 
-                if ($user && $user['password'] === md5($password)) {
+                if ($user && $user['password'] === $md5Pass) {
                     $_SESSION['is_logged_in'] = true;
                     $_SESSION['username'] = $user['name'];
+                    $_SESSION['user_id'] = $user['id'];
                     $_SESSION['role'] = 'khachhang';
 
                     header('Location: index.php?act=home');
                     exit();
                 } else {
-                    $error = 'Tài khoản hoặc mật khẩu không đúng!';
+                    //phần đăng nhập cho nhân viên
+                    $staff = $this->nhanvien->checkLogin($username);
+                    if ($staff && password_verify($password, $staff['password'])) {
+                        $_SESSION['is_logged_in'] = true;
+                        $_SESSION['username'] = $staff['name'];
+                        $_SESSION['user_id'] = $staff['id'];
+                        $_SESSION['role'] = $staff['role_name'] ?? 'Staff';
+                        header('Location: index.php?act=nv-dashboard');
+                        exit();
+                    } else {
+                        $error = 'Tài khoản hoặc mật khẩu không đúng!';
+                    }
                 }
             }
         }
-
         require_once './views/clien/DangnhapView.php';
     }
 
@@ -59,7 +75,7 @@ class KhachHangController
             $phone = $_POST['phone'] ?? '';
             $password = $_POST['password'] ?? '';
 
-
+            //phần kiểm tra tài kho
             $check = $this->khachhang->login($email);
             if ($check) {
                 $error = "Email đã tồn tại trong hệ thống!";
@@ -68,7 +84,7 @@ class KhachHangController
                 $result = $this->khachhang->register($name, $email, $phone, $password_md5);
 
                 if ($result) {
-                    echo "<script>alert('Đăng ký thành công! Vui lòng đăng nhập.'); window.location.href='index.php?act=dangnhap';</script>";
+                    echo "<script>alert('Đăng ký thành công! Vui lòng đăng nhập.'); window.location.href='index.php?act=dangnhap_khachhang';</script>";
                     exit();
                 } else {
                     $error = "Đăng ký thất bại.";

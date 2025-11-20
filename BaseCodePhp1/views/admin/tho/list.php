@@ -7,7 +7,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="<?= BASE_URL ?>public/qlydanhmuc.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
-    <title>Trang Quản Lý Danh Mục | 31Shine</title>
+    <title>Trang Quản Lý Thợ | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 </head>
 
@@ -22,12 +22,12 @@
 
         <ul class="side-menu">
             <li><a href="?act=homeadmin">Thống Kê</a></li>
-            <li class="active"><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
+            <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
             <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
-            <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
+            <li><a href="#">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Khung Giờ</a></li>
-            <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
+            <li class="active"><a href="?act=qlytho">Quản Lý Thợ</a></li>
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
         </ul>
 
@@ -72,7 +72,7 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Quản Lý Danh Mục</h1>
+                    <h1>Quản Lý Thợ</h1>
                 </div>
             </div>
 
@@ -81,55 +81,70 @@
 
                     <div class="header">
                         <i class='bx bx-receipt'></i>
-                        <h3>Danh Mục</h3>
+                        <h3>Thợ</h3>
 
                         <div class="btn">
-                            <a href="?act=create_danhmuc" class="btnthem">+ Thêm Danh Mục</a>
+                            <a href="?act=qlytho_create" class="btnthem">+ Thêm Thợ</a>
                         </div>
                     </div>
 
                     <table>
                         <thead>
                             <tr>
-                                <th>Tên Danh Mục</th>
-                                <th>Description</th>
+                                <th>ID</th>
+                                <th>Ảnh Thợ</th>
+                                <th>Tên Thợ</th>
+                                <th>Ngày Tạo</th>
+                                <th>Lý lịch / Kinh nghiệm</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
+                            <?php if (!empty($thoList)): ?>
+                                <?php foreach ($thoList as $tho): ?>
+                                    <tr>
+                                        <td>
+                                            <p><?= $tho['id'] ?></p>
+                                        </td>
 
-                            <?php foreach ($categories as $cat): ?>
-                                <tr>
-                                    <td>
-                                        <p><?= htmlspecialchars($cat['name']) ?></p>
-                                    </td>
+                                        <td>
+                                            <?php if (!empty($tho['image'])): ?>
+                                                <img src="./anhtho/<?= $tho['image'] ?>" alt="Ảnh thợ" width="80" height="80"
+                                                    style="object-fit: cover; border-radius: 50%; border: 1px solid #ccc;">
+                                            <?php else: ?>
+                                                <span class="badge badge-secondary">Chưa có ảnh</span>
+                                            <?php endif; ?>
+                                        </td>
 
-                                    <td>
-                                        <?= htmlspecialchars(mb_substr($cat['description'], 0, 60)) ?>...
-                                    </td>
+                                        <td>
+                                            <Strong><?= htmlspecialchars($tho['name']) ?></Strong>
+                                        </td>
 
-                                    <td>
-                                        <a class="btnxem" href="?act=show_danhmuc&id=<?= $cat['id'] ?>">Xem chi tiết</a>
+                                        <td>
+                                            <p><?= $tho['created_at'] ?></p>
+                                        </td>
 
-                                        <a class="btnsua" href="?act=edit_danhmuc&id=<?= $cat['id'] ?>">Sửa</a>
+                                        <td>
+                                            <?= htmlspecialchars($tho['lylich']) ?>
+                                        </td>
+                                        <td>
+                                            <a class="btnsua" href="?act=qlytho_edit&id=<?= $cat['id'] ?>">Sửa</a>
 
-                                        <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá danh mục này?')"
-                                            href="?act=delete_danhmuc&id=<?= $cat['id'] ?>">
-                                            Xoá
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-
-                            <?php if (empty($categories)): ?>
+                                            <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá thợ này?')"
+                                                href="?act=qlytho_delete&id=<?= $tho['id'] ?>">
+                                                Xoá
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
                                 <tr>
                                     <td colspan="3" style="text-align:center; padding:20px;">
-                                        Chưa có danh mục nào.
+                                        Chưa có thợ nào.
                                     </td>
                                 </tr>
                             <?php endif; ?>
-
                         </tbody>
                     </table>
 

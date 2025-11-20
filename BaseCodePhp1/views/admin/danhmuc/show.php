@@ -23,13 +23,15 @@
             <li class="active"><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
             <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
-            <li><a href="#">Quản Lý Nhân Viên</a></li>
+            <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Khung Giờ</a></li>
+            <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
         </ul>
 
         <ul class="side-menu">
-            <li><a href="<?= BASE_URL ?>?act=logout" class="logout"><i class="bx bx-log-out-circle"></i> Đăng Xuất</a></li>
+            <li><a href="<?= BASE_URL ?>?act=logout" class="logout"><i class="bx bx-log-out-circle"></i> Đăng Xuất</a>
+            </li>
         </ul>
     </div>
 

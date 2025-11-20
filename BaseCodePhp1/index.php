@@ -13,21 +13,24 @@ require_once("./controllers/CattocContronler.php");
 require_once("./controllers/CategoryController.php");
 require_once("./controllers/DichVuController.php");
 require_once("./controllers/KhachHangController.php");
-require_once("./controllers/NhanVienController.php"); 
+require_once("./controllers/NhanVienController.php");
 require_once("./controllers/NhanVienAdminController.php");
+require_once("./controllers/ThoController.php");
 
 require_once("./models/DichVuModel.php");
 require_once("./models/CategoryModel.php");
 require_once("./models/KhachHangModel.php");
 require_once("./models/NhanVienModel.php");
 require_once("./models/NhanVienAdminModel.php");
+require_once("./models/ThoModel.php");
 
 // --- KHỞI TẠO CONTROLLER ---
 $clientController = new CattocContronler();
 $adminCategoryController = new CategoryController();
 $adminDichVuController = new DichVuController();
-$adminNhanVienController = new NhanVienController(); 
-$adminNhanVienAdminController = new NhanVienAdminController(); 
+$khachHangController = new KhachHangController();
+$adminNhanVienController = new NhanVienController();
+$adminNhanVienAdminController = new NhanVienAdminController();
 
 //route
 
@@ -42,7 +45,7 @@ match ($act) {
     'dangky' => DangkyClien(),
     'chitietdichvu' => $clientController->hienthichitiet(),
     'datlich' => DatlichClien(),
-    'chondichvu' => $clientController ->chondichvu(),
+    'chondichvu' => $clientController->chondichvu(),
     'lichsudat' => Lichsudon(),
     'lichsudatchitiet' => Lichsudonchitiet(),
     //đăng nhập và đăng ký cho khách hàng
@@ -68,22 +71,27 @@ match ($act) {
     'update_dichvu' => (new DichVuController())->update(),
     'delete_dichvu' => (new DichVuController())->delete(),
     //phần tài khoản khách hàng ở admin
-    'qlytaikhoan' =>(new CattocContronler())->taikhoanuser(),
+    'qlytaikhoan' => (new CattocContronler())->taikhoanuser(),
 
-     // NHÂN VIÊN (Dashboard) 
-    'nv-login'=> (new NhanVienController())->loginForm(),
-    'nv-login-submit'=> (new NhanVienController())->login(),
-    'nv-dashboard'=> (new NhanVienController())->dashboard(),
-    'nv-chitiet'=> (new NhanVienController())->chitiet(),
-    'nv-xacnhan'=> (new NhanVienController())->xacnhan(),
-    'nv-huy'=> (new NhanVienController())->huy(),
+    // NHÂN VIÊN (Dashboard) 
+    'nv-dashboard' => (new NhanVienController())->dashboard(),
+    'nv-chitiet' => (new NhanVienController())->chitiet(),
+    'nv-xacnhan' => (new NhanVienController())->xacnhan(),
+    'nv-huy' => (new NhanVienController())->huy(),
+
+    // PHẦN QUẢN LÝ THỢ
+    'qlytho' => (new ThoController())->index(),
+    'storetho' =>(new ThoController())->tho(),
+    'qlytho_create' =>(new ThoController()) ->create(),
+    'qlytho_edit' =>(new ThoController())-> edit(),
+    'qlytho_delete' =>(new ThoController()) ->delete(),
 
     //NHÂN VIÊN (Admin quản lý + phân quyền) 
     'admin-nhanvien' => $adminNhanVienAdminController->index(),
     'admin-nhanvien-create' => $adminNhanVienAdminController->createForm(),
     'admin-nhanvien-create-submit' => $adminNhanVienAdminController->create(),
     'admin-nhanvien-edit' => $adminNhanVienAdminController->editForm(),
-    'admin-nhanvien-update' => $adminNhanVienAdminController->update(), 
+    'admin-nhanvien-update' => $adminNhanVienAdminController->update(),
     'admin-nhanvien-delete' => $adminNhanVienAdminController->delete(),
 
     // phần hiển thị chức năng của quản lý dịch vụ

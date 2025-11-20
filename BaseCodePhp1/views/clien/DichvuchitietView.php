@@ -123,32 +123,39 @@
             <div class="datlich">
                 <?php if ($isLoggedIn): ?>
                     <a href="<?= BASE_URL ?>?act=datlich">
-                        <button type="submit">
+                        <button type="button">
                             ĐẶT LỊCH NGAY
                         </button>
                     </a>
                 <?php else: ?>
-                    <div id="login-popup" class="popup-overlay">
-                        <div class="popup-content">
-                            <div class="popup-header">
-                                <i class="fa-solid fa-circle-exclamation"></i>
-                                <h3>Thông Báo</h3>
-                            </div>
-                            <div class="popup-body">
-                                <p>Bạn cần <strong>Đăng nhập</strong>hoặc <strong>Đăng ký</strong> tài khoản để thực hiện
-                                    đặt lịch.</p>
-                                <p>Bạn có muốn đi đến trang đăng nhập không?</p>
-                            </div>
-                            <div class="popup-footer">
-                                <button onclick="closePopup()" class="btn-cancel">Để sau</button>
-                                <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
-                                    <button class="btn-confirm">Đăng nhập ngay</button>
-                                </a>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                </div>
+                    <button type="button" onclick="openPopup()">
+                        ĐẶT LỊCH NGAY
+                    </button>
+                <?php endif; ?>
             </div>
+
+            <?php if (!$isLoggedIn): ?>
+                <div id="login-popup" class="popup-overlay">
+                    <div class="popup-content">
+                        <div class="popup-header">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <h3>Thông Báo</h3>
+                        </div>
+                        <div class="popup-body">
+                            <p>Bạn cần <strong>Đăng nhập</strong> hoặc <strong>Đăng ký</strong> tài khoản để thực hiện đặt
+                                lịch.</p>
+                            <p>Bạn có muốn đi đến trang đăng nhập không?</p>
+                        </div>
+                        <div class="popup-footer">
+                            <button onclick="closePopup()" class="btn-cancel">Để sau</button>
+
+                            <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
+                                <button class="btn-confirm">Đăng nhập ngay</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
         </main>
     </div>
     <footer class="footer">
