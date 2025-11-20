@@ -72,12 +72,11 @@
                 <input type="hidden" name="act" value="admin-nhanvien-search">
 
                 <div class="form-input">
-                    <input type="text" name="keyword"
-                        placeholder="Tìm tên, email hoặc số điện thoại..."
+                    <input type="text" name="keyword" placeholder="Tìm tên, email hoặc số điện thoại..."
                         value="<?= $_GET['keyword'] ?? '' ?>">
                     <button class="search-btn" type="submit">
                         <i class='bx bx-search'></i>
-                    </button>git add .
+                    </button>
                 </div>
             </form>
 
@@ -157,9 +156,9 @@
 
     <script src="<?= BASE_URL ?>public/admin.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const toggler = document.getElementById('theme-toggle');
-            toggler.addEventListener('change', function() {
+            toggler.addEventListener('change', function () {
                 if (this.checked) {
                     document.body.classList.add('dark');
                 } else {

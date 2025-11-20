@@ -53,8 +53,12 @@
                     <div class="icon">
                         <i class="fa fa-search" id="timkiem"></i>
                         <div class="search-box" id="search-box">
-                            <input type="text" placeholder="Tìm kiếm dịch vụ,giá dịch vụ...">
-                            <button type="submit"><i class="fa fa-arrow-right"></i></button>
+                            <form action="" method="GET">
+                                <input type="hidden" name="act" value="search_client">
+                                <input type="text" name="keyword" placeholder="Tìm kiếm dịch vụ, giá dịch vụ..."
+                                    value="<?= $_GET['keyword'] ?? '' ?>">
+                                <button type="submit"><i class="fa fa-arrow-right"></i></button>
+                            </form>
                         </div>
                     </div>
                     <!-- phần hiển thị các nút cho người dùng khi đã đăng nhập tài khoản -->
@@ -103,72 +107,67 @@
                     <p>Đội ngũ dày dặn kinh nghiệm trong việc chăm sóc tóc của bạn.</p>
                 </div>
                 <div class="baothocattoc">
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho1.png" alt="">
-                        <div class="infotho">
+                    <?php if (!empty($ListTho)): ?>
+                        <?php foreach ($ListTho as $tho): ?>
+                            <div class="tho">
+                                <?php
+                                // Kiểm tra ảnh, nếu không có thì dùng ảnh mặc định
+                                $imgSrc = !empty($tho['image']) ? './anhtho/' . $tho['image'] : './anhmau/default-avatar.png';
+                                ?>
+
+                                <div class="img-wrapper">
+                                    <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($tho['name']) ?>">
+                                </div>
+
+                                <div class="infotho">
+                                    <div class="ten">
+                                        <p><?= htmlspecialchars($tho['name']) ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="text-center">Đang cập nhật đội ngũ nhân viên...</p>
+                    <?php endif; ?>
+                </div>
+                <div class="baonhanviennu">
+                    <div class="titlenoidung1">
+                        <h2>31Shine’s Angels <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"
+                                fill="#f5c542" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                            </svg></h2>
+                        <p>Đội ngũ Skinner xinh đẹp hết lòng vì khách hàng.</p>
+                    </div>
+                    <div class="baothocattoc">
+                        <div class="tho">
+                            <img src="/duan1/BaseCodePhp1/anhmau/thogoi1.192Z.png" alt="">
+                            <div class="infotho">
+                                <div class="ten">
+                                    <p>Việt Hùng</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tho">
+                            <img src="/duan1/BaseCodePhp1/anhmau/thogoi2.792Z.png" alt="">
                             <div class="ten">
-                                <p>Việt Hùng</p>
+                                <p>Mạnh Dũng</p>
+                            </div>
+                        </div>
+                        <div class="tho">
+                            <img src="/duan1/BaseCodePhp1/anhmau/thonu2.493Z.png" alt="">
+                            <div class="ten">
+                                <p>Công Huy</p>
+                            </div>
+                        </div>
+                        <div class="tho">
+                            <img src="/duan1/BaseCodePhp1/anhmau/goidauthugian.679Z.png" alt="">
+                            <div class="ten">
+                                <p>Nhật Minh</p>
                             </div>
                         </div>
                     </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho2.png" alt="">
-                        <div class="ten">
-                            <p>Mạnh Dũng</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho3.png" alt="">
-                        <div class="ten">
-                            <p>Công Huy</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho4.png" alt="">
-                        <div class="ten">
-                            <p>Nhật Minh</p>
-                        </div>
-                    </div>
                 </div>
-            </div>
-            <div class="baonhanviennu">
-                <div class="titlenoidung1">
-                    <h2>31Shine’s Angels <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#f5c542"
-                            class="bi bi-star-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg></h2>
-                    <p>Đội ngũ Skinner xinh đẹp hết lòng vì khách hàng.</p>
-                </div>
-                <div class="baothocattoc">
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/thogoi1.192Z.png" alt="">
-                        <div class="infotho">
-                            <div class="ten">
-                                <p>Việt Hùng</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/thogoi2.792Z.png" alt="">
-                        <div class="ten">
-                            <p>Mạnh Dũng</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/thonu2.493Z.png" alt="">
-                        <div class="ten">
-                            <p>Công Huy</p>
-                        </div>
-                    </div>
-                    <div class="tho">
-                        <img src="/duan1/BaseCodePhp1/anhmau/goidauthugian.679Z.png" alt="">
-                        <div class="ten">
-                            <p>Nhật Minh</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </main>
     </div>
     <footer class="footer">

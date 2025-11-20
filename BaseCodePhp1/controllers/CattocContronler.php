@@ -3,6 +3,7 @@
 require_once './models/CategoryModel.php';
 require_once './models/DichVuModel.php';
 require_once './models/Taikhoanuser.php';
+require_once './models/ThoModel.php';
 function aboutClien()
 {
     require_once './views/clien/AboutView.php';
@@ -57,12 +58,14 @@ class CattocContronler
     public $categoryModel;
     public $dichvuModel;
     public $thongtinuser;
+    public $thoModell;
 
     public function __construct()
     {
         $this->categoryModel = new CategoryModel();
         $this->dichvuModel = new DichVuModel();
         $this->thongtinuser = new thongtinuser();
+        $this->thoModell = new ThoModel();
     }
 
     private function getCategorizedServices($limit = null)
@@ -81,7 +84,6 @@ class CattocContronler
     public function hienthidanhmuc()
     {
         $categoriesWithServices = $this->getCategorizedServices(2);
-        $dataForView = [];
         require_once './views/clien/HomeView.php';
     }
 
@@ -207,7 +209,8 @@ class CattocContronler
     public function lockUser()
     {
         $id = $_GET['id'] ?? null;
-        if (!$id) return;
+        if (!$id)
+            return;
 
         $this->thongtinuser->updateStatus($id, 0);
 
@@ -220,12 +223,20 @@ class CattocContronler
     public function unlockUser()
     {
         $id = $_GET['id'] ?? null;
-        if (!$id) return;
+        if (!$id)
+            return;
 
         $this->thongtinuser->updateStatus($id, 1);
 
         $_SESSION['success'] = "Đã mở khóa tài khoản!";
         header("Location: ?act=qlytaikhoan");
         exit;
+    }
+
+    // phần hiển thị thông tin thợ ra clien
+    public function hienthiNhanVien()
+    {
+        $ListTho = $this->thoModell->all();
+        require_once './views/clien/NhanvienView.php';
     }
 }

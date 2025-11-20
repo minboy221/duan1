@@ -29,6 +29,7 @@ require_once("./models/Taikhoanuser.php");
 
 
 
+
 // --- KHỞI TẠO CONTROLLER ---
 $clientController = new CattocContronler();
 $adminCategoryController = new CategoryController();
@@ -46,9 +47,7 @@ match ($act) {
     'home' => $clientController->hienthidanhmuc(),
     'about' => aboutClien(),
     'dichvu' => $clientController->hienthidanhmuc1(),
-    'nhanvien' => NhanvienClien(),
-    'dangky' => DangkyClien(),
-    'chitietdichvu' => $clientController->hienthichitiet(),
+    'nhanvien' => $clientController->hienthiNhanVien(), 'chitietdichvu' => $clientController->hienthichitiet(),
     'datlich' => DatlichClien(),
     'chondichvu' => $clientController->chondichvu(),
     'lichsudat' => Lichsudon(),
@@ -103,7 +102,9 @@ match ($act) {
     'storetho' => (new ThoController())->tho(),
     'qlytho_create' => (new ThoController())->create(),
     'qlytho_edit' => (new ThoController())->edit(),
+    'updatetho' => (new ThoController())->update(),
     'qlytho_delete' => (new ThoController())->delete(),
+    'search_tho' => (new ThoController())->search(),
 
     //NHÂN VIÊN (Admin quản lý + phân quyền) 
     'admin-nhanvien' => $adminNhanVienAdminController->index(),
@@ -116,4 +117,4 @@ match ($act) {
     // phần hiển thị chức năng của quản lý dịch vụ
     default => notFound(),
 }
-?>
+    ?>

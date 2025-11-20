@@ -55,7 +55,8 @@
                         <div class="search-box" id="search-box">
                             <form action="" method="GET">
                                 <input type="hidden" name="act" value="search_client">
-                                <input type="text" name="keyword" placeholder="Tìm kiếm dịch vụ, giá dịch vụ..." value="<?= $_GET['keyword'] ?? '' ?>">
+                                <input type="text" name="keyword" placeholder="Tìm kiếm dịch vụ, giá dịch vụ..."
+                                    value="<?= $_GET['keyword'] ?? '' ?>">
                                 <button type="submit"><i class="fa fa-arrow-right"></i></button>
                             </form>
                         </div>
@@ -106,7 +107,8 @@
                             <select name="category_id">
                                 <option value="">Chọn Dịch Vụ</option>
                                 <?php foreach ($categoriesWithServices as $cat): ?>
-                                    <option value="<?= $cat['id'] ?>" <?= (isset($_GET['category_id']) && $_GET['category_id'] == $cat['id']) ? 'selected' : '' ?>><?= htmlspecialchars($cat['name']) ?></option>
+                                    <option value="<?= $cat['id'] ?>" <?= (isset($_GET['category_id']) && $_GET['category_id'] == $cat['id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($cat['name']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -115,8 +117,10 @@
                             <select name="price_range">
                                 <option value="">Chọn Giá</option>
                                 <option value="0-50000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '0-50000') ? 'selected' : '' ?>>0 - 50.000VNĐ</option>
-                                <option value="50001-100000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '50001-100000') ? 'selected' : '' ?>>50.001 - 100.000VNĐ</option>
-                                <option value="100001-200000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '100001-200000') ? 'selected' : '' ?>>100.001 - 200.000VNĐ</option>
+                                <option value="50001-100000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '50001-100000') ? 'selected' : '' ?>>50.001 - 100.000VNĐ
+                                </option>
+                                <option value="100001-200000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '100001-200000') ? 'selected' : '' ?>>100.001 - 200.000VNĐ
+                                </option>
                             </select>
                         </div>
 
@@ -132,7 +136,7 @@
             if (!empty($categoriesWithServices)):
                 foreach ($categoriesWithServices as $category):
                     if (!empty($category['services'])):
-            ?>
+                        ?>
                         <div class="baodichvubaogia">
                             <div class="baocattoc">
                                 <h2><?= htmlspecialchars($category['name']) ?></h2>
@@ -156,11 +160,11 @@
                                     <?php endforeach; ?>
                                 </div>
                             </div>
-                <?php
+                            <?php
                     endif;
                 endforeach;
             endif;
-                ?>
+            ?>
         </main>
     </div>
     <footer class="footer">

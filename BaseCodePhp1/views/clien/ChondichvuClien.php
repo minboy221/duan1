@@ -54,8 +54,12 @@
                     <div class="icon">
                         <i class="fa fa-search" id="timkiem"></i>
                         <div class="search-box" id="search-box">
-                            <input type="text" placeholder="Tìm kiếm dịch vụ,giá dịch vụ...">
-                            <button type="submit"><i class="fa fa-arrow-right"></i></button>
+                            <form action="" method="GET">
+                                <input type="hidden" name="act" value="search_client">
+                                <input type="text" name="keyword" placeholder="Tìm kiếm dịch vụ, giá dịch vụ..."
+                                    value="<?= $_GET['keyword'] ?? '' ?>">
+                                <button type="submit"><i class="fa fa-arrow-right"></i></button>
+                            </form>
                         </div>
                     </div>
                     <!-- phần hiển thị các nút cho người dùng khi đã đăng nhập tài khoản -->

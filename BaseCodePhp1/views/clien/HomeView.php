@@ -55,7 +55,8 @@
                         <div class="search-box" id="search-box">
                             <form action="" method="GET">
                                 <input type="hidden" name="act" value="search_client">
-                                <input type="text" name="keyword" placeholder="Tìm kiếm dịch vụ, giá dịch vụ..." value="<?= $_GET['keyword'] ?? '' ?>">
+                                <input type="text" name="keyword" placeholder="Tìm kiếm dịch vụ, giá dịch vụ..."
+                                    value="<?= $_GET['keyword'] ?? '' ?>">
                                 <button type="submit"><i class="fa fa-arrow-right"></i></button>
                             </form>
                         </div>
@@ -250,7 +251,7 @@
         if (!empty($categoriesWithServices)):
             foreach ($categoriesWithServices as $category):
                 // if (!empty($category['services'])): 
-        ?>
+                ?>
                 <div class="baodichvubaogia">
                     <div class="baocattoc">
                         <h2><?= htmlspecialchars($category['name']) ?></h2>
@@ -275,7 +276,7 @@
                         </div>
                     </div>
                 </div>
-        <?php
+                <?php
             endforeach;
         endif;
         ?>
@@ -319,7 +320,9 @@
             </div>
         </div>
         <div class="xemthem">
-            <button>Xem Thêm</button>
+            <a href="<?= BASE_URL ?>?act=nhanvien">
+                <button>Xem Thêm</button>
+            </a>
         </div>
     </div>
     <footer class="footer">
