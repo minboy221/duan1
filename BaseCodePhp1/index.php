@@ -15,6 +15,8 @@ require_once("./controllers/DichVuController.php");
 require_once("./controllers/KhachHangController.php");
 require_once("./controllers/NhanVienController.php");
 require_once("./controllers/NhanVienAdminController.php");
+require_once("./controllers/ThoController.php");
+require_once("./controllers/BinhLuanUserController.php");
 
 require_once("./models/DanhGiaModel.php");
 require_once("./models/DichVuModel.php");
@@ -22,6 +24,10 @@ require_once("./models/CategoryModel.php");
 require_once("./models/KhachHangModel.php");
 require_once("./models/NhanVienModel.php");
 require_once("./models/NhanVienAdminModel.php");
+require_once("./models/ThoModel.php");
+require_once("./models/Taikhoanuser.php");
+
+
 
 // --- KHỞI TẠO CONTROLLER ---
 $clientController = new CattocContronler();
@@ -70,7 +76,14 @@ match ($act) {
     'update_dichvu' => (new DichVuController())->update(),
     'delete_dichvu' => (new DichVuController())->delete(),
     //phần tài khoản khách hàng ở admin
-    'qlytaikhoan' =>(new CattocContronler())->taikhoanuser(),
+    'qlytaikhoan' => (new CattocContronler())->taikhoanuser(),
+
+    // phần quản lý đánh giá
+    'admin-user-comment' => (new BinhLuanUserController())->detail(),
+    // tìm kiếm khách hàng
+    'search_user' => (new CattocContronler())->searchUser(),
+    // tìm kiếm khách hàng clien
+    'search_client' => (new CattocContronler())->searchClient(),
 
     // NHÂN VIÊN (Dashboard) 
     'nv-dashboard' => (new NhanVienController())->dashboard(),
@@ -80,10 +93,10 @@ match ($act) {
 
     // PHẦN QUẢN LÝ THỢ
     'qlytho' => (new ThoController())->index(),
-    'storetho' =>(new ThoController())->tho(),
-    'qlytho_create' =>(new ThoController()) ->create(),
-    'qlytho_edit' =>(new ThoController())-> edit(),
-    'qlytho_delete' =>(new ThoController()) ->delete(),
+    'storetho' => (new ThoController())->tho(),
+    'qlytho_create' => (new ThoController())->create(),
+    'qlytho_edit' => (new ThoController())->edit(),
+    'qlytho_delete' => (new ThoController())->delete(),
 
     //NHÂN VIÊN (Admin quản lý + phân quyền) 
     'admin-nhanvien' => $adminNhanVienAdminController->index(),
