@@ -41,6 +41,25 @@ $adminNhanVienAdminController = new NhanVienAdminController();
 //route
 
 $act = $_GET['act'] ?? 'home';
+// Các route chỉ dành cho admin
+$adminRoutes = [
+    'homeadmin', 'qlydanhmuc', 'create_danhmuc', 'store_danhmuc',
+    'show_danhmuc', 'edit_danhmuc', 'update_danhmuc', 'delete_danhmuc',
+    'qlydichvu', 'createdichvu', 'store_dichvu', 'show_dichvu',
+    'edit_dichvu', 'update_dichvu', 'delete_dichvu',
+    'qlytaikhoan', 'admin-user-comment',
+    'qlytho', 'qlytho_create', 'qlytho_edit',
+    'admin-nhanvien', 'admin-nhanvien-create', 'admin-nhanvien-edit'
+];
+
+// Nếu act thuộc nhóm admin -> kiểm tra đăng nhập
+if (in_array($act, $adminRoutes)) {
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+        header("Location: index.php?act=dangnhap_khachhang");
+        exit();
+    }
+}
+
 
 match ($act) {
     // phần hiển thị giao diện trang clien
