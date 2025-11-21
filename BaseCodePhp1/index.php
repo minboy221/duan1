@@ -17,6 +17,8 @@ require_once("./controllers/NhanVienController.php");
 require_once("./controllers/NhanVienAdminController.php");
 require_once("./controllers/ThoController.php");
 require_once("./controllers/BinhLuanUserController.php");
+require_once("./controllers/LichLamViecController.php");
+
 
 require_once("./models/DanhGiaModel.php");
 require_once("./models/DichVuModel.php");
@@ -26,7 +28,7 @@ require_once("./models/NhanVienModel.php");
 require_once("./models/NhanVienAdminModel.php");
 require_once("./models/ThoModel.php");
 require_once("./models/Taikhoanuser.php");
-
+require_once("./models/LichLamViecModel.php");
 
 
 
@@ -37,6 +39,7 @@ $adminDichVuController = new DichVuController();
 $khachHangController = new KhachHangController();
 $adminNhanVienController = new NhanVienController();
 $adminNhanVienAdminController = new NhanVienAdminController();
+$lich = new LichLamViecController();
 
 //route
 
@@ -96,7 +99,6 @@ match ($act) {
     // tìm kiếm nhan viên
     'admin-nhanvien-search' => (new NhanVienAdminController())->search(),
 
-
     // PHẦN QUẢN LÝ THỢ
     'qlytho' => (new ThoController())->index(),
     'storetho' => (new ThoController())->tho(),
@@ -105,6 +107,15 @@ match ($act) {
     'updatetho' => (new ThoController())->update(),
     'qlytho_delete' => (new ThoController())->delete(),
     'search_tho' => (new ThoController())->search(),
+
+    //PHẦN QUẢN LÝ LÀM VIỆC CHO THỢ
+    'qlylichlamviec' =>(new LichLamViecController())->index(),
+    'auto_create_days'=>(new LichLamViecController())->autoCreate(),
+    'assign_tho'=>(new LichLamViecController())->assignTho(),
+    'store_assign'=>(new LichLamViecController())->storeAssign(),
+    'edit_times'=>(new LichLamViecController())->editTimes(),
+    'update_times'=>(new LichLamViecController())->updateTimes(),
+    'detail_ngay' => (new LichLamViecController())->detail(),
 
     //NHÂN VIÊN (Admin quản lý + phân quyền) 
     'admin-nhanvien' => $adminNhanVienAdminController->index(),

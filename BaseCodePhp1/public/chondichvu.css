@@ -33,6 +33,7 @@ body{
     }
 
 /* Header trên cùng (mở cửa & liên hệ) */
+/* Header trên cùng (mở cửa & liên hệ) */
 .mocua {
     position: absolute;
     top: 0;
@@ -195,7 +196,7 @@ body{
 
 /* Toàn bộ header cố định trên cùng */
 header {
-    position: fixed;
+    position: sticky;
     top: 0;
     z-index: 999;
 }
