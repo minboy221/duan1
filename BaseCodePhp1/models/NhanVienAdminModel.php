@@ -14,12 +14,13 @@ class NhanVienAdminModel
     public function all()
     {
         $sql = "
-            SELECT nv.*, r.id AS role_id, r.name AS role_name
-            FROM nhanvien nv
-            LEFT JOIN user_role ur ON ur.user_id = nv.id
-            LEFT JOIN role r ON r.id = ur.role_id
-            ORDER BY nv.id DESC
-        ";
+    SELECT nv.*, nv.password_plain, r.id AS role_id, r.name AS role_name
+    FROM nhanvien nv
+    LEFT JOIN user_role ur ON ur.user_id = nv.id
+    LEFT JOIN role r ON r.id = ur.role_id
+    ORDER BY nv.id DESC
+";
+
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -28,7 +29,7 @@ class NhanVienAdminModel
     // Lấy 1 nhân viên
     public function find($id)
     {
-        $sql = "SELECT * FROM nhanvien WHERE id = :id";
+        $sql = "SELECT *, password_plain FROM nhanvien WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['id' => $id]);
         $nv = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -54,16 +55,17 @@ class NhanVienAdminModel
     // Thêm nhân viên
     public function create($data)
     {
-        $sql = "INSERT INTO nhanvien (name, email, password, phone, gioitinh) VALUES (:name, :email, :password, :phone, :gioitinh)";
+        $sql = "INSERT INTO nhanvien (name, email, password, password_plain, phone, gioitinh) 
+        VALUES (:name, :email, :password, :password_plain, :phone, :gioitinh)";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-            'phone' => $data['phone'] ?? '',
-            'gioitinh' => $data['gioitinh'] ?? ''
+            'password_plain' => $data['password'],  // <── lưu mật khẩu thường
+            'phone' => $data['phone'],
+            'gioitinh' => $data['gioitinh']
         ]);
-
         $id = $this->conn->lastInsertId();
 
         if (!empty($data['role_id'])) {
@@ -125,11 +127,11 @@ class NhanVienAdminModel
     }
     // Tìm kiếm nhân viên theo tên hoặc email
     // Tìm kiếm nhân viên theo tên, email hoặc số điện thoại
-public function search($keyword)
-{
-    $keyword = "%$keyword%";
+    public function search($keyword)
+    {
+        $keyword = "%$keyword%";
 
-    $sql = "
+        $sql = "
         SELECT nv.*, r.id AS role_id, r.name AS role_name
         FROM nhanvien nv
         LEFT JOIN user_role ur ON ur.user_id = nv.id
@@ -140,12 +142,9 @@ public function search($keyword)
         ORDER BY nv.id DESC
     ";
 
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute(['kw' => $keyword]);
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['kw' => $keyword]);
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
-
-    
-}
-?>

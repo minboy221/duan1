@@ -119,6 +119,7 @@
                                 <th>Email</th>
                                 <th>SDT</th>
                                 <th>Giới Tính</th>
+                                <th>Mật khẩu</th>
                                 <th>Phân Quyền</th>
                                 <th>Hành Động</th>
                             </tr>
@@ -130,13 +131,14 @@
                                     <td><?= htmlspecialchars($nv['email']) ?></td>
                                     <td><?= htmlspecialchars($nv['phone'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($nv['gioitinh'] ?? '') ?></td>
+                                    <td><?= htmlspecialchars($nv['password_plain'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($nv['role_name'] ?? '') ?></td>
                                     <td style="display:flex; gap:5px;">
                                         <a class="btnsua" href="?act=admin-nhanvien-edit&id=<?= $nv['id'] ?>">Sửa</a>
-                                        <?php if ($nv['role_id'] != 1): ?>
-                                            <a href="?act=admin-nhanvien-delete&id=<?= $nv['id'] ?>" class="btn btn-danger"
-                                                onclick="return confirm('Bạn có chắc muốn xóa nhân viên này?')">Xóa</a>
-                                        <?php endif; ?>
+                                                <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá dịch vụ này?')"
+                                                href="?act=admin-nhanvien-delete&id=<?= $nv['id'] ?>">
+                                                Xoá
+                                            </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
