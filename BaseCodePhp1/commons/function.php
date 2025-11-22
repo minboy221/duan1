@@ -7,11 +7,11 @@ function debug($data)
     die();
 }
 
-function notFound()
-{
-    http_response_code(404);
-    echo '404 - Page Not Found';
-    exit;
+
+function notFound() {
+    require_once './views/errors/404.php';
+
+
 
 }
 
