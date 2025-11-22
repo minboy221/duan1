@@ -33,7 +33,7 @@
 </head>
 
 <body>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Sidebar -->
     <div class="sidebar">
         <a href="#" class="logo">
@@ -93,6 +93,30 @@
         </nav>
         <!-- Main -->
         <main>
+            <?php if (isset($_SESSION['success'])): ?>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: '<?= $_SESSION['success'] ?>',
+                        confirmButtonText: 'OK'
+                    });
+                </script>
+            <?php unset($_SESSION['success']);
+            endif; ?>
+
+            <?php if (isset($_SESSION['error'])): ?>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: '<?= $_SESSION['error'] ?>',
+                        confirmButtonText: 'OK'
+                    });
+                </script>
+            <?php unset($_SESSION['error']);
+            endif; ?>
+
             <div class="header">
                 <div class="left">
                     <h1>Quản Lý Người Dùng</h1>
@@ -206,6 +230,8 @@
         // Hiển thị trang đầu tiên
         showPage(1);
     </script>
+
+
 
 </body>
 
