@@ -626,7 +626,6 @@ main{
 
 /* phần footer */
 .footer {
-    margin-top: 80px;
     background-color: #111; /* nền đen */
     color: #f5c542; /* vàng sang trọng */
     padding: 60px 20px 20px;

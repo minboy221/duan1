@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết đơn | 31Shine</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/lichsudatchitiet.css">
+    <title>Đặt Lịch Thành Công | 31Shine</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/datlichthanhcong.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
 </head>
@@ -31,7 +31,9 @@
             </div>
             <aside class="aside">
                 <div class="logo">
-                    <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
+                    <a href="<?= BASE_URL ?>?act=home">
+                        <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
+                    </a>
                 </div>
                 <div class="menu">
                     <ul>
@@ -89,104 +91,102 @@
             <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
         </div>
         <main>
-            <div class="baohoadon">
-                <h2>Chi tiết hoá đơn</h2>
-                <div class="chititethoadon">
-                    <h3>Thông tin đơn hàng của bạn</h3>
-                    <div class="infor-row">
-                        <p><strong>Mã Hoá Đơn:</strong>#001</p>
-                        <p><strong>Ngày Đặt:</strong>11/11/2025 - 9:30</p>
-                        <p><strong>Trạng Thái:</strong><span class="trangthai paid">Đã Thanh Toán</span></p>
+            <div class="booking-success-wrapper">
+                <div class="booking-container">
+                    <div class="success-header">
+                        <div class="icon-success">🎉</div>
+                        <h2 class="success-title">ĐẶT LỊCH THÀNH CÔNG</h2>
                     </div>
-                </div>
-                <!-- phần khách hàng -->
-                <div class="thongtin-donhang">
-                    <h2>Thông tin khách hàng</h2>
-                    <div class="infor-row">
-                        <p><strong>Họ Tên: </strong>Nguyễn Văn A</p>
-                        <p><strong>Số Điện Thoại:</strong>0265478512</p>
+
+                    <div class="banner-section">
+                        <img src="/duan1/BaseCodePhp1/anhmau/240425_banner_success.png" alt="Banner 31Shine" class="promo-banner">
                     </div>
-                </div>
-                <!-- phần thợ -->
-                <div class="thongtin-donhang">
-                    <h2>Stylist phụ trách</h2>
-                    <div class="infor-row">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho1.png" alt="">
-                        <div class="stylist-infor">
-                            <p><strong>Tên:</strong> Việt Hùng</p>
-                            <p><strong>Kinh nghiệm:</strong> 5 năm</p>
+
+                    <div class="info-card">
+                        <div class="salon-address">
+                            <i class="fa-solid fa-location-dot" style="color: var(--gold-text); margin-right: 5px;"></i>
+                            113 Trần Hưng Đạo, P. Mỹ Bình, Long Xuyên, An Giang
+                        </div>
+                        <div class="salon-note">
+                            Đối diện khách sạn Hòa Bình và sân vận động
+                        </div>
+
+                        <div class="action-group">
+                            <button class="btn-gold-action btn-outline">
+                                <i class="fa-solid fa-diamond-turn-right"></i> Chỉ đường
+                            </button>
+
+                            <a href="tel:0123456789" style="flex: 1; text-decoration: none;">
+                                <button class="btn-gold-action btn-fill">
+                                    <i class="fa-solid fa-phone"></i> Gọi Salon
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="booking-detail-wrapper">
+                        <div class="detail-card">
+                            <h3 class="card-title">Chi tiết lịch đặt</h3>
+
+                            <div class="info-section">
+                                <p class="label">Dịch vụ</p>
+                                <p class="value">
+                                    <?= htmlspecialchars($booking['service_name'] ?? 'Cắt xả') ?>
+                                </p>
+                            </div>
+
+                            <div class="info-section">
+                                <p class="label">Tổng tiền anh cần thanh toán sau áp dụng ưu đãi:</p>
+                                <p class="price-value">
+                                    <?= number_format($booking['price'] ?? 94000, 0, ',', '.') ?> VNĐ
+                                </p>
+                            </div>
+
+                            <div class="divider"></div>
+
+                            <div class="parking-info">
+                                <p class="label">Thông tin gửi xe</p>
+                                <div class="parking-content">
+                                    <i class="fa-solid fa-motorcycle"></i>
+                                    <span>Gửi xe máy miễn phí tại salon</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="menu-options">
+                            <p class="guide-text">
+                                "Nếu đến muộn quá 10 phút, chúng em xin phép dời lịch để đảm bảo trải nghiệm tốt
+                                nhất
+                                cho anh."
+                            </p>
+
+                            <div class="menu-item" onclick="window.location.href='<?= BASE_URL ?>?act=doilich'">
+                                <div class="menu-left">
+                                    <div class="icon-box">
+                                        <i class="fa-solid fa-align-justify"></i>
+                                    </div>
+                                    <span>Xem Chi Tiết</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right menu-arrow"></i>
+                            </div>
+
+                            <div class="menu-item"
+                                onclick="if(confirm('Anh có chắc muốn hủy lịch không?')) window.location.href='<?= BASE_URL ?>?act=huylich'">
+                                <div class="menu-left">
+                                    <div class="icon-box" style="color: #ff4d4d;"> <i class="fa-solid fa-xmark"></i>
+                                    </div>
+                                    <span>Hủy lịch</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right menu-arrow"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- phần dịch vụ -->
-                <div class="thongtin-donhang">
-                    <h2>Dịch vụ đã chọn</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tên Dịch Vụ</th>
-                                <th>Giá</th>
-                            </tr>
-                        </thead>
-                        <!-- thông tin dịch vụ -->
-                        <tbody>
-                            <tr>
-                                <td>Cắt tóc nam</td>
-                                <td>94.000VNĐ</td>
-                            </tr>
-                            <tr>
-                                <td>Gội đầu thư giãn</td>
-                                <td>150.000VNĐ</td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td><strong>Tổng Cộng:</strong></td>
-                                <td><strong>244.000VNĐ</strong></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="action">
-                    <a href="<?= BASE_URL ?>?act=lichsudat">
-                        <button class="btn back">Quay Lại</button>
-                    </a>
-                </div>
-            </div>
-            <form action="#" method="POST">
-                <div class="rating-section">
-                    <h2>Mời Bạn Đánh Giá Trải Nghiệm Dịch Vụ</h2>
-
-                    <div class="emotion-rating-container">
-                        <input type="hidden" name="rating_value" id="rating-value" value="0">
-
-                        <div class="rating-buttons">
-                            <button type="button" class="rating-btn" data-value="1">Không hài lòng</button>
-                            <button type="button" class="rating-btn" data-value="2">Bình thường</button>
-                            <button type="button" class="rating-btn" data-value="3">Rất hài lòng</button>
-                        </div>
-                    </div>
-
-                    <div class="comment-box">
-                        <p>Bình luận chi tiết về trải nghiệm (Không bắt buộc):</p>
-                        <textarea name="comment" placeholder="Viết bình luận của bạn tại đây..."></textarea>
-                    </div>
-                </div>
-
-                <div class="action">
-                    <button type="submit" class="btn submit-review">Gửi Đánh Giá</button>
-                    <a href="#">
-                        <button type="button" class="btn back">Quay Lại</button>
-                    </a>
-                </div>
-            </form>
         </main>
     </div>
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-column">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
-                    class="footer-logo">
+                <img src="anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo" class="footer-logo">
                 <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam. Chúng tôi giúp bạn luôn tự tin và phong độ
                     mỗi ngày.</p>
             </div>
@@ -219,6 +219,5 @@
         </div>
     </footer>
 </body>
-<script src="<?= BASE_URL ?>public/main.js"></script>
 
 </html>

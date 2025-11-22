@@ -105,6 +105,7 @@ match ($act) {
     'chondichvu' => $clientController->chondichvu(),
     'lichsudat' => Lichsudon(),
     'lichsudatchitiet' => Lichsudonchitiet(),
+    'datlichthanhcong' => Datlichthanhcong(),
     //đăng nhập và đăng ký cho khách hàng
     'dangky_khachhang' => (new KhachHangController())->register(),
     'dangnhap_khachhang' => (new KhachHangController())->login(),
