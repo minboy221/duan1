@@ -10,9 +10,6 @@ function debug($data)
 
 function notFound() {
     require_once './views/errors/404.php';
-
-
-
 }
 
 //kết nối CSDL qua PDO

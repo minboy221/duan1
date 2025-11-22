@@ -118,15 +118,20 @@
                         // Kiểm tra xem có dịch vụ nào trong giỏ hàng (Session) chưa
                         if (isset($_SESSION['booking_cart']['services']) && !empty($_SESSION['booking_cart']['services'])):
                             $totalMoney = 0;
-                            ?>
+                        ?>
                             <ul style="list-style: none; padding: 0;">
                                 <?php foreach ($_SESSION['booking_cart']['services'] as $sv):
                                     $totalMoney += $sv['price'];
-                                    ?>
+                                ?>
                                     <li
                                         style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #ddd;">
                                         <span><?= htmlspecialchars($sv['name']) ?></span>
                                         <span style="font-weight: bold;"><?= number_format($sv['price']) ?>đ</span>
+                                        <a href="index.php?act=remove_service&id=<?= $sv['id'] ?>"
+                                            style="color:red; margin-left:10px; font-size:14px;">
+                                            Xóa
+                                        </a>
+
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
@@ -322,11 +327,11 @@
 
     function validateBooking() {
         if (!document.getElementById('selected_time_id').value) {
-            alert("Vui lòng chọn giờ!"); return false;
+            alert("Vui lòng chọn giờ!");
+            return false;
         }
         return true;
     }
-
 </script>
 
 </html>
