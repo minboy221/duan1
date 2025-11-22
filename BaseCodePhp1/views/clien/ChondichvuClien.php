@@ -109,7 +109,7 @@
                     <button><i class="fa fa-search"></i></button>
                 </div>
 
-                <form action="<?= BASE_URL ?>?act=xacnhan_datlich" method="POST" id="bookingForm"></form>
+                <form action="<?= BASE_URL ?>?act=datlich" method="POST" id="bookingForm"></form>
 
                 <div class="baodichvu">
                     <?php if (!empty($categoriesWithServices)):
@@ -133,16 +133,18 @@
                                                             <p><?= number_format($service['price']) ?> VNĐ</p>
                                                         </div>
                                                     </div>
-                                                    <button type="button" class="btn-select" data-id="<?= $service['id'] ?>"
-                                                        data-price="<?= $service['price'] ?>">
+                                                    <a class="btn-select"
+                                                        href="index.php?act=add_service&id=<?= $service['id'] ?>">
                                                         CHỌN
-                                                    </button>
+                                                    </a>
+
+
                                                 </div>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
-                            <?php endif;
+                        <?php endif;
                         endforeach;
                     else: ?>
                         <p style="text-align: center; padding: 20px;">Hiện chưa có dịch vụ nào.</p>
@@ -163,5 +165,8 @@
     </div>
 </body>
 <script src="<?= BASE_URL ?>public/main.js"></script>
+<script>
+    
+</script>
 
 </html>

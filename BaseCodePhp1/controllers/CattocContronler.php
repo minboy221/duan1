@@ -285,4 +285,57 @@ class CattocContronler
         echo "<script>alert('Đặt lịch thành công!'); window.location.href='index.php';</script>";
         }
     }
+    // chọn dịch vụ trong đặt lịch
+public function addService() {
+    $id = $_GET['id'] ?? 0;
+    if (!$id) return;
+
+    // Lấy thông tin dịch vụ từ DB
+    $service = $this->dichvuModel->find($id);
+    if (!$service) return;
+
+    // Kiểm tra giỏ
+    if (!isset($_SESSION['booking_cart']['services'])) {
+        $_SESSION['booking_cart']['services'] = [];
+    }
+
+    // Kiểm tra trùng
+    foreach ($_SESSION['booking_cart']['services'] as $sv) {
+        if ($sv['id'] == $id) {
+            $_SESSION['success'] = "Dịch vụ đã tồn tại trong giỏ!";
+            header("Location: index.php?act=chondichvu");
+            return;
+        }
+    }
+
+    // Thêm dịch vụ vào giỏ
+    $_SESSION['booking_cart']['services'][] = [
+        'id' => $service['id'],
+        'name' => $service['name'],
+        'price' => $service['price']
+    ];
+
+    $_SESSION['success'] = "Đã thêm dịch vụ!";
+    header("Location: index.php?act=chondichvu");
+    exit;
+}
+
+// xóa dịch vụ khỏi giỏ
+public function removeService() {
+    $id = $_GET['id'] ?? 0;
+    if (!$id) return;
+
+    if (isset($_SESSION['booking_cart']['services'])) {
+        $_SESSION['booking_cart']['services'] = 
+            array_filter($_SESSION['booking_cart']['services'], function ($sv) use ($id) {
+                return $sv['id'] != $id;
+            });
+    }
+
+    $_SESSION['success'] = "Đã xóa dịch vụ khỏi giỏ!";
+    header("Location: index.php?act=datlich");
+    exit;
+}
+
+
 }

@@ -180,6 +180,12 @@ match ($act) {
     'api_get_time' => $clientController->apiGetTime(),
     //xử lý lưu
     'luu_datlich' => $clientController->luuDatLich(),
+    // chọn dịch vụ trong đặt lịch
+    'add_service' => (new CattocContronler())->addService(),
+    // xóa dịch vụ trong đặt lịch
+    'remove_service' => (new CattocContronler())->removeService(),
+
+     // trang không tồn tại
     default => notFound(),
 }
     ?>
