@@ -42,23 +42,24 @@
         </a>
 
         <ul class="side-menu">
-            <li><a href="?act=homeadmin">Thống Kê</a></li>
-            <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
-            <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
-            <li><a href="#">Quản Lý Đặt Lịch</a></li>
-            <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
-            <li><a href="#">Quản Lý Khung Giờ</a></li>
-            <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
-            <li class="active"><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
-        </ul>
+            <ul class="side-menu">
+                <li class="active"><a href="?act=homeadmin">Thống Kê</a></li>
+                <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
+                <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
+                <li><a href="#">Quản Lý Đặt Lịch</a></li>
+                <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
+                <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
+                <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
+                <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
+            </ul>
 
-        <ul class="side-menu">
-            <li>
-                <a href="<?= BASE_URL ?>?act=logout" class="logout">
-                    <i class='bx bx-log-out-circle'></i> Đăng Xuất
-                </a>
-            </li>
-        </ul>
+            <ul class="side-menu">
+                <li>
+                    <a href="<?= BASE_URL ?>?act=logout" class="logout">
+                        <i class='bx bx-log-out-circle'></i> Đăng Xuất
+                    </a>
+                </li>
+            </ul>
     </div>
 
     <!-- Main Content -->
@@ -90,7 +91,6 @@
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
             </a>
         </nav>
-
         <!-- Main -->
         <main>
             <div class="header">
@@ -138,12 +138,12 @@
 
                                         </td>
                                     </tr>
-                        </tbody>
-                    <?php endforeach; ?>
-                    </table>
-                <?php else: ?>
-                    <p>Chưa có tài khoản nào trong hệ thống.</p>
-                <?php endif; ?>
+                                </tbody>
+                            <?php endforeach; ?>
+                        </table>
+                    <?php else: ?>
+                        <p>Chưa có tài khoản nào trong hệ thống.</p>
+                    <?php endif; ?>
                 </div>
             </div>
 

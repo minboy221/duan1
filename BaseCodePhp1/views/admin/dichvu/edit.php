@@ -25,7 +25,7 @@
             <li class="active"><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
             <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
-            <li><a href="#">Quản Lý Khung Giờ</a></li>
+            <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
             <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
         </ul>

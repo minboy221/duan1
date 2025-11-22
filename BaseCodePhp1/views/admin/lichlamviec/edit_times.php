@@ -1,53 +1,142 @@
-<div class="form-wrapper">
-    <div class="text-center mb-4">
-        <h4 class="text-gray-800">Xếp Giờ Làm Việc</h4>
-        <h5 class="text-primary font-weight-bold">
-            <?= htmlspecialchars($info['name']) ?>
-            <small class="text-muted"> | Ngày <?= date('d/m/Y', strtotime($info['date'])) ?></small>
-        </h5>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/createdanhmuc.css">
+    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+    <title>Trang Xếp Giờ Cho Thợ | 31Shine</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <i class="bi bi-scissors"></i>
+            <div class="logo-name"><span>31</span>Shine</div>
+        </a>
+
+        <ul class="side-menu">
+            <li><a href="?act=homeadmin">Thống Kê</a></li>
+            <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
+            <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
+            <li><a href="#">Quản Lý Đặt Lịch</a></li>
+            <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
+            <li class="active"><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
+            <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
+            <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
+        </ul>
+
+        <ul class="side-menu">
+            <li>
+                <a href="#" class="logout">
+                    <i class='bx bx-log-out-circle'></i> Đăng Xuất
+                </a>
+            </li>
+        </ul>
     </div>
+    <!-- End Sidebar -->
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>
 
-    <form action="index.php?act=update_times" method="POST">
-        <input type="hidden" name="phan_cong_id" value="<?= $info['id'] ?>">
+            <form action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
 
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <strong>Tích chọn các khung giờ làm việc:</strong>
+            <input type="checkbox" id="theme-toggle" hidden>
+            <label for="theme-toggle" class="theme-toggle"></label>
+
+            <a href="#" class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">12</span>
+            </a>
+
+            <a href="<?= BASE_URL ?>?act=logout" class="profile">
+                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+            </a>
+        </nav>
+        <main>
+            <div class="header">
+                <h1>Xếp Giờ Làm Việc</h1>
+                <a href="index.php?act=detail_ngay&id=<?= $info['ngay_lv_id'] ?? '' ?>" class="btnthem btn-back"
+                    style="background:#ccc;color:#000">
+                    ← Quay lại
+                </a>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <?php
-                    // Tạo giờ từ 08:00 đến 21:00
-                    for ($i = 8; $i <= 21; $i++):
-                        $timeStr = str_pad($i, 2, "0", STR_PAD_LEFT) . ":00";
 
-                        // Kiểm tra xem giờ này có trong DB chưa
-                        // Lưu ý: $currentTimes phải là mảng phẳng ['08:00', '09:00']
-                        // Nếu model trả về mảng lồng, bạn cần dùng array_column hoặc sửa model fetchColumn như bài trước
-                        $isChecked = in_array($timeStr, $currentTimes) ? 'checked' : '';
+            <div class="form-wrapper">
+                <form action="index.php?act=update_times" method="POST" class="form-add">
+                    <input type="hidden" name="phan_cong_id" value="<?= $info['id'] ?>">
+
+                    <div class="form-group">
+                        <label>Thông tin phân công</label>
+                        <?php
+                        $ngayHienThi = date('d/m/Y', strtotime($info['date']));
+                        $valHienThi = $info['name'] . " - Ngày " . $ngayHienThi;
                         ?>
-                        <div class="col-md-3 col-6 mb-3">
-                            <div class="form-check p-2 border rounded d-flex align-items-center" style="cursor: pointer;">
-                                <input class="form-check-input ml-2" type="checkbox" name="times[]" value="<?= $timeStr ?>"
-                                    id="time_<?= $i ?>" <?= $isChecked ?> style="transform: scale(1.3); cursor: pointer;">
+                        <input type="text" value="<?= htmlspecialchars($valHienThi) ?>" disabled
+                            style="background-color: #e9ecef; color: #333; font-weight: bold; cursor: not-allowed;">
+                    </div>
 
-                                <label class="form-check-label ml-4 w-100 font-weight-bold" for="time_<?= $i ?>"
-                                    style="cursor: pointer; margin-left: 10px;">
-                                    <?= $timeStr ?>
-                                </label>
+                    <div class="form-group">
+                        <label>Tích chọn các khung giờ làm việc</label>
+
+                        <div class="time-list-container" style="margin-top: 10px;">
+                            <div class="row" style="margin-top:2px">
+                                <?php
+                                // Tạo vòng lặp giờ từ 08:00 đến 21:00
+                                for ($i = 8; $i <= 21; $i++):
+
+                                    // --- [MỚI] Tạo mảng các phút muốn hiển thị (Ví dụ: 00 và 30) ---
+                                    $minutes = ['00', '30'];
+
+                                    // Chạy vòng lặp qua các phút
+                                    foreach ($minutes as $min):
+                                        // Ghép giờ và phút: Ví dụ 08:00, 08:30
+                                        $timeStr = str_pad($i, 2, "0", STR_PAD_LEFT) . ":" . $min;
+
+                                        // (Tùy chọn) Nếu muốn dừng ở đúng 21:00 mà không hiện 21:30 thì thêm dòng này:
+                                        if ($i == 21 && $min == '30')
+                                            continue;
+
+                                        // Kiểm tra giờ đã chọn (Logic cũ của bạn)
+                                        $isChecked = in_array($timeStr, $currentTimes) ? 'checked' : '';
+                                        ?>
+                                        <div class="col-xl-3 col-md-4 col-6 mb-3">
+                                            <label class="staff-checkbox-item">
+                                                <input type="checkbox" name="times[]" value="<?= $timeStr ?>" <?= $isChecked ?>>
+                                                <span class="staff-info">
+                                                    <i class='bx bx-time-five'></i> <?= $timeStr ?>
+                                                </span>
+                                            </label>
+                                        </div>
+
+                                    <?php
+                                    endforeach; // Kết thúc vòng lặp phút
+                                endfor; // Kết thúc vòng lặp giờ 
+                                ?>
                             </div>
                         </div>
-                    <?php endfor; ?>
-                </div>
-            </div>
-        </div>
+                    </div>
 
-        <div class="mt-4 text-center">
-            <button type="submit" class="btn btn-success btn-lg px-5">
-                <i class="fa fa-save"></i> Lưu Thay Đổi
-            </button>
-            <br><br>
-            <a href="index.php?act=qlylichlamviec" class="text-secondary">Quay lại danh sách</a>
-        </div>
-    </form>
-</div>
+                    <button type="submit" class="btnthem" style="padding: 12px 30px; width: 100%; margin-top: 20px;">
+                        <i class='bx bx-save'></i> Lưu Thay Đổi
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="<?= BASE_URL ?>public/admin.js"></script>
+</body>
+
+</html>

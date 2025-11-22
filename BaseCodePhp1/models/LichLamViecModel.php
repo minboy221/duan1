@@ -29,6 +29,14 @@ class LichLamViecModel
             return false;
         }
     }
+    // lấy thông tin ngày cụ thể
+    public function find($id)
+    {
+        $sql = "SELECT * FROM ngay_lam_viec WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch();
+    }
 
     //PHẦN XEM CHI TIẾT NGÀY ĐÃ TẠO VÀ GẮN THỢ
     public function getNgayById($id)
@@ -122,14 +130,100 @@ class LichLamViecModel
     //Phần lấy thông tin chi tiết của thợ
     public function getDetailPhanCong($id)
     {
-        $sql = "SELECT pc.id,t.name,n.date
-        FROM phan_cong pc
-        JOIN tho t ON pc.tho_id = t.id
-        JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
-        WHERE pc.id = ?";
+        $sql = "SELECT pc.id, pc.ngay_lv_id, t.name, n.date 
+                FROM phan_cong pc
+                JOIN tho t ON pc.tho_id = t.id
+                JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
+                WHERE pc.id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    //PHẦN HIÊN THỊ CHO CLIEN
+    public function getFutureDays()
+    {
+        $sql = "SELECT * FROM ngay_lam_viec
+        WHERE date >= CURDATE()
+        ORDER BY date ASC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    //lấy danh sách thợ làm việc
+    public function getThoByDayId($ngay_id)
+    {
+        $sql = "SELECT pc.id as phan_cong_id,t.id as tho_id,t.name,t.image,t.lylich
+                FROM phan_cong pc
+                JOIN tho t ON pc.tho_id = t.id
+                WHERE pc.ngay_lv_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$ngay_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    //lấy khung giờ của thợ và kiểm tra
+    // --- CẬP NHẬT HÀM NÀY TRONG MODEL ---
+    public function getAvailableTime($phan_cong_id)
+    {
+        // Cài đặt múi giờ Việt Nam
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $currentDate = date('Y-m-d'); // Ngày hôm nay
+        $currentTime = date('H:i');   // Giờ hiện tại (VD: 14:30)
+
+        //Lấy Ngày làm việc của phân công này (để so sánh)
+        $sqlDate = "SELECT n.date 
+                    FROM phan_cong pc 
+                    JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id 
+                    WHERE pc.id = ?";
+        $stmtDate = $this->conn->prepare($sqlDate);
+        $stmtDate->execute([$phan_cong_id]);
+        $dateRow = $stmtDate->fetch(PDO::FETCH_ASSOC);
+        $workDate = $dateRow['date']; // Ngày làm việc (VD: 2025-11-23)
+
+        // Lấy tất cả khung giờ
+        $sqlKG = "SELECT id, time FROM khunggio WHERE phan_cong_id = ? ORDER BY time ASC";
+        $stmtKG = $this->conn->prepare($sqlKG);
+        $stmtKG->execute([$phan_cong_id]);
+        $allSlots = $stmtKG->fetchAll(PDO::FETCH_ASSOC);
+
+        //Lấy các giờ ĐÃ BỊ ĐẶT
+        $sqlBooked = "SELECT khunggio_id FROM lichdat WHERE status != 'cancelled'";
+        $stmtBooked = $this->conn->prepare($sqlBooked);
+        $stmtBooked->execute();
+        $bookedIds = $stmtBooked->fetchAll(PDO::FETCH_COLUMN);
+
+        //XỬ LÝ LOGIC: Đã đặt OR Đã qua giờ
+        foreach ($allSlots as &$slot) {
+            // Mặc định là chưa bị đặt
+            $slot['is_booked'] = false;
+            $slot['status_text'] = ''; // Thêm text để giải thích (nếu cần)
+
+            // CHECK 1: Đã có người đặt chưa?
+            if (in_array($slot['id'], $bookedIds)) {
+                $slot['is_booked'] = true;
+                $slot['status_text'] = 'Đã có khách';
+            }
+
+            //Đã qua giờ chưa? (Chỉ check nếu chưa bị đặt)
+            if (!$slot['is_booked']) {
+                // Nếu ngày làm việc < ngày hiện tại (Ngày quá khứ)
+                if ($workDate < $currentDate) {
+                    $slot['is_booked'] = true;
+                    $slot['status_text'] = 'Đã qua';
+                }
+                // Nếu là ngày HÔM NAY -> Check giờ
+                elseif ($workDate == $currentDate) {
+                    // So sánh chuỗi giờ (VD: "08:00" < "09:30")
+                    if ($slot['time'] < $currentTime) {
+                        $slot['is_booked'] = true;
+                        $slot['status_text'] = 'Đã qua';
+                    }
+                }
+            }
+        }
+
+        return $allSlots;
     }
 }
 

@@ -40,19 +40,50 @@ $khachHangController = new KhachHangController();
 $adminNhanVienController = new NhanVienController();
 $adminNhanVienAdminController = new NhanVienAdminController();
 $lich = new LichLamViecController();
+$clientController = new CattocContronler();
 
 //route
 
 $act = $_GET['act'] ?? 'home';
 // Các route chỉ dành cho admin
 $adminRoutes = [
-    'homeadmin', 'qlydanhmuc', 'create_danhmuc', 'store_danhmuc',
-    'show_danhmuc', 'edit_danhmuc', 'update_danhmuc', 'delete_danhmuc',
-    'qlydichvu', 'createdichvu', 'store_dichvu', 'show_dichvu',
-    'edit_dichvu', 'update_dichvu', 'delete_dichvu',
-    'qlytaikhoan', 'admin-user-comment',
-    'qlytho', 'qlytho_create', 'qlytho_edit',
-    'admin-nhanvien', 'admin-nhanvien-create', 'admin-nhanvien-edit'
+    //trang chủ
+    'homeadmin',
+    //phần quản lý danh mục
+    'qlydanhmuc',
+    'create_danhmuc',
+    'store_danhmuc',
+    'show_danhmuc',
+    'edit_danhmuc',
+    'update_danhmuc',
+    'delete_danhmuc',
+    //phần quản lý dịch vụ
+    'qlydichvu',
+    'createdichvu',
+    'store_dichvu',
+    'show_dichvu',
+    'edit_dichvu',
+    'update_dichvu',
+    'delete_dichvu',
+    //phần xem người dùng
+    'qlytaikhoan',
+    'admin-user-comment',
+    //phần quản lý thợ
+    'qlytho',
+    'qlytho_create',
+    'qlytho_edit',
+    //phần quản lý làm việc cho thợ
+    'qlylichlamviec',
+    'auto_create_days',
+    'assign_tho',
+    'store_assign',
+    'edit_times',
+    'update_times',
+    'detail_ngay',
+    //phần trang cho nhân viên
+    'admin-nhanvien',
+    'admin-nhanvien-create',
+    'admin-nhanvien-edit',
 ];
 
 // Nếu act thuộc nhóm admin -> kiểm tra đăng nhập
@@ -70,7 +101,7 @@ match ($act) {
     'about' => aboutClien(),
     'dichvu' => $clientController->hienthidanhmuc1(),
     'nhanvien' => $clientController->hienthiNhanVien(), 'chitietdichvu' => $clientController->hienthichitiet(),
-    'datlich' => DatlichClien(),
+    'datlich' => $clientController->datlich(),
     'chondichvu' => $clientController->chondichvu(),
     'lichsudat' => Lichsudon(),
     'lichsudatchitiet' => Lichsudonchitiet(),
@@ -128,12 +159,12 @@ match ($act) {
     'search_tho' => (new ThoController())->search(),
 
     //PHẦN QUẢN LÝ LÀM VIỆC CHO THỢ
-    'qlylichlamviec' =>(new LichLamViecController())->index(),
-    'auto_create_days'=>(new LichLamViecController())->autoCreate(),
-    'assign_tho'=>(new LichLamViecController())->assignTho(),
-    'store_assign'=>(new LichLamViecController())->storeAssign(),
-    'edit_times'=>(new LichLamViecController())->editTimes(),
-    'update_times'=>(new LichLamViecController())->updateTimes(),
+    'qlylichlamviec' => (new LichLamViecController())->index(),
+    'auto_create_days' => (new LichLamViecController())->autoCreate(),
+    'assign_tho' => (new LichLamViecController())->assignTho(),
+    'store_assign' => (new LichLamViecController())->storeAssign(),
+    'edit_times' => (new LichLamViecController())->editTimes(),
+    'update_times' => (new LichLamViecController())->updateTimes(),
     'detail_ngay' => (new LichLamViecController())->detail(),
 
     //NHÂN VIÊN (Admin quản lý + phân quyền) 
@@ -144,7 +175,11 @@ match ($act) {
     'admin-nhanvien-update' => $adminNhanVienAdminController->update(),
     'admin-nhanvien-delete' => $adminNhanVienAdminController->delete(),
 
-    // phần hiển thị chức năng của quản lý dịch vụ
+    // phần API trả về json
+    'api_get_stylist' => $clientController->apiGetStylist(),
+    'api_get_time' => $clientController->apiGetTime(),
+    //xử lý lưu
+    'luu_datlich' => $clientController->luuDatLich(),
     default => notFound(),
 }
     ?>

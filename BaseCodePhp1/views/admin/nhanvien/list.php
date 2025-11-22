@@ -49,7 +49,7 @@
             <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
             <li class="active"><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
-            <li><a href="#">Quản Lý Khung Giờ</a></li>
+            <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
             <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
         </ul>
@@ -135,10 +135,10 @@
                                     <td><?= htmlspecialchars($nv['role_name'] ?? '') ?></td>
                                     <td style="display:flex; gap:5px;">
                                         <a class="btnsua" href="?act=admin-nhanvien-edit&id=<?= $nv['id'] ?>">Sửa</a>
-                                                <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá dịch vụ này?')"
-                                                href="?act=admin-nhanvien-delete&id=<?= $nv['id'] ?>">
-                                                Xoá
-                                            </a>
+                                        <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá dịch vụ này?')"
+                                            href="?act=admin-nhanvien-delete&id=<?= $nv['id'] ?>">
+                                            Xoá
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

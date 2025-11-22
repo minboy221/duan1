@@ -290,7 +290,6 @@ body{
     cursor: pointer;
     position: relative;
     border-radius: 25px;
-    margin-top: 2px;
 }
 
 .content nav .theme-toggle::before{
@@ -315,16 +314,69 @@ body{
     max-height: calc(100vh - 56px);
 }
 
-/* ===== HEADER ===== */
-.content main .header h1{
-    font-size: 36px;
-    font-weight: 600;
-    color: var(--dark);
+.content main .header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 16px;
+    flex-wrap: wrap;
 }
 
-.header{
-    display: flex;
-    justify-content: space-between;
+.btnthem{
+    background-color: #388E3C;
+    border-radius: 10px;
+    color: #fff;
+    padding: 10px 20px;
+    transition: 0.3s;
+    border: none;
+    font-weight: 600;
+}
+
+.btnthem:hover{
+    background-color: #205d23;
+}
+
+.btnxem{
+    background-color: #1976D2;
+    border-radius: 10px;
+    color: #fff;
+    padding: 10px 20px;
+    transition: 0.3s;
+}
+
+.btnxem:hover{
+    background-color: #14589c;
+}
+
+.btnsua{
+    background-color: #FBC02D;
+    border-radius: 10px;
+    color: #fff;
+    padding: 10px 20px;
+    transition: 0.3s;
+}
+
+.btnsua:hover{
+    background-color: #8f6c15;
+}
+
+.btnxoa{
+    background-color: #D32F2F;
+    border-radius: 10px;
+    color: #fff;
+    padding: 10px 20px;
+    transition: 0.3s;
+}
+
+.btnxoa:hover{
+    background-color: #891313;
+}
+
+.content main .header .left h1{
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--dark);
 }
 
 .content main .header .left .breadcrumb{
@@ -339,10 +391,12 @@ body{
 
 .content main .header .left .breadcrumb li a{
     color: var(--dark-grey);
+    pointer-events: none;
 }
 
 .content main .header .left .breadcrumb li a.active{
     color: var(--primary);
+    pointer-events: none;
 }
 
 .content main .header .report{
@@ -357,151 +411,211 @@ body{
     grid-gap: 10px;
     font-weight: 500;
 }
-.content nav #theme-toggle {
-    display: none;
+
+.content main .bottom-data{
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 24px;
+    margin-top: 24px;
+    width: 100%;
+    color: var(--dark);
 }
 
-/* ===== FORM WRAPPER ===== */
-.form-wrapper {
-    margin-top: 20px;
+.content main .bottom-data>div{
+    border-radius: 20px;
     background: var(--light);
-    color: var(--dark);
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-    border: 1px solid var(--border);
-    max-width: 1300px;
+    padding: 24px;
+    overflow-x: auto;
 }
 
-/* ===== FORM ===== */
-.form-add .form-group {
-    margin-bottom: 18px;
-}
-
-.form-add label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: var(--dark);
-}
-
-.form-add input,
-.form-add textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 8px;
-    background: var(--grey);
-    border: 1px solid var(--border);
-    color: var(--dark);
-    font-size: 15px;
-    transition: 0.2s;
-}
-
-.form-add input:focus,
-.form-add textarea:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 5px rgba(40,167,69,0.3);
-    outline: none;
-}
-
-/* Error message */
-.error-msg {
-    color: #d9534f;
-    font-size: 14px;
-    margin-top: 4px;
-    display: block;
-}
-
-input.error, textarea.error {
-    border-color: #d9534f !important;
-}
-
-/* ===== BUTTON STYLE ===== */
-.btnthem {
-    display: inline-block;
-    padding: 10px 18px;
-    background: var(--primary);
-    color: var(--light);
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-    border: none;
-}
-
-.btnthem:hover {
-    background: #2f7d3a;
-}
-
-.btn-back {
-    background: #6c757d;
-    /* width: 20px 10px; */
-}
-
-.btn-back:hover {
-    background: #5a6268;
-}
-
-/* phàn checkbox cho trang lịch làm việc */
-.staff-checkbox-item {
-    display: flex;              
-    align-items: center;       
-    padding: 12px 25px;
-    border: 1px solid #ddd;    
-    border-radius: 8px;       
-    cursor: pointer;
-    background-color: #fff;
-    transition: all 0.2s ease;
-    width: 100%;
-    margin-bottom: 0;
-}
-
-/* Hiệu ứng khi di chuột vào */
-.staff-checkbox-item:hover {
-    background-color: #f0f8ff; 
-    border-color: #3C91E6;      
-}
-
-/* Chỉnh lại cái ô vuông checkbox */
-.staff-checkbox-item input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin-right: 12px;       
-    accent-color: #3C91E6;    
-    cursor: pointer;
-}
-
-.staff-info {
-    font-size: 15px;
-    font-weight: 500;
-    color: #333;
+.content main .bottom-data .header{
     display: flex;
     align-items: center;
-    gap: 8px;
+    grid-gap: 16px;
+    margin-bottom: 24px;
 }
 
-button.btnthem {
-    background-color: #3C91E6;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
+.content main .bottom-data .header h3{
+    margin-right: auto;
+    font-size: 24px;
     font-weight: 600;
+}
+
+.content main .bottom-data .header .bx{
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: background 0.3s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-button.btnthem:hover {
-    background-color: #2a75c0;
-    transform: translateY(-2px);
+.content main .bottom-data .orders{
+    flex-grow: 1;
+    flex-basis: 500px;
 }
 
+.calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 24px;
+        margin-top: 20px;
+    }
+
+    /* Thẻ từng ngày (Card) */
+    .day-card {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .day-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        border-color: #3C91E6;
+    }
+
+    /* Header của thẻ ngày */
+    .day-header {
+        background: #f8f9fa;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .day-date {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .day-weekday {
+        font-size: 13px;
+        font-weight: 600;
+        color: #fff;
+        background: #3C91E6;
+        padding: 4px 10px;
+        border-radius: 20px;
+    }
+
+    /* Body của thẻ ngày (Danh sách thợ) */
+    .day-body {
+        padding: 0;
+        flex-grow: 1; /* Đẩy footer xuống đáy */
+        min-height: 100px; /* Chiều cao tối thiểu */
+    }
+
+    .staff-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .staff-item:last-child {
+        border-bottom: none;
+    }
+
+    .staff-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .staff-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #eee;
+    }
+
+    .staff-name {
+        font-weight: 600;
+        font-size: 14px;
+        color: #444;
+    }
+
+    .btn-time {
+        font-size: 11px;
+        padding: 4px 8px;
+        background: #fff3cd;
+        color: #856404;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    /* Trạng thái trống (Chưa có thợ) */
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 30px 0;
+        color: #999;
+        font-size: 13px;
+        font-style: italic;
+    }
+
+    /* Footer của thẻ ngày (Nút bấm) */
+    .day-footer {
+        padding: 15px;
+        background: #fff;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-action {
+        flex: 1;
+        text-align: center;
+        padding: 8px 0;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .btn-detail {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+    .btn-detail:hover { background: #bbdefb; }
+
+    .btn-assign {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+    .btn-assign:hover { background: #c8e6c9; }
+
+    /* Nút tự động tạo ở trên cùng */
+    .top-controls {
+        display: flex;
+        justify-content: flex-end; /* Đẩy nút sang phải */
+        margin-bottom: 10px;
+    }
+
+    /* --- CSS CHO CUỐI TUẦN (Thêm mới) --- */
+    
+    .day-header.weekend {
+        background: #fff5f5; /* Nền hồng nhạt */
+        border-bottom: 1px solid #ffd6d6;
+    }
+
+    .day-header.weekend .day-weekday {
+        background: #ff6b6b; /* Màu đỏ cam */
+        color: #fff;
+    }
+
+    .day-header.weekend .day-date {
+        color: #e03131;
+    }
 @media screen and (max-width: 768px) {
     .sidebar{
         width: 200px;

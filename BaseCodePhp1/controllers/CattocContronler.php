@@ -4,6 +4,7 @@ require_once './models/CategoryModel.php';
 require_once './models/DichVuModel.php';
 require_once './models/Taikhoanuser.php';
 require_once './models/ThoModel.php';
+require_once './models/LichLamViecModel.php';
 function aboutClien()
 {
     require_once './views/clien/AboutView.php';
@@ -58,14 +59,16 @@ class CattocContronler
     public $categoryModel;
     public $dichvuModel;
     public $thongtinuser;
-    public $thoModell;
+    public $thoModel;
+    public $lichModel;
 
     public function __construct()
     {
         $this->categoryModel = new CategoryModel();
         $this->dichvuModel = new DichVuModel();
         $this->thongtinuser = new thongtinuser();
-        $this->thoModell = new ThoModel();
+        $this->thoModel = new ThoModel();
+        $this->lichModel = new LichLamViecModel();
     }
 
     private function getCategorizedServices($limit = null)
@@ -236,7 +239,50 @@ class CattocContronler
     // phần hiển thị thông tin thợ ra clien
     public function hienthiNhanVien()
     {
-        $ListTho = $this->thoModell->all();
+        $ListTho = $this->thoModel->all();
         require_once './views/clien/NhanvienView.php';
+    }
+
+    //phần hiển thị thông tin của đặt lịch(chọn thợ, ngày,khung giờ) ra trang clien
+    public function datlich()
+    {
+        //kiểm tra đăng nhập
+        // if (!isset($_SESSION['usernae'])) {
+        //     header("Location:index.php?act=dangnhap_khachhang");
+        //     exit();
+        // }
+        //lấy danh sách ngày để hiển thị
+        $listDays = $this->lichModel->getFutureDays();
+        require_once './views/clien/DatlichView.php';
+    }
+    // API lấy danh sách thợ theo ngày
+    public function apiGetStylist()
+    {
+        $ngay_id = $_GET['ngay_id'] ?? 0;
+        $stylists = $this->lichModel->getThoByDayId($ngay_id);
+        header('Content-Type:application/json');
+        echo json_encode($stylists);
+    }
+    // API lấy danh sách giờ theo phân công
+    public function apiGetTime()
+    {
+        $phan_cong_id = $_GET['phan_cong_id'] ?? 0;
+        $slots = $this->lichModel->getAvailableTime($phan_cong_id);
+        header('Content-Type: application/json');
+        echo json_encode($slots);
+    }
+    //xử lý lưu lịch đặt
+    public function luuDatLich()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //lấy dữ liệu từ from
+            $khachhang_id = $_SESSION['user_id'] ?? 0;
+            $khunggio_id = $_POST['note'] ?? '';
+
+            // TODO: Gọi Model LichDat để insert vào database
+            // $this->lichDatModel->insert(...)
+
+        echo "<script>alert('Đặt lịch thành công!'); window.location.href='index.php';</script>";
+        }
     }
 }

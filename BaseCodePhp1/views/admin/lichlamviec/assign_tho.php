@@ -1,35 +1,140 @@
-<div class="form-wrapper">
-    <h4 class="mb-3">Phân công thợ cho ngày ID: <?= $ngay_id ?></h4>
+<!DOCTYPE html>
+<html lang="en">
 
-    <form action="index.php?act=store_assign" method="POST" class="form-add">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/createdanhmuc.css">
+    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+    <title>Trang Phân Công Thợ | 31Shine</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
 
-        <input type="hidden" name="ngay_lv_id" value="<?= $ngay_id ?>">
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <i class="bi bi-scissors"></i>
+            <div class="logo-name"><span>31</span>Shine</div>
+        </a>
 
-        <div class="form-group">
-            <label>Danh sách nhân viên:</label>
-            <div class="row">
-                <?php if (!empty($allTho)): ?>
-                    <?php foreach ($allTho as $tho): ?>
-                        <?php
-                        // Kiểm tra đã chọn chưa
-                        $checked = in_array($tho['id'], $assignedIds) ? 'checked' : '';
-                        ?>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-check">
-                                <input class="form-check-input tho-checkbox" type="checkbox" name="tho_ids[]"
-                                    value="<?= $tho['id'] ?>" <?= $checked ?>>
-                                <label class="form-check-label">
-                                    <?= htmlspecialchars($tho['name']) ?>
-                                </label>
+        <ul class="side-menu">
+            <li><a href="?act=homeadmin">Thống Kê</a></li>
+            <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
+            <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
+            <li><a href="#">Quản Lý Đặt Lịch</a></li>
+            <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
+            <li class="active"><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
+            <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
+            <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
+        </ul>
+
+        <ul class="side-menu">
+            <li>
+                <a href="#" class="logout">
+                    <i class='bx bx-log-out-circle'></i> Đăng Xuất
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- End Sidebar -->
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>
+
+            <form action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+
+            <input type="checkbox" id="theme-toggle" hidden>
+            <label for="theme-toggle" class="theme-toggle"></label>
+
+            <a href="#" class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">12</span>
+            </a>
+
+            <a href="<?= BASE_URL ?>?act=logout" class="profile">
+                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+            </a>
+        </nav>
+
+        <main>
+            <div class="header">
+                <h1>Phân Công Thợ</h1>
+                <a href="?act=qlylichlamviec" class="btnthem btn-back" style="background:#ccc;color:#000">← Quay lại</a>
+            </div>
+
+            <div class="form-wrapper">
+                <?php
+                // --- GIỮ NGUYÊN LOGIC XỬ LÝ NGÀY ---
+                $ngayInfo = (new LichLamViecModel())->find($ngay_id);
+                if ($ngayInfo) {
+                    $timestamp = strtotime($ngayInfo['date']);
+                    $thuTiengViet = [
+                        1 => 'Thứ Hai', 2 => 'Thứ Ba', 3 => 'Thứ Tư',
+                        4 => 'Thứ Năm', 5 => 'Thứ Sáu', 6 => 'Thứ Bảy', 7 => 'Chủ Nhật'
+                    ];
+                    $thu = $thuTiengViet[date('N', $timestamp)] ?? '';
+                    $ngayThang = date('d/m/Y', $timestamp);
+                    $hienThi = "{$thu}, {$ngayThang}";
+                } else {
+                    $hienThi = "Không tìm thấy ngày";
+                }
+                ?>
+
+                <form action="index.php?act=store_assign" method="POST" class="form-add">
+                    <input type="hidden" name="ngay_lv_id" value="<?= $ngay_id ?>">
+
+                    <div class="form-group">
+                        <label>Ngày phân công</label>
+                        <input type="text" value="<?= $hienThi ?>" disabled 
+                               style="background-color: #e9ecef; color: #495057; font-weight: bold; cursor: not-allowed;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chọn nhân viên làm việc</label>
+                        <div class="staff-list-container" style="margin-top: 10px; max-height: 400px; overflow-y: auto; padding-right: 5px;">
+                            <div class="row">
+                                <?php if (!empty($allTho)): ?>
+                                    <?php foreach ($allTho as $tho): ?>
+                                        <?php
+                                        $checked = in_array($tho['id'], $assignedIds) ? 'checked' : '';
+                                        ?>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="staff-checkbox-item">
+                                                <input type="checkbox" name="tho_ids[]" value="<?= $tho['id'] ?>" <?= $checked ?>>
+                                                <span class="staff-info">
+                                                    <i class='bx bx-user'></i> <?= htmlspecialchars($tho['name']) ?>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <div class="col-12">
+                                        <p style="color:red; font-style:italic;">Chưa có nhân viên nào trong hệ thống.</p>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>Không có dữ liệu thợ.</p>
-                <?php endif; ?>
+                    </div>
+                    <button type="submit" class="btnthem" style="padding: 12px 30px; width: 100%; margin-top: 20px;">
+                        <i class='bx bx-save'></i> Lưu Phân Công
+                    </button>
+                </form>
             </div>
-        </div>
+        </main>
+    </div>
+    <script src="<?= BASE_URL ?>public/admin.js"></script>
 
-        <button type="submit" class="btn btn-primary mt-3">Lưu Phân Công</button>
-    </form>
-</div>
+</body>
+
+</html>

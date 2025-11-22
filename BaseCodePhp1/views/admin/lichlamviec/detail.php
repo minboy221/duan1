@@ -1,81 +1,167 @@
-<div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="text-gray-800">
-            Chi Tiết Lịch Làm Việc:
-            <span class="text-primary font-weight-bold">
-                <?= date('d/m/Y', strtotime($dayInfo['date'])) ?>
-            </span>
-        </h3>
-        <a href="index.php?act=qlylichlamviec" class="btn btn-secondary">
-            <i class="fa fa-arrow-left"></i> Quay lại
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/qlydanhmuc.css">
+    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+    <title>Chi Tiết Việc Làm | 31Shine</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <i class="bi bi-scissors"></i>
+            <div class="logo-name"><span>31</span>Shine</div>
         </a>
+
+        <ul class="side-menu">
+            <li><a href="?act=homeadmin">Thống Kê</a></li>
+            <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
+            <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
+            <li><a href="#">Quản Lý Đặt Lịch</a></li>
+            <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
+            <li class="active"><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
+            <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
+            <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
+        </ul>
+
+        <ul class="side-menu">
+            <li>
+                <a href="#" class="logout">
+                    <i class='bx bx-log-out-circle'></i> Đăng Xuất
+                </a>
+            </li>
+        </ul>
     </div>
+    <!-- End Sidebar -->
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Danh sách nhân sự & Ca làm việc</h6>
-        </div>
-        <div class="card-body">
+            <form method="GET" action="">
+                <div class="form-input">
+                    <input type="hidden" name="act" value="qlydanhmuc">
+                    <input type="text" name="keyword" placeholder="Tìm danh mục..."
+                        value="<?= $_GET['keyword'] ?? '' ?>">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
 
-            <?php if (!empty($listTho)): ?>
-                <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" cellspacing="0">
-                        <thead class="bg-light">
+            <input type="checkbox" id="theme-toggle" hidden>
+            <label for="theme-toggle" class="theme-toggle"></label>
+
+            <a href="#" class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">12</span>
+            </a>
+
+            <a href="<?= BASE_URL ?>?act=logout" class="profile">
+                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+            </a>
+        </nav>
+        <main>
+            <div class="header">
+                <div class="left">
+                    <h1>Chi Tiết Làm Việc</h1>
+                    <ul class="breadcrumb">
+                        <li><a href="#">Quản lý lịch</a></li>
+                        /
+                        <li><a href="#" class="active">Chi tiết ngày</a></li>
+                    </ul>
+                </div>
+                <a href="index.php?act=qlylichlamviec" class="btnthem" style="background:#ccc; color:#000;">
+                    <i class='bx bx-arrow-back'></i> Quay lại
+                </a>
+            </div>
+
+            <div class="bottom-data">
+                <div class="orders">
+
+                    <div class="header">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <i class='bx bx-calendar-check'></i>
+                            <h3>
+                                Lịch ngày:
+                                <span style="color: #3C91E6;">
+                                    <?= date('d/m/Y', strtotime($dayInfo['date'])) ?>
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+
+                    <table>
+                        <thead>
                             <tr>
-                                <th width="5%">STT</th>
-                                <th width="20%">Thợ / Stylist</th>
+                                <th>STT</th>
+                                <th>Thợ / Stylist</th>
                                 <th>Khung Giờ Đăng Ký</th>
-                                <th width="15%">Hành Động</th>
+                                <th>Hành Động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($listTho as $index => $tho): ?>
-                                <tr>
-                                    <td class="text-center"><?= $index + 1 ?></td>
+                            <?php if (!empty($listTho)): ?>
+                                <?php foreach ($listTho as $index => $tho): ?>
+                                    <tr>
+                                        <td><?= $index + 1 ?></td>
 
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <?php $img = !empty($tho['image']) ? './anhtho/' . $tho['image'] : './anhmau/default-avatar.png'; ?>
-                                            <img src="<?= $img ?>" class="rounded-circle mr-2" width="40" height="40"
-                                                style="object-fit: cover;">
-                                            <div>
-                                                <strong><?= htmlspecialchars($tho['name']) ?></strong>
+                                        <td>
+                                            <div class="user-info">
+                                                <?php $img = !empty($tho['image']) ? './anhtho/' . $tho['image'] : './anhmau/default-avatar.png'; ?>
+
+                                                <img src="<?= $img ?>" class="staff-avatar" alt="Avatar"
+                                                    style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%;">
+
+                                                <p style="font-weight: 600; margin:0; margin-left: 8px;">
+                                                    <?= htmlspecialchars($tho['name']) ?></p>
                                             </div>
-                                        </div>
-                                    </td>
+                                        </td>
 
-                                    <td>
-                                        <?php if (!empty($tho['slots'])): ?>
-                                            <?php foreach ($tho['slots'] as $time): ?>
-                                                <span class="badge badge-info p-2 mr-1 mb-1" style="font-size: 13px;">
-                                                    <i class="fa fa-clock"></i> <?= $time ?>
+                                        <td>
+                                            <?php if (!empty($tho['slots'])): ?>
+                                                <?php foreach ($tho['slots'] as $time): ?>
+                                                    <span class="time-badge">
+                                                        <i class='bx bx-time-five'></i> <?= $time ?>
+                                                    </span>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <span style="color: #999; font-style: italic; font-size: 13px;">
+                                                    Chưa xếp giờ làm
                                                 </span>
-                                            <?php endforeach; ?>
-                                        <?php else: ?>
-                                            <span class="text-muted font-italic">Chưa xếp giờ làm</span>
-                                        <?php endif; ?>
-                                    </td>
+                                            <?php endif; ?>
+                                        </td>
 
-                                    <td class="text-center">
-                                        <a href="index.php?act=edit_times&id=<?= $tho['phan_cong_id'] ?>"
-                                            class="btn btn-sm btn-warning">
-                                            <i class="fa fa-edit"></i> Sửa Giờ
-                                        </a>
+                                        <td>
+                                            <a href="index.php?act=edit_times&id=<?= $tho['phan_cong_id'] ?>" class="btnsua">
+                                                <i class='bx bx-edit-alt'></i> Sửa Giờ
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4" style="text-align: center; padding: 30px; color: #888;">
+                                        <i class='bx bx-user-x'
+                                            style="font-size: 40px; display: block; margin-bottom: 10px;"></i>
+                                        Chưa có nhân sự nào được phân công cho ngày này.
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
-                </div>
-            <?php else: ?>
-                <div class="text-center py-5">
-                    <p class="text-muted mb-3">Ngày này chưa có thợ nào được phân công.</p>
-                    <a href="index.php?act=assign_tho&id=<?= $dayInfo['id'] ?>" class="btn btn-primary">
-                        <i class="fa fa-plus"></i> Phân công thợ ngay
-                    </a>
-                </div>
-            <?php endif; ?>
 
-        </div>
+                </div>
+            </div>
+        </main>
     </div>
-</div>
+    <script src="<?= BASE_URL ?>public/admin.js"></script>
+
+</body>
+
+</html>

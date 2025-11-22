@@ -9,7 +9,7 @@
     <title>Quản Lý Dịch Vụ | 31Shine</title>
     <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
-        <style>
+    <style>
         .pagination button {
             margin: 3px;
             padding: 8px 14px;
@@ -48,7 +48,7 @@
             <li class="active"><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
             <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
-            <li><a href="#">Quản Lý Khung Giờ</a></li>
+            <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
             <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
         </ul>

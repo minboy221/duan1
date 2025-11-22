@@ -572,6 +572,57 @@ main{
     background: #000;
     color: #fff;
 }
+/* ===== KHUNG CHỌN NGÀY ===== */
+.chonngay {
+    background: #ffffff;
+    padding: 15px 18px;
+    border-radius: 14px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    margin-bottom: 15px;
+}
+
+/* Label */
+.chonngay label {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+/* Icon calendar */
+.chonngay i {
+    color: #D6A354;
+    margin-right: 6px;
+}
+
+/* Select */
+.chonngay select {
+    height: 45px;
+    border-radius: 12px;
+    border: 1px solid #d6e0ff;
+    padding: 10px 15px;
+    font-size: 15px;
+    background: linear-gradient(to right, #f8faff, #ffffff);
+    transition: all 0.25s ease;
+}
+
+/* Hover */
+.chonngay select:hover {
+    border-color: #0d6efd;
+}
+
+/* Focus */
+.chonngay select:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13,110,253,0.2);
+}
+
+/* Option đẹp hơn */
+.chonngay select option {
+    padding: 10px;
+}
+
 
 /* phần footer */
 .footer {

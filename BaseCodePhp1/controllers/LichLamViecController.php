@@ -19,10 +19,12 @@ class LichLamViecController
         $count = $this->model->taoNgayTuDong();
         if ($count !== false) {
             echo "<script>alert('Thàn công! đã tạo thêm $count ngày làm việc mới.');
-                windown.location.href='index.php?act=qlylichlamviec';
+                window.location.href='index.php?act=qlylichlamviec';
                 </script>";
+            exit();
         } else {
-            echo "<script>alert('có lỗi xảy ra!'); windown.history.back();</script>";
+            header("Location: index.php?act=qlylichlamviec");
+            exit();
         }
     }
     //PHẦN CHỌN THỢ CHO NGÀY
@@ -55,7 +57,7 @@ class LichLamViecController
     public function editTimes()
     {
         $phan_cong_id = $_GET['id']; //id của bảng phân công
-        //lấy thôn tin
+        //lấy thông tin
         $info = $this->model->getDetailPhanCong($phan_cong_id);
         //lấy giờ hiện tại của thợ đó
         $currentTimes = $this->model->getKhungGio($phan_cong_id);

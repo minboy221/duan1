@@ -25,8 +25,8 @@
             <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
             <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="#">Quản Lý Đặt Lịch</a></li>
-            <li><a href="#">Quản Lý Nhân Viên</a></li>
-            <li><a href="#">Quản Lý Khung Giờ</a></li>
+            <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
+            <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
             <li class="active"><a href="?act=qlytho">Quản Lý Thợ</a></li>
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
         </ul>
@@ -52,9 +52,7 @@
                 <input type="hidden" name="act" value="search_tho">
 
                 <div class="form-input">
-                    <input type="search"
-                        name="keyword"
-                        placeholder="Tìm thợ theo tên..."
+                    <input type="search" name="keyword" placeholder="Tìm thợ theo tên..."
                         value="<?= $_GET['keyword'] ?? '' ?>">
                     <button class="search-btn" type="submit">
                         <i class='bx bx-search'></i>
