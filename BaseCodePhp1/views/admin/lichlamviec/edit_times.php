@@ -156,10 +156,7 @@
 
                                 <?php endforeach;
                                 endfor; ?>
-                                        <?php
-                                    endforeach; // Kết thúc vòng lặp phút
-                                endfor; // Kết thúc vòng lặp giờ 
-                                ?>
+
                             </div>
 
                             <div id="pagination"></div>
