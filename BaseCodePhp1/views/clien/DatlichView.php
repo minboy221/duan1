@@ -118,11 +118,11 @@
                         // Kiểm tra xem có dịch vụ nào trong giỏ hàng (Session) chưa
                         if (isset($_SESSION['booking_cart']['services']) && !empty($_SESSION['booking_cart']['services'])):
                             $totalMoney = 0;
-                        ?>
+                            ?>
                             <ul style="list-style: none; padding: 0;">
                                 <?php foreach ($_SESSION['booking_cart']['services'] as $sv):
                                     $totalMoney += $sv['price'];
-                                ?>
+                                    ?>
                                     <li
                                         style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #ddd;">
                                         <span><?= htmlspecialchars($sv['name']) ?></span>
@@ -182,14 +182,24 @@
                         <div class="chontime" id="time-container" style="display: flex; gap: 10px; flex-wrap: wrap;">
                         </div>
                         <input type="hidden" name="khunggio_id" id="selected_time_id" required>
-
-                        <div class="chotgio" style="margin-top: 30px; text-align: center;">
-                            <button type="submit" class="btn-submit"
-                                style="padding: 15px 40px; background: #D6A354; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 16px; cursor: pointer;">
-                                CHỐT GIỜ CẮT
-                            </button>
-                        </div>
                     </div>
+                </div>
+                <div class="buoc">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <h3>Ghi Chú (Nếu có):</h3>
+                    </div>
+                    <div class="step-noidung">
+                        <textarea name="note" rows="3"
+                            placeholder="Ví dụ: Tôi muốn nhuộm màu khói, xin tư vấn kiểu tóc..."
+                            style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; resize: vertical;"></textarea>
+                    </div>
+                </div>
+                <div class="chotgio" style="margin-top: 30px; text-align: center;">
+                    <button type="submit" class="btn-submit"
+                        style="padding: 15px 40px; background: #D6A354; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 16px; cursor: pointer;">
+                        CHỐT GIỜ CẮT
+                    </button>
                 </div>
             </form>
         </main>

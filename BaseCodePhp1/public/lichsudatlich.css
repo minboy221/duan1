@@ -8,29 +8,29 @@
     font-family: 'Roboto', sans-serif;
 }
 
-body{
+body {
     background-color: #FEFDFB;
 }
 
 /* phần thanh cuộn */
 /* phần thanh cuộn cho website */
-    ::-webkit-scrollbar {
-        width: 5px;
-    }
+::-webkit-scrollbar {
+    width: 5px;
+}
 
-    ::-webkit-scrollbar-track {
-        background: #4c5c79;
-    }
+::-webkit-scrollbar-track {
+    background: #4c5c79;
+}
 
-    ::-webkit-scrollbar-thumb {
-        background: #f5c542;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-    }
+::-webkit-scrollbar-thumb {
+    background: #f5c542;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
 
-    ::-webkit-scrollbar-thumb:hover {
-        background-color: #af601a;
-    }
+::-webkit-scrollbar-thumb:hover {
+    background-color: #af601a;
+}
 
 /* Header trên cùng (mở cửa & liên hệ) */
 .mocua {
@@ -43,7 +43,8 @@ body{
     font-size: 14px;
     padding: 8px 0;
     border-radius: 0 0 20px 20px;
-    z-index: 1000; /* Cao hơn banner */
+    z-index: 1000;
+    /* Cao hơn banner */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -55,7 +56,7 @@ body{
     gap: 15px;
 }
 
-.thongtin span{
+.thongtin span {
     font-weight: 600;
 }
 
@@ -70,16 +71,16 @@ body{
 
 /* Thanh điều hướng chính */
 .aside {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 5px 80px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 10;
-  background-color: #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    background-color: #000;
 }
 
 /* Logo */
@@ -134,42 +135,42 @@ body{
 
 /* phần dropdown */
 .nav-item.dropdown {
-  position: relative;
+    position: relative;
 }
 
 /* Dropdown menu (ẩn mặc định) */
 .nav-item .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 120%;
-  left: 0;
-  flex-direction: column;
-  background-color: #222;
-  border-radius: 8px;
-  min-width: 180px;
-  padding: 10px 0;
-  z-index: 999;
+    display: none;
+    position: absolute;
+    top: 120%;
+    left: 0;
+    flex-direction: column;
+    background-color: #222;
+    border-radius: 8px;
+    min-width: 180px;
+    padding: 10px 0;
+    z-index: 999;
 }
 
 .nav-item.dropdown:hover .dropdown-menu {
-  display: flex;
+    display: flex;
 }
 
 .dropdown-menu li {
-  width: 100%;
+    width: 100%;
 }
 
 .dropdown-item {
-  color: #fff;
-  text-decoration: none;
-  padding: 10px 20px;
-  display: block;
-  font-weight: 500;
-  transition: 0.3s;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+    font-weight: 500;
+    transition: 0.3s;
 }
 
 /* Icon tìm kiếm */
-.search-box{
+.search-box {
     position: absolute;
     right: 35px;
     top: 40px;
@@ -178,18 +179,18 @@ body{
     display: flex;
     align-items: center;
     padding: 5px 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transform: scale(0);
     transform-origin: top right;
     transition: transform 0.3s ease;
     z-index: 99;
 }
 
-.search-box.active{
+.search-box.active {
     transform: scale(1);
 }
 
-.search-box input{
+.search-box input {
     border: none;
     outline: none;
     padding: 8px 20px;
@@ -198,7 +199,7 @@ body{
     width: 250px;
 }
 
-.search-box button{
+.search-box button {
     background: #f5c542;
     border: none;
     color: #000;
@@ -209,23 +210,23 @@ body{
     transition: 0.3s;
 }
 
-.search-box button:hover{
+.search-box button:hover {
     background: #000;
     color: #f5c542;
 }
 
-.icon{
+.icon {
     position: relative;
 }
 
-#timkiem{
+#timkiem {
     color: #f5c542;
     font-size: 20px;
     cursor: pointer;
     transition: 0.3s;
 }
 
-#timkiem:hover{
+#timkiem:hover {
     color: #fff;
 }
 
@@ -237,7 +238,9 @@ header {
 }
 
 /* Thêm hiệu ứng hover nhẹ nhàng */
-a, button, .icon i {
+a,
+button,
+.icon i {
     cursor: pointer;
 }
 
@@ -266,7 +269,7 @@ a, button, .icon i {
     position: absolute;
     right: 0;
     background-color: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     min-width: 180px;
     border-radius: 8px;
     overflow: hidden;
@@ -292,7 +295,7 @@ a, button, .icon i {
 }
 
 
-.dangky button{
+.dangky button {
     padding: 10px 10px;
     color: #fff;
     font-weight: 700;
@@ -302,7 +305,7 @@ a, button, .icon i {
     transition: 0.3s;
 }
 
-.dangky  :hover{
+.dangky :hover {
     border-radius: 10px;
     background-color: #D6A354;
     color: #000;
@@ -327,17 +330,18 @@ a, button, .icon i {
 }
 
 /* phần background */
-.background{
+.background {
     position: fixed;
     inset: 0;
     z-index: 0;
 }
 
-.background img{
+.background img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+
 /* phần nội dung */
 main {
     position: relative;
@@ -354,10 +358,11 @@ main {
     padding: 40px 50px;
     border-radius: 16px;
     box-shadow: 0 0 25px rgba(245, 197, 66, 0.4);
-    max-width: 900px;
+    max-width: 1000px;
     width: 90%;
     color: #fff;
     border: 1px solid #f5c542;
+    margin-top: 100px;
 }
 
 /* Tiêu đề */
@@ -380,7 +385,8 @@ main {
     border-collapse: collapse;
 }
 
-.bang-lichsu th, .bang-lichsu td {
+.bang-lichsu th,
+.bang-lichsu td {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 12px 15px;
     text-align: center;
@@ -409,7 +415,7 @@ main {
     font-weight: 600;
 }
 
-.chitiet button{
+.chitiet button {
     padding: 5px 10px;
     border-radius: 20px;
     border: 1px solid #f5c542;
@@ -418,14 +424,17 @@ main {
     transition: 0.3s;
 }
 
-.chitiet button:hover{
+.chitiet button:hover {
     background-color: #f5c542;
 }
 
 /* phần footer */
 .footer {
-    background-color: #111; /* nền đen */
-    color: #f5c542; /* vàng sang trọng */
+    margin-top: 50px;
+    background-color: #111;
+    /* nền đen */
+    color: #f5c542;
+    /* vàng sang trọng */
     padding: 60px 20px 20px;
     font-family: 'Poppins', sans-serif;
     position: relative;

@@ -33,12 +33,6 @@ function chondichvuClien()
 {
     require_once './views/clien/ChondichvuClien.php';
 }
-
-function Lichsudon()
-{
-    require_once './views/clien/Lichsudatlich.php';
-}
-
 function Lichsudonchitiet()
 {
     require_once './views/clien/Lichsudat_chitiet.php';
@@ -53,12 +47,6 @@ function qlyDanhmuc()
     require_once './views/admin/Qlydanhmuc.php';
 }
 
-//phần hiên thị giao diện đặt lịch thành công
-function Datlichthanhcong()
-{
-    require_once './views/clien/Datlichthanhcong.php';
-}
-
 //phần để hiện thị các dữ liệu ra clien
 class CattocContronler
 {
@@ -67,6 +55,7 @@ class CattocContronler
     public $thongtinuser;
     public $thoModel;
     public $lichModel;
+    public $lichDatModel;
 
     public function __construct()
     {
@@ -75,6 +64,7 @@ class CattocContronler
         $this->thongtinuser = new thongtinuser();
         $this->thoModel = new ThoModel();
         $this->lichModel = new LichLamViecModel();
+        $this->lichDatModel = new LichDatModel();
     }
 
     private function getCategorizedServices($limit = null)
@@ -281,16 +271,52 @@ class CattocContronler
     public function luuDatLich()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            //lấy dữ liệu từ from
-            $khachhang_id = $_SESSION['user_id'] ?? 0;
-            $khunggio_id = $_POST['note'] ?? '';
-
-            // TODO: Gọi Model LichDat để insert vào database
-            // $this->lichDatModel->insert(...)
-
-            echo "<script>alert('Đặt lịch thành công!'); window.location.href='index.php';</script>";
+            $khachhang_id = 1;
+            if (isset($_SESSION['user_id'])) {
+                $khachhang_id = $_SESSION['user_id'];
+                $khachhang_id = $_SESSION['user_id'];
+            }
+            $khunggio_id = $_POST['khunggio_id'];
+            $note = $_POST['note'] ?? '';
+            //lấy dịch vụ từ giỏ hàng
+            if (isset($_SESSION['booking_cart']['services'])) {
+                //khởi tạo lịch đặt
+                $lichDatModel = new LichDatModel();
+                foreach ($_SESSION['booking_cart']['services'] as $sv) {
+                    //lưu từng dịch vụ
+                    $ma_code = $lichDatModel->insertBooking($khachhang_id, $sv['id'], $khunggio_id, $note);
+                }
+                //xoá giỏ hàng sau khi đặt
+                unset($_SESSION['booking_cart']);
+                echo "<script>
+                        window.location.href = 'index.php?act=cam_on&ma_lich=$ma_code';
+                      </script>";
+                exit();
+            } else {
+                echo "<script>alert('Giỏ hàng trống!'); window.history.back();</script>";
+            }
         }
     }
+
+    //chuyển sang trang đặt lịch thành công
+    public function camOn()
+    {
+        // Lấy mã lịch từ URL để hiện ra cho khách
+        $ma_lich = $_GET['ma_lich'] ?? '';
+        if (!$ma_lich) {
+            header("Location:index.php");
+            exit;
+        }
+        $lichDatModel = new LichDatModel();
+        $booking = new $lichDatModel();
+        $booking = $lichDatModel->getBookingByCode($ma_lich);
+        if (!$booking) {
+            echo "Không tìm thấy đơn đặt lịch!";
+            exit;
+        }
+        require_once './views/clien/CamOnView.php';
+    }
+
     // chọn dịch vụ trong đặt lịch
     public function addService()
     {
@@ -348,5 +374,69 @@ class CattocContronler
         exit;
     }
 
+    // PHẦN LỊCH SỬ ĐẶT LỊCH CỦA CLIEN
+    public function lichSuDatLich()
+    {
+        //kiểm tra đăng nhập
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: index.php?act=dangnhap_khachhang");
+            exit;
+        }
+        $user_id = $_SESSION['user_id'];
+        //gọi model lấy dữ liệu
+        if (!isset($this->lichDatModel)) {
+            require_once './models/LichDatModle.php';
+            $this->lichDatModel = new LichDatModel();
+        }
+        $historyList = $this->lichDatModel->getHistoryByCustomer($user_id);
+        require_once './views/clien/Lichsudatlich.php';
+    }
 
+    //Phần Lịch Sử Đặt Lịch Chi Tiết Của CLien
+    public function lichsuChiTiet()
+    {
+        //lấy mã lịch
+        $ma_lich = $_GET['ma_lich'] ?? '';
+        if (!$ma_lich) {
+            header("Location: index.php?act=lichsudat");
+            exit();
+        }
+        $booking = $this->lichDatModel->getBookingByCode($ma_lich);
+        if (!$booking) {
+            echo 'Không tìm thấy lịch đặt!';
+            exit;
+        }
+        require_once './views/clien/Lichsudat_chitiet.php';
+    }
+
+    //PHẦN HUỶ LỊCH CỦA CLIEN
+    public function huyLich()
+    {
+        //kiểm tra đăng nhập
+        if (!isset($_SESSION['username']) || !isset($_SESSION['user_id'])) {
+            echo "<script>alert('Vui lòng đăng nhập lại!'); window.location.href='index.php?act=dangnhap_khachhang';</script>";
+            exit;
+        }
+        //phần lấy ID
+        $id = $_GET['id'] ?? 0;
+        $user_id = $_SESSION['user_id'];
+
+        //phần gọi model
+        if (!isset($this->lichDatModel)) {
+            require_once './models/LichDatModel.php';
+            $this->lichModel = new LichDatModel();
+        }
+        $result = $this->lichDatModel->cancelBooking($id, $user_id);
+        if ($result) {
+            echo "<script>
+                    alert('Đã hủy lịch thành công!');
+                    window.location.href = 'index.php'; // Hoặc về trang lịch sử
+                  </script>";
+        } else {
+            echo "<script>
+                    alert('Hủy thất bại! Có thể lịch đã hoàn thành hoặc không tồn tại.');
+                    window.history.back();
+                  </script>";
+        }
+    }
 }

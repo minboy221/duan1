@@ -23,7 +23,7 @@
             <li><a href="?act=homeadmin">Thống Kê</a></li>
             <li class="active"><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
             <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
-            <li><a href="#">Quản Lý Đặt Lịch</a></li>
+            <li><a href="?act=qlylichdat">Quản Lý Đặt Lịch</a></li>
             <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
             <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
             <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
@@ -34,6 +34,11 @@
             <li>
                 <a href="#" class="logout">
                     <i class='bx bx-log-out-circle'></i> Đăng Xuất
+                </a>
+            </li>
+            <li>
+                <a href="<?= BASE_URL ?>?act=home" class="logout">
+                    <i class='bx bx-log-out-circle'></i>Xem Website
                 </a>
             </li>
         </ul>

@@ -43,20 +43,25 @@
 
         <ul class="side-menu">
             <ul class="side-menu">
-                <li class="active"><a href="?act=homeadmin">Thống Kê</a></li>
+                <li><a href="?act=homeadmin">Thống Kê</a></li>
                 <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
                 <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
-                <li><a href="#">Quản Lý Đặt Lịch</a></li>
+                <li><a href="?act=qlylichdat">Quản Lý Đặt Lịch</a></li>
                 <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
                 <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
                 <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
-                <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
+                <li class="active"><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
             </ul>
 
             <ul class="side-menu">
                 <li>
                     <a href="<?= BASE_URL ?>?act=logout" class="logout">
                         <i class='bx bx-log-out-circle'></i> Đăng Xuất
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= BASE_URL ?>?act=home" class="logout">
+                        <i class='bx bx-log-out-circle'></i>Xem Website
                     </a>
                 </li>
             </ul>
@@ -102,7 +107,7 @@
                         confirmButtonText: 'OK'
                     });
                 </script>
-            <?php unset($_SESSION['success']);
+                <?php unset($_SESSION['success']);
             endif; ?>
 
             <?php if (isset($_SESSION['error'])): ?>
@@ -114,7 +119,7 @@
                         confirmButtonText: 'OK'
                     });
                 </script>
-            <?php unset($_SESSION['error']);
+                <?php unset($_SESSION['error']);
             endif; ?>
 
             <div class="header">
@@ -127,7 +132,7 @@
                 <div class="orders">
 
                     <div class="header">
-                        <i class='bx bx-receipt'></i>
+                        <i class="bx bx-group"></i>
                         <h3>Người Dùng</h3>
                     </div>
                     <table id="userTable">

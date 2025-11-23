@@ -93,18 +93,22 @@
         <main>
             <div class="booking-success-wrapper">
                 <div class="booking-container">
+
                     <div class="success-header">
                         <div class="icon-success">🎉</div>
                         <h2 class="success-title">ĐẶT LỊCH THÀNH CÔNG</h2>
+                        <p style="color: #666;">Mã đơn: <strong><?= htmlspecialchars($booking['ma_lich']) ?></strong>
+                        </p>
                     </div>
 
                     <div class="banner-section">
-                        <img src="/duan1/BaseCodePhp1/anhmau/240425_banner_success.png" alt="Banner 31Shine" class="promo-banner">
+                        <img src="<?= BASE_URL ?>anhmau/240425_banner_success.png" alt="Banner 31Shine"
+                            class="promo-banner">
                     </div>
 
                     <div class="info-card">
                         <div class="salon-address">
-                            <i class="fa-solid fa-location-dot" style="color: var(--gold-text); margin-right: 5px;"></i>
+                            <i class="fa-solid fa-location-dot" style="color: #D6A354; margin-right: 5px;"></i>
                             113 Trần Hưng Đạo, P. Mỹ Bình, Long Xuyên, An Giang
                         </div>
                         <div class="salon-note">
@@ -123,21 +127,36 @@
                             </a>
                         </div>
                     </div>
+
                     <div class="booking-detail-wrapper">
                         <div class="detail-card">
                             <h3 class="card-title">Chi tiết lịch đặt</h3>
 
                             <div class="info-section">
                                 <p class="label">Dịch vụ</p>
-                                <p class="value">
-                                    <?= htmlspecialchars($booking['service_name'] ?? 'Cắt xả') ?>
+                                <p class="value" style="font-weight: bold;">
+                                    <?= htmlspecialchars($booking['ten_dichvu']) ?>
                                 </p>
                             </div>
 
                             <div class="info-section">
-                                <p class="label">Tổng tiền anh cần thanh toán sau áp dụng ưu đãi:</p>
-                                <p class="price-value">
-                                    <?= number_format($booking['price'] ?? 94000, 0, ',', '.') ?> VNĐ
+                                <p class="label">Thời gian</p>
+                                <p class="value">
+                                    <?= $booking['gio_lam'] ?> - <?= date('d/m/Y', strtotime($booking['ngay_lam'])) ?>
+                                </p>
+                            </div>
+
+                            <div class="info-section">
+                                <p class="label">Stylist</p>
+                                <p class="value">
+                                    <?= htmlspecialchars($booking['ten_tho']) ?>
+                                </p>
+                            </div>
+
+                            <div class="info-section">
+                                <p class="label">Tổng tiền cần thanh toán:</p>
+                                <p class="price-value" style="color: #d63031; font-weight: bold; font-size: 18px;">
+                                    <?= number_format($booking['price'], 0, ',', '.') ?> VNĐ
                                 </p>
                             </div>
 
@@ -153,13 +172,13 @@
                         </div>
 
                         <div class="menu-options">
-                            <p class="guide-text">
-                                "Nếu đến muộn quá 10 phút, chúng em xin phép dời lịch để đảm bảo trải nghiệm tốt
-                                nhất
+                            <p class="guide-text"
+                                style="font-style: italic; font-size: 13px; color: #666; text-align: center; margin-bottom: 15px;">
+                                "Nếu đến muộn quá 10 phút, chúng em xin phép dời lịch để đảm bảo trải nghiệm tốt nhất
                                 cho anh."
                             </p>
 
-                            <div class="menu-item" onclick="window.location.href='<?= BASE_URL ?>?act=doilich'">
+                            <div class="menu-item" onclick="window.location.href='lichsudatchitiet.php'">
                                 <div class="menu-left">
                                     <div class="icon-box">
                                         <i class="fa-solid fa-align-justify"></i>
@@ -169,18 +188,22 @@
                                 <i class="fa-solid fa-chevron-right menu-arrow"></i>
                             </div>
 
-                            <div class="menu-item"
-                                onclick="if(confirm('Anh có chắc muốn hủy lịch không?')) window.location.href='<?= BASE_URL ?>?act=huylich'">
-                                <div class="menu-left">
-                                    <div class="icon-box" style="color: #ff4d4d;"> <i class="fa-solid fa-xmark"></i>
+                            <?php if (in_array($booking['status'], ['pending', 'confirmed'])): ?>
+                                <div class="menu-item"
+                                    onclick="if(confirm('Anh có chắc muốn hủy lịch không?')) window.location.href='<?= BASE_URL ?>?act=huylich&id=<?= $booking['id'] ?>'">
+                                    <div class="menu-left">
+                                        <div class="icon-box" style="color: #ff4d4d;">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </div>
+                                        <span>Hủy lịch</span>
                                     </div>
-                                    <span>Hủy lịch</span>
+                                    <i class="fa-solid fa-chevron-right menu-arrow"></i>
                                 </div>
-                                <i class="fa-solid fa-chevron-right menu-arrow"></i>
-                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
+            </div>
         </main>
     </div>
     <footer class="footer">
@@ -219,5 +242,6 @@
         </div>
     </footer>
 </body>
+<script src="<?= BASE_URL ?>public/main.js"></script>
 
 </html>

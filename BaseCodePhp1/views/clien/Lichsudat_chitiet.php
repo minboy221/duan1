@@ -88,98 +88,125 @@
         <div class="background">
             <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
         </div>
-        <main>
+        <div class="container py-5">
             <div class="baohoadon">
-                <h2>Chi tiết hoá đơn</h2>
-                <div class="chititethoadon">
+                <h2 class="text-center mb-4">Chi tiết hoá đơn</h2>
+
+                <div class="chititethoadon mb-4">
                     <h3>Thông tin đơn hàng của bạn</h3>
                     <div class="infor-row">
-                        <p><strong>Mã Hoá Đơn:</strong>#001</p>
-                        <p><strong>Ngày Đặt:</strong>11/11/2025 - 9:30</p>
-                        <p><strong>Trạng Thái:</strong><span class="trangthai paid">Đã Thanh Toán</span></p>
+                        <p><strong>Mã Hoá Đơn:</strong> #<?= htmlspecialchars($booking['ma_lich']) ?></p>
+                        <p><strong>Ngày Đặt:</strong> <?= date('d/m/Y H:i', strtotime($booking['created_at'])) ?></p>
+                        <p><strong>Trạng Thái:</strong>
+                            <?php
+                            $statusText = [
+                                'pending' => 'Chờ xác nhận',
+                                'confirmed' => 'Đã xác nhận',
+                                'done' => 'Hoàn thành',
+                                'cancelled' => 'Đã hủy'
+                            ];
+                            $statusClass = [
+                                'pending' => 'text-warning',
+                                'confirmed' => 'text-primary',
+                                'done' => 'text-success',
+                                'cancelled' => 'text-danger'
+                            ];
+                            ?>
+                            <span class="<?= $statusClass[$booking['status']] ?? '' ?> fw-bold">
+                                <?= $statusText[$booking['status']] ?? 'Không xác định' ?>
+                            </span>
+                        </p>
                     </div>
                 </div>
-                <!-- phần khách hàng -->
-                <div class="thongtin-donhang">
+
+                <div class="thongtin-donhang mb-4">
                     <h2>Thông tin khách hàng</h2>
                     <div class="infor-row">
-                        <p><strong>Họ Tên: </strong>Nguyễn Văn A</p>
-                        <p><strong>Số Điện Thoại:</strong>0265478512</p>
+                        <p><strong>Họ Tên: </strong> <?= htmlspecialchars($booking['ten_khach']) ?></p>
+                        <p><strong>Số Điện Thoại:</strong> <?= htmlspecialchars($booking['phone']) ?></p>
                     </div>
                 </div>
-                <!-- phần thợ -->
-                <div class="thongtin-donhang">
+
+                <div class="thongtin-donhang mb-4">
                     <h2>Stylist phụ trách</h2>
-                    <div class="infor-row">
-                        <img src="/duan1/BaseCodePhp1/anhmau/tho1.png" alt="">
+                    <div class="infor-row d-flex align-items-center">
+                        <?php $img = !empty($booking['anh_tho']) ? './anhtho/' . $booking['anh_tho'] : './anhmau/default-avatar.png'; ?>
+                        <img src="<?= $img ?>" alt="Stylist"
+                            style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 15px;">
                         <div class="stylist-infor">
-                            <p><strong>Tên:</strong> Việt Hùng</p>
-                            <p><strong>Kinh nghiệm:</strong> 5 năm</p>
+                            <p><strong>Tên:</strong> <?= htmlspecialchars($booking['ten_tho']) ?></p>
                         </div>
                     </div>
                 </div>
-                <!-- phần dịch vụ -->
-                <div class="thongtin-donhang">
+
+                <div class="thongtin-donhang mb-4">
                     <h2>Dịch vụ đã chọn</h2>
-                    <table>
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Tên Dịch Vụ</th>
                                 <th>Giá</th>
                             </tr>
                         </thead>
-                        <!-- thông tin dịch vụ -->
                         <tbody>
                             <tr>
-                                <td>Cắt tóc nam</td>
-                                <td>94.000VNĐ</td>
-                            </tr>
-                            <tr>
-                                <td>Gội đầu thư giãn</td>
-                                <td>150.000VNĐ</td>
+                                <td><?= htmlspecialchars($booking['ten_dichvu']) ?></td>
+                                <td><?= number_format($booking['price'], 0, ',', '.') ?> VNĐ</td>
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr>
                                 <td><strong>Tổng Cộng:</strong></td>
-                                <td><strong>244.000VNĐ</strong></td>
+                                <td class="text-danger"><strong><?= number_format($booking['price'], 0, ',', '.') ?>
+                                        VNĐ</strong></td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
-                <div class="action">
-                    <a href="<?= BASE_URL ?>?act=lichsudat">
-                        <button class="btn back">Quay Lại</button>
+
+                <div class="action mb-5">
+                    <a href="<?= BASE_URL ?>?act=lichsudat" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Quay Lại Lịch Sử
                     </a>
                 </div>
             </div>
-            <form action="#" method="POST">
-                <div class="rating-section">
-                    <h2>Mời Bạn Đánh Giá Trải Nghiệm Dịch Vụ</h2>
 
-                    <div class="emotion-rating-container">
-                        <input type="hidden" name="rating_value" id="rating-value" value="0">
+            <?php if ($booking['status'] == 'done'): ?>
+                <form action="index.php?act=luu_danhgia" method="POST" class="rating-form p-4 border rounded bg-light">
+                    <input type="hidden" name="ma_lich" value="<?= $booking['ma_lich'] ?>">
 
-                        <div class="rating-buttons">
-                            <button type="button" class="rating-btn" data-value="1">Không hài lòng</button>
-                            <button type="button" class="rating-btn" data-value="2">Bình thường</button>
-                            <button type="button" class="rating-btn" data-value="3">Rất hài lòng</button>
+                    <div class="rating-section text-center">
+                        <h2 class="mb-4">Mời Bạn Đánh Giá Trải Nghiệm Dịch Vụ</h2>
+
+                        <div class="emotion-rating-container mb-3">
+                            <input type="hidden" name="rating_value" id="rating-value" value="0">
+
+                            <div class="rating-buttons d-flex justify-content-center gap-3">
+                                <button type="button" class="btn btn-outline-danger rating-btn" data-value="1">
+                                    <i class="fa fa-frown"></i> Không hài lòng
+                                </button>
+                                <button type="button" class="btn btn-outline-warning rating-btn" data-value="2">
+                                    <i class="fa fa-meh"></i> Bình thường
+                                </button>
+                                <button type="button" class="btn btn-outline-success rating-btn" data-value="3">
+                                    <i class="fa fa-smile"></i> Rất hài lòng
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="comment-box mb-3">
+                            <p class="text-start">Bình luận chi tiết (Không bắt buộc):</p>
+                            <textarea name="comment" class="form-control" rows="3"
+                                placeholder="Viết bình luận của bạn tại đây..."></textarea>
                         </div>
                     </div>
 
-                    <div class="comment-box">
-                        <p>Bình luận chi tiết về trải nghiệm (Không bắt buộc):</p>
-                        <textarea name="comment" placeholder="Viết bình luận của bạn tại đây..."></textarea>
+                    <div class="action text-center">
+                        <button type="submit" class="btn btn-primary px-5">Gửi Đánh Giá</button>
                     </div>
-                </div>
-
-                <div class="action">
-                    <button type="submit" class="btn submit-review">Gửi Đánh Giá</button>
-                    <a href="#">
-                        <button type="button" class="btn back">Quay Lại</button>
-                    </a>
-                </div>
-            </form>
+                </form>
+            <?php endif; ?>
+        </div>
         </main>
     </div>
     <footer class="footer">

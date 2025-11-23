@@ -9,7 +9,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
 </head>
+<style>
+    <style>
+    .bang-lichsu { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background-color: #f8f9fa; font-weight: bold; }
+    
+    /* Badge trạng thái */
+    .badge { padding: 5px 10px; border-radius: 15px; font-size: 12px; color: white; font-weight: 500; }
+    .status-pending { background-color: #f6c23e; color: #fff; } /* Vàng */
+    .status-confirmed { background-color: #36b9cc; } /* Xanh dương */
+    .status-done { background-color: #1cc88a; } /* Xanh lá */
+    .status-cancelled { background-color: #e74a3b; } /* Đỏ */
 
+    /* Nút chi tiết */
+    .btn-view {
+        padding: 5px 10px; background: #222; color: #fff; border: none; border-radius: 4px; cursor: pointer; transition: 0.3s;
+    }
+    .btn-view:hover { background: #D6A354; }
+</style>
 <body>
     <div class="container">
         <header>
@@ -97,26 +116,77 @@
                     <table>
                         <thead>
                             <tr>
+                                <th>Mã</th>
                                 <th>Ngày</th>
+                                <th>Giờ hẹn</th>
                                 <th>Dịch vụ</th>
                                 <th>Thợ cắt</th>
-                                <th>Giờ hẹn</th>
                                 <th>Giá</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>05/11/2025</td>
-                                <td>Cắt tóc & gội đầu</td>
-                                <td>Việt Hùng</td>
-                                <td>14:00</td>
-                                <td>99.000đ</td>
-                                <td><span class="done">Hoàn thành</span></td>
-                                <td class="chitiet"> <a href="<?= BASE_URL ?>?act=lichsudatchitiet"><button>Xem Chi
-                                            Tiết</button></a></td>
-                            </tr>
+                            <?php if (!empty($historyList)): ?>
+                                <?php foreach ($historyList as $item): ?>
+                                    <?php
+                                    // Xử lý màu sắc trạng thái
+                                    $statusClass = '';
+                                    $statusText = '';
+                                    switch ($item['status']) {
+                                        case 'pending':
+                                            $statusClass = 'status-pending';
+                                            $statusText = 'Chờ xác nhận';
+                                            break;
+                                        case 'confirmed':
+                                            $statusClass = 'status-confirmed';
+                                            $statusText = 'Đã duyệt';
+                                            break;
+                                        case 'done':
+                                            $statusClass = 'status-done';
+                                            $statusText = 'Hoàn thành';
+                                            break;
+                                        case 'cancelled':
+                                            $statusClass = 'status-cancelled';
+                                            $statusText = 'Đã hủy';
+                                            break;
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td><small>#<?= htmlspecialchars($item['ma_lich']) ?></small></td>
+
+                                        <td><?= date('d/m/Y', strtotime($item['ngay_hen'])) ?></td>
+
+                                        <td style="font-weight: bold; color: #fff;">
+                                            <?= htmlspecialchars($item['gio_hen']) ?>
+                                        </td>
+
+                                        <td><?= htmlspecialchars($item['ten_dichvu']) ?></td>
+
+                                        <td><?= htmlspecialchars($item['ten_tho']) ?></td>
+
+                                        <td style="color: #d63031; font-weight: bold;">
+                                            <?= number_format($item['price'], 0, ',', '.') ?>đ
+                                        </td>
+
+                                        <td>
+                                            <span class="badge <?= $statusClass ?>"><?= $statusText ?></span>
+                                        </td>
+
+                                        <td class="chitiet">
+                                            <a href="<?= BASE_URL ?>?act=lichsudatchitiet&ma_lich=<?= $item['ma_lich'] ?>">
+                                                <button class="btn-view">Chi Tiết</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 20px;">
+                                        Bạn chưa có lịch sử đặt nào. <a href="index.php?act=datlich">Đặt lịch ngay!</a>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>

@@ -18,6 +18,7 @@ require_once("./controllers/NhanVienAdminController.php");
 require_once("./controllers/ThoController.php");
 require_once("./controllers/BinhLuanUserController.php");
 require_once("./controllers/LichLamViecController.php");
+require_once "./controllers/LichDatController.php";
 
 
 require_once("./models/DanhGiaModel.php");
@@ -29,6 +30,7 @@ require_once("./models/NhanVienAdminModel.php");
 require_once("./models/ThoModel.php");
 require_once("./models/Taikhoanuser.php");
 require_once("./models/LichLamViecModel.php");
+require_once("./models/LichDatModel.php");
 
 
 
@@ -41,6 +43,7 @@ $adminNhanVienController = new NhanVienController();
 $adminNhanVienAdminController = new NhanVienAdminController();
 $lich = new LichLamViecController();
 $clientController = new CattocContronler();
+$lichDatController = new LichDatController();
 
 //route
 
@@ -80,6 +83,9 @@ $adminRoutes = [
     'edit_times',
     'update_times',
     'detail_ngay',
+    //phần trang quản lý lịch đặt
+    'qlylichdat',
+
     //phần trang cho nhân viên
     'admin-nhanvien',
     'admin-nhanvien-create',
@@ -94,7 +100,6 @@ if (in_array($act, $adminRoutes)) {
     }
 }
 
-
 match ($act) {
     // phần hiển thị giao diện trang clien
     'home' => $clientController->hienthidanhmuc(),
@@ -103,13 +108,12 @@ match ($act) {
     'nhanvien' => $clientController->hienthiNhanVien(), 'chitietdichvu' => $clientController->hienthichitiet(),
     'datlich' => $clientController->datlich(),
     'chondichvu' => $clientController->chondichvu(),
-    'lichsudat' => Lichsudon(),
-    'lichsudatchitiet' => Lichsudonchitiet(),
-    'datlichthanhcong' => Datlichthanhcong(),
-    //đăng nhập và đăng ký cho khách hàng
+    'lichsudat' => $clientController->lichSuDatLich(),
+    'lichsudatchitiet' => $clientController->lichSuChiTiet(),    //đăng nhập và đăng ký cho khách hàng
     'dangky_khachhang' => (new KhachHangController())->register(),
     'dangnhap_khachhang' => (new KhachHangController())->login(),
     'logout' => (new KhachHangController())->logout(),
+    'huylich' => $clientController->huyLich(),
     //phần hiển thị dữ liệu ra clien
     //phần hiển thị giao diện admin
     'homeadmin' => homeAdmin(),
@@ -134,13 +138,16 @@ match ($act) {
     'lock_user' => (new CattocContronler())->lockUser(),
     'unlock_user' => (new CattocContronler())->unlockUser(),
 
-
     // phần quản lý đánh giá
     'admin-user-comment' => (new BinhLuanUserController())->detail(),
     // tìm kiếm khách hàng
     'search_user' => (new CattocContronler())->searchUser(),
     // tìm kiếm khách hàng clien
     'search_client' => (new CattocContronler())->searchClient(),
+
+    //PHẦN QUẢN LÝ LỊCH ĐẶT
+    'qlylichdat' => (new LichDatController())->index(),
+    'update_status_lich' => (new LichDatController())->updateStatus(),
 
     // NHÂN VIÊN (Dashboard) 
     'nv-dashboard' => (new NhanVienController())->dashboard(),
@@ -181,12 +188,13 @@ match ($act) {
     'api_get_time' => $clientController->apiGetTime(),
     //xử lý lưu
     'luu_datlich' => $clientController->luuDatLich(),
+    'cam_on' => $clientController->camOn(),
     // chọn dịch vụ trong đặt lịch
     'add_service' => (new CattocContronler())->addService(),
     // xóa dịch vụ trong đặt lịch
     'remove_service' => (new CattocContronler())->removeService(),
 
-     // trang không tồn tại
+    // trang không tồn tại
     default => notFound(),
 }
     ?>
