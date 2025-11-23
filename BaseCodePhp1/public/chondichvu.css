@@ -8,31 +8,30 @@
     font-family: 'Roboto', sans-serif;
 }
 
-body{
+body {
     background-color: #FEFDFB;
 }
 
 /* phần thanh cuộn */
 /* phần thanh cuộn cho website */
-    ::-webkit-scrollbar {
-        width: 5px;
-    }
+::-webkit-scrollbar {
+    width: 5px;
+}
 
-    ::-webkit-scrollbar-track {
-        background: #4c5c79;
-    }
+::-webkit-scrollbar-track {
+    background: #4c5c79;
+}
 
-    ::-webkit-scrollbar-thumb {
-        background: #f5c542;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-    }
+::-webkit-scrollbar-thumb {
+    background: #f5c542;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
 
-    ::-webkit-scrollbar-thumb:hover {
-        background-color: #af601a;
-    }
+::-webkit-scrollbar-thumb:hover {
+    background-color: #af601a;
+}
 
-/* Header trên cùng (mở cửa & liên hệ) */
 /* Header trên cùng (mở cửa & liên hệ) */
 .mocua {
     position: absolute;
@@ -44,7 +43,7 @@ body{
     font-size: 14px;
     padding: 8px 0;
     border-radius: 0 0 20px 20px;
-    z-index: 1000; /* Cao hơn banner */
+    z-index: 1000;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -56,7 +55,7 @@ body{
     gap: 15px;
 }
 
-.thongtin span{
+.thongtin span {
     font-weight: 600;
 }
 
@@ -71,16 +70,16 @@ body{
 
 /* Thanh điều hướng chính */
 .aside {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 5px 80px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 10;
-  background-color: #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    background-color: #000;
 }
 
 /* Logo */
@@ -134,7 +133,7 @@ body{
 }
 
 /* Icon tìm kiếm */
-.search-box{
+.search-box {
     position: absolute;
     right: 35px;
     top: 40px;
@@ -143,18 +142,18 @@ body{
     display: flex;
     align-items: center;
     padding: 5px 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transform: scale(0);
     transform-origin: top right;
     transition: transform 0.3s ease;
     z-index: 99;
 }
 
-.search-box.active{
+.search-box.active {
     transform: scale(1);
 }
 
-.search-box input{
+.search-box input {
     border: none;
     outline: none;
     padding: 8px 20px;
@@ -163,7 +162,7 @@ body{
     width: 250px;
 }
 
-.search-box button{
+.search-box button {
     background: #f5c542;
     border: none;
     color: #000;
@@ -174,23 +173,23 @@ body{
     transition: 0.3s;
 }
 
-.search-box button:hover{
+.search-box button:hover {
     background: #000;
     color: #f5c542;
 }
 
-.icon{
+.icon {
     position: relative;
 }
 
-#timkiem{
+#timkiem {
     color: #f5c542;
     font-size: 20px;
     cursor: pointer;
     transition: 0.3s;
 }
 
-#timkiem:hover{
+#timkiem:hover {
     color: #fff;
 }
 
@@ -202,12 +201,14 @@ header {
 }
 
 /* Thêm hiệu ứng hover nhẹ nhàng */
-a, button, .icon i {
+a,
+button,
+.icon i {
     cursor: pointer;
 }
 
 /* phần đăng ký/đăng nhập */
-.dangky{
+.dangky {
     padding: 10px;
 }
 
@@ -215,7 +216,7 @@ a, button, .icon i {
 .dropdown {
     position: relative;
     display: inline-block;
-    /* margin: 50px; */
+    margin: 50px;
 }
 
 .dropdown-btn {
@@ -226,9 +227,6 @@ a, button, .icon i {
     cursor: pointer;
     border-radius: 8px;
     font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .dropdown-content {
@@ -236,7 +234,7 @@ a, button, .icon i {
     position: absolute;
     right: 0;
     background-color: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     min-width: 180px;
     border-radius: 8px;
     overflow: hidden;
@@ -262,7 +260,7 @@ a, button, .icon i {
 }
 
 
-.dangky button{
+.dangky button {
     padding: 10px 10px;
     color: #fff;
     font-weight: 700;
@@ -272,7 +270,7 @@ a, button, .icon i {
     transition: 0.3s;
 }
 
-.dangky  :hover{
+.dangky :hover {
     border-radius: 10px;
     background-color: #D6A354;
     color: #000;
@@ -298,13 +296,13 @@ a, button, .icon i {
 }
 
 /* phần background */
-.background{
+.background {
     position: fixed;
     inset: 0;
     z-index: 0;
 }
 
-.background img{
+.background img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -312,20 +310,21 @@ a, button, .icon i {
 
 /* phần nội dung */
 main {
-    width: 100%;
-    background-color: #fff;
-    min-height: 100vh;
-    padding-bottom: 100px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.chondichvu{
+.chondichvu {
     max-width: 1200px;
     width: 95%;
     margin: 80px auto 0;
     padding: 20px;
 }
 
-.tieude{
+.tieude {
     display: flex;
     align-items: center;
     text-align: center;
@@ -334,26 +333,26 @@ main {
     margin-bottom: 10px;
 }
 
-.tieude a svg{
+.tieude a svg {
     background-color: #D6A354;
     color: #fff;
     border-radius: 50%;
     padding: 5px;
 }
 
-.tieude h2{
+.tieude h2 {
     font-weight: 600;
     color: #222;
 }
 
-.search{
+.search {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
 }
 
-.search input{
+.search input {
     padding: 10px 20px;
     width: 800px;
     border: none;
@@ -365,7 +364,7 @@ main {
 }
 
 .search button {
-    background:#D6A354;
+    background: #D6A354;
     color: #000;
     border: none;
     padding: 12px 15px;
@@ -381,7 +380,7 @@ main {
     transform: scale(1.05);
 }
 
-.baodichvu{
+.baodichvu {
     margin-top: 20px;
     width: 800px;
     height: 100%;
@@ -390,7 +389,7 @@ main {
     padding: 10px;
 }
 
-.dichvu h3{
+.dichvu h3 {
     position: relative;
     font-size: 20px;
     font-weight: 800;
@@ -399,7 +398,7 @@ main {
     padding: 10px;
 }
 
-.dichvu h3::after{
+.dichvu h3::after {
     content: "";
     position: absolute;
     left: 0;
@@ -407,17 +406,18 @@ main {
     transform: translateY(-50%);
     width: 6px;
     height: 30px;
-    background-color: #f5c542; /* vÃ ng chá»§ Ä‘áº¡o */
+    background-color: #f5c542;
+    /* vÃ ng chá»§ Ä‘áº¡o */
     border-radius: 3px;
 }
 
-.cacdichvu{
+.cacdichvu {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
 }
 
-.dichvucon{
+.dichvucon {
     width: 250px;
     height: 350px;
     margin-top: 10px;
@@ -429,7 +429,7 @@ main {
     overflow: hidden;
 }
 
-.dichvucon img{
+.dichvucon img {
     width: 100%;
     object-fit: cover;
     border-radius: 10px 10px 0 0;
@@ -447,7 +447,7 @@ main {
     font-weight: 500;
 }
 
-.dichvucon .infor{
+.dichvucon .infor {
     background-color: #222;
     margin-top: -10px;
     position: relative;
@@ -457,16 +457,16 @@ main {
     text-align: center;
 }
 
-.infor p{
+.infor p {
     font-size: 15px;
     font-weight: 600;
 }
 
-.infor-gia span{
+.infor-gia span {
     font-size: 10px;
 }
 
-.infor button{
+.infor button {
     margin-top: 5px;
     padding: 10px 90px;
     border-radius: 10px;
@@ -475,15 +475,15 @@ main {
     color: #fff;
     font-size: 15px;
     font-weight: 700;
-    transition:  0.3s;
+    transition: 0.3s;
 }
 
-.infor button:hover{
+.infor button:hover {
     background-color: #000;
     color: #fff;
 }
 
-.dachon{
+.dachon {
     margin-top: 80px;
     position: fixed;
     bottom: 0;

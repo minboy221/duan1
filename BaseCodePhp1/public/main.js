@@ -14,6 +14,22 @@ if (searchIcon && searchBox) {
     });
 }
 
+//phần menu dropdown
+const dropdownBtn = document.querySelector(".dropdown-btn");
+const dropdownContent = document.querySelector(".dropdown-content");
+
+if (dropdownBtn && dropdownContent) {
+    dropdownBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdownContent.classList.toggle("show");
+    });
+
+    window.addEventListener("click", (e) => {
+        if (!e.target.closest(".dropdown")) {
+            dropdownContent.classList.remove("show");
+        }
+    });
+}
 
 //phần hiên thị popup đăng nhập
 function openPopup() {

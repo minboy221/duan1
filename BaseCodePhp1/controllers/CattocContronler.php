@@ -33,12 +33,6 @@ function chondichvuClien()
 {
     require_once './views/clien/ChondichvuClien.php';
 }
-
-function Lichsudon()
-{
-    require_once './views/clien/Lichsudatlich.php';
-}
-
 function Lichsudonchitiet()
 {
     require_once './views/clien/Lichsudat_chitiet.php';
@@ -61,6 +55,7 @@ class CattocContronler
     public $thongtinuser;
     public $thoModel;
     public $lichModel;
+    public $lichDatModel;
 
     public function __construct()
     {
@@ -69,6 +64,7 @@ class CattocContronler
         $this->thongtinuser = new thongtinuser();
         $this->thoModel = new ThoModel();
         $this->lichModel = new LichLamViecModel();
+        $this->lichDatModel = new LichDatModel();
     }
 
     private function getCategorizedServices($limit = null)
@@ -275,67 +271,172 @@ class CattocContronler
     public function luuDatLich()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            //lấy dữ liệu từ from
-            $khachhang_id = $_SESSION['user_id'] ?? 0;
-            $khunggio_id = $_POST['note'] ?? '';
-
-            // TODO: Gọi Model LichDat để insert vào database
-            // $this->lichDatModel->insert(...)
-
-        echo "<script>alert('Đặt lịch thành công!'); window.location.href='index.php';</script>";
+            $khachhang_id = 1;
+            if (isset($_SESSION['user_id'])) {
+                $khachhang_id = $_SESSION['user_id'];
+                $khachhang_id = $_SESSION['user_id'];
+            }
+            $khunggio_id = $_POST['khunggio_id'];
+            $note = $_POST['note'] ?? '';
+            //lấy dịch vụ từ giỏ hàng
+            if (isset($_SESSION['booking_cart']['services'])) {
+                //khởi tạo lịch đặt
+                $lichDatModel = new LichDatModel();
+                foreach ($_SESSION['booking_cart']['services'] as $sv) {
+                    //lưu từng dịch vụ
+                    $ma_code = $lichDatModel->insertBooking($khachhang_id, $sv['id'], $khunggio_id, $note);
+                }
+                //xoá giỏ hàng sau khi đặt
+                unset($_SESSION['booking_cart']);
+                echo "<script>
+                        window.location.href = 'index.php?act=cam_on&ma_lich=$ma_code';
+                      </script>";
+                exit();
+            } else {
+                echo "<script>alert('Giỏ hàng trống!'); window.history.back();</script>";
+            }
         }
     }
+
+    //chuyển sang trang đặt lịch thành công
+    public function camOn()
+    {
+        // Lấy mã lịch từ URL để hiện ra cho khách
+        $ma_lich = $_GET['ma_lich'] ?? '';
+        if (!$ma_lich) {
+            header("Location:index.php");
+            exit;
+        }
+        $lichDatModel = new LichDatModel();
+        $booking = new $lichDatModel();
+        $booking = $lichDatModel->getBookingByCode($ma_lich);
+        if (!$booking) {
+            echo "Không tìm thấy đơn đặt lịch!";
+            exit;
+        }
+        require_once './views/clien/CamOnView.php';
+    }
+
     // chọn dịch vụ trong đặt lịch
-public function addService() {
-    $id = $_GET['id'] ?? 0;
-    if (!$id) return;
+    public function addService()
+    {
+        $id = $_GET['id'] ?? 0;
+        if (!$id)
+            return;
 
-    // Lấy thông tin dịch vụ từ DB
-    $service = $this->dichvuModel->find($id);
-    if (!$service) return;
+        // Lấy thông tin dịch vụ từ DB
+        $service = $this->dichvuModel->find($id);
+        if (!$service)
+            return;
 
-    // Kiểm tra giỏ
-    if (!isset($_SESSION['booking_cart']['services'])) {
-        $_SESSION['booking_cart']['services'] = [];
+        // Kiểm tra giỏ
+        if (!isset($_SESSION['booking_cart']['services'])) {
+            $_SESSION['booking_cart']['services'] = [];
+        }
+
+        // Kiểm tra trùng
+        foreach ($_SESSION['booking_cart']['services'] as $sv) {
+            if ($sv['id'] == $id) {
+                $_SESSION['success'] = "Dịch vụ đã tồn tại trong giỏ!";
+                header("Location: index.php?act=chondichvu");
+                return;
+            }
+        }
+
+        // Thêm dịch vụ vào giỏ
+        $_SESSION['booking_cart']['services'][] = [
+            'id' => $service['id'],
+            'name' => $service['name'],
+            'price' => $service['price']
+        ];
+
+        $_SESSION['success'] = "Đã thêm dịch vụ!";
+        header("Location: index.php?act=chondichvu");
+        exit;
     }
 
-    // Kiểm tra trùng
-    foreach ($_SESSION['booking_cart']['services'] as $sv) {
-        if ($sv['id'] == $id) {
-            $_SESSION['success'] = "Dịch vụ đã tồn tại trong giỏ!";
-            header("Location: index.php?act=chondichvu");
+    // xóa dịch vụ khỏi giỏ
+    public function removeService()
+    {
+        $id = $_GET['id'] ?? 0;
+        if (!$id)
             return;
+
+        if (isset($_SESSION['booking_cart']['services'])) {
+            $_SESSION['booking_cart']['services'] =
+                array_filter($_SESSION['booking_cart']['services'], function ($sv) use ($id) {
+                    return $sv['id'] != $id;
+                });
+        }
+
+        $_SESSION['success'] = "Đã xóa dịch vụ khỏi giỏ!";
+        header("Location: index.php?act=datlich");
+        exit;
+    }
+
+    // PHẦN LỊCH SỬ ĐẶT LỊCH CỦA CLIEN
+    public function lichSuDatLich()
+    {
+        //kiểm tra đăng nhập
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: index.php?act=dangnhap_khachhang");
+            exit;
+        }
+        $user_id = $_SESSION['user_id'];
+        //gọi model lấy dữ liệu
+        if (!isset($this->lichDatModel)) {
+            require_once './models/LichDatModle.php';
+            $this->lichDatModel = new LichDatModel();
+        }
+        $historyList = $this->lichDatModel->getHistoryByCustomer($user_id);
+        require_once './views/clien/Lichsudatlich.php';
+    }
+
+    //Phần Lịch Sử Đặt Lịch Chi Tiết Của CLien
+    public function lichsuChiTiet()
+    {
+        //lấy mã lịch
+        $ma_lich = $_GET['ma_lich'] ?? '';
+        if (!$ma_lich) {
+            header("Location: index.php?act=lichsudat");
+            exit();
+        }
+        $booking = $this->lichDatModel->getBookingByCode($ma_lich);
+        if (!$booking) {
+            echo 'Không tìm thấy lịch đặt!';
+            exit;
+        }
+        require_once './views/clien/Lichsudat_chitiet.php';
+    }
+
+    //PHẦN HUỶ LỊCH CỦA CLIEN
+    public function huyLich()
+    {
+        //kiểm tra đăng nhập
+        if (!isset($_SESSION['username']) || !isset($_SESSION['user_id'])) {
+            echo "<script>alert('Vui lòng đăng nhập lại!'); window.location.href='index.php?act=dangnhap_khachhang';</script>";
+            exit;
+        }
+        //phần lấy ID
+        $id = $_GET['id'] ?? 0;
+        $user_id = $_SESSION['user_id'];
+
+        //phần gọi model
+        if (!isset($this->lichDatModel)) {
+            require_once './models/LichDatModel.php';
+            $this->lichModel = new LichDatModel();
+        }
+        $result = $this->lichDatModel->cancelBooking($id, $user_id);
+        if ($result) {
+            echo "<script>
+                    alert('Đã hủy lịch thành công!');
+                    window.location.href = 'index.php'; // Hoặc về trang lịch sử
+                  </script>";
+        } else {
+            echo "<script>
+                    alert('Hủy thất bại! Có thể lịch đã hoàn thành hoặc không tồn tại.');
+                    window.history.back();
+                  </script>";
         }
     }
-
-    // Thêm dịch vụ vào giỏ
-    $_SESSION['booking_cart']['services'][] = [
-        'id' => $service['id'],
-        'name' => $service['name'],
-        'price' => $service['price']
-    ];
-
-    $_SESSION['success'] = "Đã thêm dịch vụ!";
-    header("Location: index.php?act=chondichvu");
-    exit;
-}
-
-// xóa dịch vụ khỏi giỏ
-public function removeService() {
-    $id = $_GET['id'] ?? 0;
-    if (!$id) return;
-
-    if (isset($_SESSION['booking_cart']['services'])) {
-        $_SESSION['booking_cart']['services'] = 
-            array_filter($_SESSION['booking_cart']['services'], function ($sv) use ($id) {
-                return $sv['id'] != $id;
-            });
-    }
-
-    $_SESSION['success'] = "Đã xóa dịch vụ khỏi giỏ!";
-    header("Location: index.php?act=datlich");
-    exit;
-}
-
-
 }

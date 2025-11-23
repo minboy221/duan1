@@ -4,31 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch Sử Cắt | 31Shine</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/lichsudatlich.css">
+    <title>Đặt Lịch Thành Công | 31Shine</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/datlichthanhcong.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
 </head>
-<style>
-    <style>
-    .bang-lichsu { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-    th { background-color: #f8f9fa; font-weight: bold; }
-    
-    /* Badge trạng thái */
-    .badge { padding: 5px 10px; border-radius: 15px; font-size: 12px; color: white; font-weight: 500; }
-    .status-pending { background-color: #f6c23e; color: #fff; } /* Vàng */
-    .status-confirmed { background-color: #36b9cc; } /* Xanh dương */
-    .status-done { background-color: #1cc88a; } /* Xanh lá */
-    .status-cancelled { background-color: #e74a3b; } /* Đỏ */
 
-    /* Nút chi tiết */
-    .btn-view {
-        padding: 5px 10px; background: #222; color: #fff; border: none; border-radius: 4px; cursor: pointer; transition: 0.3s;
-    }
-    .btn-view:hover { background: #D6A354; }
-</style>
 <body>
     <div class="container">
         <header>
@@ -50,7 +31,9 @@
             </div>
             <aside class="aside">
                 <div class="logo">
-                    <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
+                    <a href="<?= BASE_URL ?>?act=home">
+                        <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
+                    </a>
                 </div>
                 <div class="menu">
                     <ul>
@@ -108,87 +91,117 @@
             <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
         </div>
         <main>
-            <div class="lichsu">
-                <h2>LỊCH SỬ CẮT TÓC</h2>
-                <p>Xem lại các lần bạn đã cắt tóc tại 31Shine</p>
+            <div class="booking-success-wrapper">
+                <div class="booking-container">
 
-                <div class="bang-lichsu">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Mã</th>
-                                <th>Ngày</th>
-                                <th>Giờ hẹn</th>
-                                <th>Dịch vụ</th>
-                                <th>Thợ cắt</th>
-                                <th>Giá</th>
-                                <th>Trạng thái</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($historyList)): ?>
-                                <?php foreach ($historyList as $item): ?>
-                                    <?php
-                                    // Xử lý màu sắc trạng thái
-                                    $statusClass = '';
-                                    $statusText = '';
-                                    switch ($item['status']) {
-                                        case 'pending':
-                                            $statusClass = 'status-pending';
-                                            $statusText = 'Chờ xác nhận';
-                                            break;
-                                        case 'confirmed':
-                                            $statusClass = 'status-confirmed';
-                                            $statusText = 'Đã duyệt';
-                                            break;
-                                        case 'done':
-                                            $statusClass = 'status-done';
-                                            $statusText = 'Hoàn thành';
-                                            break;
-                                        case 'cancelled':
-                                            $statusClass = 'status-cancelled';
-                                            $statusText = 'Đã hủy';
-                                            break;
-                                    }
-                                    ?>
-                                    <tr>
-                                        <td><small>#<?= htmlspecialchars($item['ma_lich']) ?></small></td>
+                    <div class="success-header">
+                        <div class="icon-success">🎉</div>
+                        <h2 class="success-title">ĐẶT LỊCH THÀNH CÔNG</h2>
+                        <p style="color: #666;">Mã đơn: <strong><?= htmlspecialchars($booking['ma_lich']) ?></strong>
+                        </p>
+                    </div>
 
-                                        <td><?= date('d/m/Y', strtotime($item['ngay_hen'])) ?></td>
+                    <div class="banner-section">
+                        <img src="<?= BASE_URL ?>anhmau/240425_banner_success.png" alt="Banner 31Shine"
+                            class="promo-banner">
+                    </div>
 
-                                        <td style="font-weight: bold; color: #fff;">
-                                            <?= htmlspecialchars($item['gio_hen']) ?>
-                                        </td>
+                    <div class="info-card">
+                        <div class="salon-address">
+                            <i class="fa-solid fa-location-dot" style="color: #D6A354; margin-right: 5px;"></i>
+                            113 Trần Hưng Đạo, P. Mỹ Bình, Long Xuyên, An Giang
+                        </div>
+                        <div class="salon-note">
+                            Đối diện khách sạn Hòa Bình và sân vận động
+                        </div>
 
-                                        <td><?= htmlspecialchars($item['ten_dichvu']) ?></td>
+                        <div class="action-group">
+                            <button class="btn-gold-action btn-outline">
+                                <i class="fa-solid fa-diamond-turn-right"></i> Chỉ đường
+                            </button>
 
-                                        <td><?= htmlspecialchars($item['ten_tho']) ?></td>
+                            <a href="tel:0123456789" style="flex: 1; text-decoration: none;">
+                                <button class="btn-gold-action btn-fill">
+                                    <i class="fa-solid fa-phone"></i> Gọi Salon
+                                </button>
+                            </a>
+                        </div>
+                    </div>
 
-                                        <td style="color: #d63031; font-weight: bold;">
-                                            <?= number_format($item['price'], 0, ',', '.') ?>đ
-                                        </td>
+                    <div class="booking-detail-wrapper">
+                        <div class="detail-card">
+                            <h3 class="card-title">Chi tiết lịch đặt</h3>
 
-                                        <td>
-                                            <span class="badge <?= $statusClass ?>"><?= $statusText ?></span>
-                                        </td>
+                            <div class="info-section">
+                                <p class="label">Dịch vụ</p>
+                                <p class="value" style="font-weight: bold;">
+                                    <?= htmlspecialchars($booking['ten_dichvu']) ?>
+                                </p>
+                            </div>
 
-                                        <td class="chitiet">
-                                            <a href="<?= BASE_URL ?>?act=lichsudatchitiet&ma_lich=<?= $item['ma_lich'] ?>">
-                                                <button class="btn-view">Chi Tiết</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="8" style="text-align: center; padding: 20px;">
-                                        Bạn chưa có lịch sử đặt nào. <a href="index.php?act=datlich">Đặt lịch ngay!</a>
-                                    </td>
-                                </tr>
+                            <div class="info-section">
+                                <p class="label">Thời gian</p>
+                                <p class="value">
+                                    <?= $booking['gio_lam'] ?> - <?= date('d/m/Y', strtotime($booking['ngay_lam'])) ?>
+                                </p>
+                            </div>
+
+                            <div class="info-section">
+                                <p class="label">Stylist</p>
+                                <p class="value">
+                                    <?= htmlspecialchars($booking['ten_tho']) ?>
+                                </p>
+                            </div>
+
+                            <div class="info-section">
+                                <p class="label">Tổng tiền cần thanh toán:</p>
+                                <p class="price-value" style="color: #d63031; font-weight: bold; font-size: 18px;">
+                                    <?= number_format($booking['price'], 0, ',', '.') ?> VNĐ
+                                </p>
+                            </div>
+
+                            <div class="divider"></div>
+
+                            <div class="parking-info">
+                                <p class="label">Thông tin gửi xe</p>
+                                <div class="parking-content">
+                                    <i class="fa-solid fa-motorcycle"></i>
+                                    <span>Gửi xe máy miễn phí tại salon</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="menu-options">
+                            <p class="guide-text"
+                                style="font-style: italic; font-size: 13px; color: #666; text-align: center; margin-bottom: 15px;">
+                                "Nếu đến muộn quá 10 phút, chúng em xin phép dời lịch để đảm bảo trải nghiệm tốt nhất
+                                cho anh."
+                            </p>
+
+                            <div class="menu-item" onclick="window.location.href='lichsudatchitiet.php'">
+                                <div class="menu-left">
+                                    <div class="icon-box">
+                                        <i class="fa-solid fa-align-justify"></i>
+                                    </div>
+                                    <span>Xem Chi Tiết</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right menu-arrow"></i>
+                            </div>
+
+                            <?php if (in_array($booking['status'], ['pending', 'confirmed'])): ?>
+                                <div class="menu-item"
+                                    onclick="if(confirm('Anh có chắc muốn hủy lịch không?')) window.location.href='<?= BASE_URL ?>?act=huylich&id=<?= $booking['id'] ?>'">
+                                    <div class="menu-left">
+                                        <div class="icon-box" style="color: #ff4d4d;">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </div>
+                                        <span>Hủy lịch</span>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right menu-arrow"></i>
+                                </div>
                             <?php endif; ?>
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -196,8 +209,7 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-column">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
-                    class="footer-logo">
+                <img src="anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo" class="footer-logo">
                 <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam. Chúng tôi giúp bạn luôn tự tin và phong độ
                     mỗi ngày.</p>
             </div>

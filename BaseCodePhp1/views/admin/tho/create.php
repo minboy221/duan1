@@ -36,6 +36,11 @@
                     <i class='bx bx-log-out-circle'></i> Đăng Xuất
                 </a>
             </li>
+            <li>
+                <a href="<?= BASE_URL ?>?act=home" class="logout">
+                    <i class='bx bx-log-out-circle'></i>Xem Website
+                </a>
+            </li>
         </ul>
     </div>
     <!-- End Sidebar -->
