@@ -72,52 +72,130 @@
                     <table>
                         <thead>
                             <tr>
+                                <th>Mã Lịch</th>
                                 <th>Khách Hàng</th>
                                 <th>Dịch Vụ</th>
-                                <th>Ngày</th>
-                                <th>Giờ</th>
+                                <th>Thời Gian & Thợ</th>
+                                <th>Ghi Chú</th>
                                 <th>Trạng Thái</th>
                                 <th>Hành Động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($lich as $item): ?>
+                            <?php if (!empty($lich)): ?>
+                                <?php foreach ($lich as $item): ?>
+                                    <tr>
+                                        <td>
+                                            <span style="font-weight: bold; color: #555;">
+                                                #<?= htmlspecialchars($item['ma_lich']) ?>
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <div style="display:flex; align-items:center; gap:10px;">
+                                                <div
+                                                    style="width:35px; height:35px; background:#eee; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                                                    <i class='bx bx-user'></i>
+                                                </div>
+                                                <div>
+                                                    <p style="font-weight:600; margin:0;">
+                                                        <?= htmlspecialchars($item['ten_khach']) ?>
+                                                    </p>
+                                                    <small
+                                                        style="color:#888;"><?= htmlspecialchars($item['sdt_khach']) ?></small>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <p style="margin:0;"><?= htmlspecialchars($item['ten_dichvu']) ?></p>
+                                            <strong style="color: #DB504A;"><?= number_format($item['price']) ?> đ</strong>
+                                        </td>
+
+                                        <td>
+                                            <div style="font-size:13px;">
+                                                <div style="margin-bottom:4px;">
+                                                    <i class='bx bx-calendar'></i>
+                                                    <?= date('d/m/Y', strtotime($item['ngay_lam'])) ?>
+                                                </div>
+                                                <div style="margin-bottom:4px;">
+                                                    <i class='bx bx-time'></i> <strong><?= $item['gio_lam'] ?></strong>
+                                                </div>
+                                                <div style="color:#3C91E6;">
+                                                    <i class='bx bx-cut'></i> <?= htmlspecialchars($item['ten_tho']) ?>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <span style="color:#666; font-style:italic; font-size:13px;">
+                                                <?= !empty($item['note']) ? htmlspecialchars($item['note']) : '---' ?>
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <?php
+                                            $st = $item['status'];
+                                            $class = 'status-pending';
+                                            $text = 'Chờ duyệt';
+
+                                            if ($st == 'confirmed') {
+                                                $class = 'status-confirmed';
+                                                $text = 'Đã duyệt';
+                                            }
+                                            if ($st == 'done') {
+                                                $class = 'status-done';
+                                                $text = 'Hoàn thành';
+                                            }
+                                            if ($st == 'cancelled') {
+                                                $class = 'status-cancelled';
+                                                $text = 'Đã hủy';
+                                            }
+                                            ?>
+                                            <span class="status-badge <?= $class ?>"><?= $text ?></span>
+                                        </td>
+
+                                        <td>
+                                            <form action="index.php?act=update_status_lich" method="POST"
+                                                style="display:inline-block">
+                                                <input type="hidden" name="id" value="<?= $item['id'] ?>">
+
+                                                <?php if ($st == 'pending'): ?>
+                                                    <button name="status" value="confirmed" class="btn-action btn-approve"
+                                                        title="Duyệt">
+                                                        <i class='bx bx-check'></i>
+                                                    </button>
+                                                    <button name="status" value="cancelled" class="btn-action btn-cancel"
+                                                        title="Hủy" onclick="return confirm('Hủy lịch này?')">
+                                                        <i class='bx bx-x'></i>
+                                                    </button>
+
+                                                <?php elseif ($st == 'confirmed'): ?>
+                                                    <button name="status" value="done" class="btn-action btn-complete"
+                                                        title="Hoàn thành">
+                                                        <i class='bx bx-check-double'></i>
+                                                    </button>
+                                                    <button name="status" value="cancelled" class="btn-action btn-cancel"
+                                                        title="Hủy" onclick="return confirm('Hủy lịch này?')">
+                                                        <i class='bx bx-x'></i>
+                                                    </button>
+
+                                                <?php else: ?>
+                                                    <span style="color:#ccc; font-size:20px;"><i class='bx bx-lock-alt'></i></span>
+                                                <?php endif; ?>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($item['ten_khach']) ?></td>
-                                    <td><?= htmlspecialchars($item['ten_dichvu']) ?></td>
-                                    <td><?= htmlspecialchars($item['ngay_id']) ?></td>
-                                    <td><?= htmlspecialchars($item['time']) ?></td>
-                                    <td>
-                                        <?php
-                                        if ($item['status'] == 0)
-                                            echo '<span class="status pending">Chờ Xác Nhận</span>';
-                                        elseif ($item['status'] == 1)
-                                            echo '<span class="status completed">Đã Xác Nhận</span>';
-                                        elseif ($item['status'] == 2)
-                                            echo '<span class="status cancelled">Đã Hủy</span>';
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <!-- Nút Xác Nhận -->
-                                        <?php if ($item['status'] != 1): ?>
-                                            <a class="btn btn-success" href="index.php?act=nv-xacnhan&id=<?= $item['id'] ?>">Xác
-                                                Nhận</a>
-                                        <?php else: ?>
-                                            <span class="btn btn-success disabled">Xác Nhận</span>
-                                        <?php endif; ?>
-
-                                        <!-- Nút Hủy -->
-                                        <?php if ($item['status'] != 1): ?>
-                                            <a class="btn btn-danger" href="index.php?act=nv-huy&id=<?= $item['id'] ?>">Hủy</a>
-                                        <?php else: ?>
-                                            <span class="btn btn-secondary disabled">Hủy</span>
-                                        <?php endif; ?>
-
-                                        <a class="btn btn-primary"
-                                            href="index.php?act=nv-chitiet&id=<?= $item['id'] ?>">Xem</a>
+                                    <td colspan="7" style="text-align:center; padding:30px; color:#888;">
+                                        <i class='bx bx-calendar-x'
+                                            style="font-size:40px; display:block; margin-bottom:10px;"></i>
+                                        Chưa có lịch đặt nào.
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
 

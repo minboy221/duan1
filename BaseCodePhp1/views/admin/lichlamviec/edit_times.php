@@ -156,9 +156,7 @@
 
                                 <?php endforeach;
                                 endfor; ?>
-
                             </div>
-
                             <div id="pagination"></div>
                         </div>
                     </div>
