@@ -9,7 +9,41 @@
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
     <title>Trang Xếp Giờ Cho Thợ | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        /* container scroll để pagination không bị chìm */
+        .time-list-container {
+            max-height: 520px;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-bottom: 20px;
+        }
+
+        .time-item {
+            display: none;
+        }
+
+        #pagination {
+            text-align: center;
+            padding: 12px 0;
+            margin-top: 15px;
+        }
+
+        #pagination .page-btn {
+            margin: 4px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #999;
+            cursor: pointer;
+            background: white;
+        }
+
+        #pagination .page-btn.active {
+            background: #1976D2;
+            color: white;
+            border-color: #0a4fa6;
+        }
+    </style>
 </head>
 
 <body>
@@ -44,10 +78,10 @@
             </li>
         </ul>
     </div>
-    <!-- End Sidebar -->
+
     <!-- Main Content -->
     <div class="content">
-        <!-- Navbar -->
+
         <nav>
             <i class='bx bx-menu'></i>
 
@@ -70,11 +104,12 @@
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
             </a>
         </nav>
+
         <main>
             <div class="header">
                 <h1>Xếp Giờ Làm Việc</h1>
-                <a href="index.php?act=detail_ngay&id=<?= $info['ngay_lv_id'] ?? '' ?>" class="btnthem btn-back"
-                    style="background:#ccc;color:#000">
+                <a href="index.php?act=detail_ngay&id=<?= $info['ngay_lv_id'] ?? '' ?>"
+                    class="btnthem btn-back" style="background:#ccc;color:#000">
                     ← Quay lại
                 </a>
             </div>
@@ -86,62 +121,96 @@
                     <div class="form-group">
                         <label>Thông tin phân công</label>
                         <?php
-                        $ngayHienThi = date('d/m/Y', strtotime($info['date']));
-                        $valHienThi = $info['name'] . " - Ngày " . $ngayHienThi;
+                        $dateShow = date('d/m/Y', strtotime($info['date']));
+                        $textShow = $info['name'] . " - Ngày " . $dateShow;
                         ?>
-                        <input type="text" value="<?= htmlspecialchars($valHienThi) ?>" disabled
-                            style="background-color: #e9ecef; color: #333; font-weight: bold; cursor: not-allowed;">
+                        <input type="text"
+                            value="<?= htmlspecialchars($textShow) ?>"
+                            disabled
+                            style="background:#e9ecef; font-weight:bold;">
                     </div>
 
                     <div class="form-group">
-                        <label>Tích chọn các khung giờ làm việc</label>
+                        <label>Chọn các khung giờ làm việc</label>
 
-                        <div class="time-list-container" style="margin-top: 10px;">
-                            <div class="row" style="margin-top:2px">
+                        <div class="time-list-container">
+
+                            <div id="timeList" class="row">
                                 <?php
-                                // Tạo vòng lặp giờ từ 08:00 đến 21:00
-                                for ($i = 8; $i <= 21; $i++):
+                                for ($h = 8; $h <= 21; $h++):
+                                    foreach (['00', '30'] as $min):
+                                        if ($h == 21 && $min == '30') continue;
 
-                                    // --- [MỚI] Tạo mảng các phút muốn hiển thị (Ví dụ: 00 và 30) ---
-                                    $minutes = ['00', '30'];
+                                        $time = str_pad($h, 2, "0", STR_PAD_LEFT) . ":" . $min;
+                                        $checked = in_array($time, $currentTimes) ? 'checked' : '';
+                                ?>
 
-                                    // Chạy vòng lặp qua các phút
-                                    foreach ($minutes as $min):
-                                        // Ghép giờ và phút: Ví dụ 08:00, 08:30
-                                        $timeStr = str_pad($i, 2, "0", STR_PAD_LEFT) . ":" . $min;
-
-                                        // (Tùy chọn) Nếu muốn dừng ở đúng 21:00 mà không hiện 21:30 thì thêm dòng này:
-                                        if ($i == 21 && $min == '30')
-                                            continue;
-
-                                        // Kiểm tra giờ đã chọn (Logic cũ của bạn)
-                                        $isChecked = in_array($timeStr, $currentTimes) ? 'checked' : '';
-                                        ?>
-                                        <div class="col-xl-3 col-md-4 col-6 mb-3">
+                                        <div class="col-xl-3 col-md-4 col-6 mb-3 time-item">
                                             <label class="staff-checkbox-item">
-                                                <input type="checkbox" name="times[]" value="<?= $timeStr ?>" <?= $isChecked ?>>
+                                                <input type="checkbox" name="times[]" value="<?= $time ?>" <?= $checked ?>>
                                                 <span class="staff-info">
-                                                    <i class='bx bx-time-five'></i> <?= $timeStr ?>
+                                                    <i class='bx bx-time-five'></i> <?= $time ?>
                                                 </span>
                                             </label>
                                         </div>
 
+                                <?php endforeach;
+                                endfor; ?>
                                         <?php
                                     endforeach; // Kết thúc vòng lặp phút
                                 endfor; // Kết thúc vòng lặp giờ 
                                 ?>
                             </div>
+
+                            <div id="pagination"></div>
                         </div>
                     </div>
 
-                    <button type="submit" class="btnthem" style="padding: 12px 30px; width: 100%; margin-top: 20px;">
+                    <button type="submit" class="btnthem"
+                        style="padding:12px 30px; width:100%; margin-top:20px;">
                         <i class='bx bx-save'></i> Lưu Thay Đổi
                     </button>
                 </form>
             </div>
         </main>
     </div>
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script>
+        const itemsPerPage = 5;
+        const items = Array.from(document.querySelectorAll(".time-item"));
+        const pagination = document.getElementById("pagination");
+
+        const total = items.length;
+        const pages = Math.ceil(total / itemsPerPage);
+
+        function showPage(p) {
+            items.forEach(el => el.style.display = "none");
+
+            const start = (p - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+
+            for (let i = start; i < end && i < total; i++) {
+                items[i].style.display = "flex";
+            }
+
+            document.querySelectorAll(".page-btn")
+                .forEach(btn => btn.classList.remove("active"));
+
+            document.getElementById("page-" + p).classList.add("active");
+        }
+
+        for (let i = 1; i <= pages; i++) {
+            const btn = document.createElement("button");
+            btn.innerText = i;
+            btn.id = "page-" + i;
+            btn.className = "page-btn";
+            btn.type = "button"; // <<< FIX SUBMIT FORM
+            btn.onclick = () => showPage(i);
+            pagination.appendChild(btn);
+        }
+
+        showPage(1);
+    </script>
+
 </body>
 
 </html>
