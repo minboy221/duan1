@@ -120,5 +120,28 @@ class LichDatModel
             return false;
         }
     }
+    public function getByNhanVien($nhanvien_id)
+{
+    $sql = "SELECT ld.*, 
+            dv.name AS ten_dichvu, dv.price,
+            kh.name AS ten_khach, kh.phone AS sdt_khach,
+            kg.time AS gio_lam,
+            nl.date AS ngay_lam,
+            t.name AS ten_tho
+        FROM lichdat ld
+        JOIN dichvu dv ON ld.dichvu_id = dv.id
+        JOIN khachhang kh ON ld.khachhang_id = kh.id
+        JOIN khunggio kg ON ld.khunggio_id = kg.id
+        JOIN phan_cong pc ON pc.id = kg.phan_cong_id
+        JOIN ngay_lam_viec nl ON nl.id = pc.ngay_lv_id
+        JOIN tho t ON pc.tho_id = t.id
+        WHERE t.id = ? 
+        ORDER BY ld.id DESC";
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute([$nhanvien_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }
 ?>

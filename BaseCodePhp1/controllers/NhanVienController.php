@@ -16,7 +16,7 @@ class NhanVienController
     // giao diện dashboard
     public function dashboard()
     {
-        $lich = $this->lichModel->all();
+        $lich = $this->lichModel->getAllLichDat();
         include 'views/nhanvien/dashboard.php';
     }
 
@@ -24,7 +24,7 @@ class NhanVienController
     public function chitiet()
     {
         $id = $_GET['id'];
-        $lich = $this->lichModel->find($id);
+        $lich = $this->lichModel->getBookingByCode($id);
         include 'views/nhanvien/chitiet.php';
     }
 
