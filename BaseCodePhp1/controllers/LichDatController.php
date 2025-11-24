@@ -23,5 +23,25 @@ class LichDatController
             header("Location: index.php?act=qlylichdat");
         }
     }
+    // Trong LichDatController.php (hoặc NhanVienController.php)
+
+// Ví dụ tạo hàm trong LichDatController, và sẽ gọi nó bằng route mới
+public function updateStatusNhanVien() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = $_POST['id'];
+        $status = $_POST['status'];
+        
+        // Cập nhật trạng thái (vẫn dùng chung model update)
+        $this->model->updateStatus($id, $status);
+        
+        // 💡 Chuyển hướng về Dashboard Nhân viên
+        header("Location: index.php?act=nv-dashboard"); 
+        exit(); 
+    } else {
+        // Xử lý truy cập bằng GET
+        header("Location: index.php?act=nv-dashboard");
+        exit();
+    }
+}
 }
 ?>

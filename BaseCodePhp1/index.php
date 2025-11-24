@@ -85,6 +85,7 @@ $adminRoutes = [
     'detail_ngay',
     //phần trang quản lý lịch đặt
     'qlylichdat',
+    'update_status_lich', // <--- THÊM DÒNG NÀY ĐỂ BẢO VỆ HÀNH ĐỘNG CẬP NHẬT TRẠNG THÁI
 
     //phần trang cho nhân viên
     'admin-nhanvien',
@@ -93,8 +94,18 @@ $adminRoutes = [
 ];
 
 // Nếu act thuộc nhóm admin -> kiểm tra đăng nhập
+// Trong file index.php
+
+// Định nghĩa các Role được phép truy cập Admin/Staff Dashboard
+$allowedRoles = ['admin', 'Nhân Viên', 'Staff']; // Thêm tất cả các role hợp lệ
+
+// Nếu act thuộc nhóm admin -> kiểm tra đăng nhập
 if (in_array($act, $adminRoutes)) {
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    // Thêm điều kiện kiểm tra Session của Nhân viên
+    $isLoggedIn = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true;
+    $hasPermission = isset($_SESSION['role']) && in_array($_SESSION['role'], $allowedRoles);
+
+    if (!$isLoggedIn || !$hasPermission) {
         header("Location: index.php?act=dangnhap_khachhang");
         exit();
     }
@@ -105,7 +116,8 @@ match ($act) {
     'home' => $clientController->hienthidanhmuc(),
     'about' => aboutClien(),
     'dichvu' => $clientController->hienthidanhmuc1(),
-    'nhanvien' => $clientController->hienthiNhanVien(), 'chitietdichvu' => $clientController->hienthichitiet(),
+    'nhanvien' => $clientController->hienthiNhanVien(),
+    'chitietdichvu' => $clientController->hienthichitiet(),
     'datlich' => $clientController->datlich(),
     'chondichvu' => $clientController->chondichvu(),
     'lichsudat' => $clientController->lichSuDatLich(),
@@ -144,10 +156,15 @@ match ($act) {
     'search_user' => (new CattocContronler())->searchUser(),
     // tìm kiếm khách hàng clien
     'search_client' => (new CattocContronler())->searchClient(),
+    // đánh giá khách hàng
+    'danhgia' => (new BinhLuanUserController())->formDanhGia(),
+    'submit_danhgia' => (new BinhLuanUserController())->submitDanhGia(),
+
 
     //PHẦN QUẢN LÝ LỊCH ĐẶT
     'qlylichdat' => (new LichDatController())->index(),
     'update_status_lich' => (new LichDatController())->updateStatus(),
+    'update_status_nv' => (new LichDatController())->updateStatusNhanVien(), // Hoặc (new NhanVienController())->updateStatusNhanVien(), tùy nơi bạn đặt hàm
 
     // NHÂN VIÊN (Dashboard) 
     'nv-dashboard' => (new NhanVienController())->dashboard(),
@@ -197,4 +214,5 @@ match ($act) {
     // trang không tồn tại
     default => notFound(),
 }
-    ?>
+
+?>

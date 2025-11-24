@@ -96,6 +96,7 @@
                                     <th>ID</th>
                                     <th>Dịch Vụ</th>
                                     <th>Nội dung</th>
+                                    <th>Số sao</th>
                                     <th>Ngày đánh giá</th>
                                 </tr>
                             </thead>
@@ -106,6 +107,7 @@
                                         <td><?= $c['id'] ?></td>
                                         <td><?= htmlspecialchars($c['ten_dichvu']) ?></td>
                                         <td><?= htmlspecialchars($c['comment']) ?></td>
+                                        <td><?= str_repeat('⭐', (int)$c['rating']) ?></td>
                                         <td><?= $c['created_at'] ?></td>
                                     </tr>
                                 <?php endforeach; ?>
