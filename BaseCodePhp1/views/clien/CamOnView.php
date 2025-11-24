@@ -75,9 +75,7 @@
                                 </div>
                             <?php else: ?>
                                 <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
-                                    <button>
-                                        Đăng Nhập / Đăng Ký
-                                    </button>
+                                    <button>Đăng Nhập / Đăng Ký</button>
                                 </a>
                             <?php endif; ?>
                         </div>
