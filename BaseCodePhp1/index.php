@@ -20,7 +20,9 @@ require_once("./controllers/BinhLuanUserController.php");
 require_once("./controllers/LichLamViecController.php");
 require_once "./controllers/LichDatController.php";
 
+require_once("./controllers/AdminHomeController.php");
 
+require_once("./models/StatsModel.php");
 require_once("./models/DanhGiaModel.php");
 require_once("./models/DichVuModel.php");
 require_once("./models/CategoryModel.php");
@@ -128,7 +130,9 @@ match ($act) {
     'huylich' => $clientController->huyLich(),
     //phần hiển thị dữ liệu ra clien
     //phần hiển thị giao diện admin
-    'homeadmin' => homeAdmin(),
+    'homeadmin' => (new AdminHomeController())->index(),
+
+
     'qlydanhmuc' => (new CategoryController())->quanlydanhmuc(),
     'create_danhmuc' => (new CategoryController())->createdanhmuc(),
     'store_danhmuc' => (new CategoryController())->store(),
@@ -136,6 +140,8 @@ match ($act) {
     'edit_danhmuc' => (new CategoryController())->edit(),
     'update_danhmuc' => (new CategoryController())->update(),
     'delete_danhmuc' => (new CategoryController())->delete(),
+
+    'homeadmin' => (new HomeAdminController())->index(),
     // dich vụ
     'qlydichvu' => (new DichVuController())->quanlydichvu(),
     'createdichvu' => (new DichVuController())->createdichvu(),
