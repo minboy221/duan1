@@ -156,7 +156,7 @@
                                         </td>
 
                                         <td>
-                                            <form action="index.php?act=update_status_lich" method="POST"
+                                            <form action="index.php?act=update_status_nv" method="POST"
                                                 style="display:inline-block">
                                                 <input type="hidden" name="id" value="<?= $item['id'] ?>">
 

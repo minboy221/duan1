@@ -10,25 +10,75 @@
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
 </head>
 <style>
-    <style>
-    .bang-lichsu { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-    th { background-color: #f8f9fa; font-weight: bold; }
-    
+    .bang-lichsu {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th,
+    td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+
     /* Badge trạng thái */
-    .badge { padding: 5px 10px; border-radius: 15px; font-size: 12px; color: white; font-weight: 500; }
-    .status-pending { background-color: #f6c23e; color: #fff; } /* Vàng */
-    .status-confirmed { background-color: #36b9cc; } /* Xanh dương */
-    .status-done { background-color: #1cc88a; } /* Xanh lá */
-    .status-cancelled { background-color: #e74a3b; } /* Đỏ */
+    .badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+        color: white;
+        font-weight: 500;
+    }
+
+    .status-pending {
+        background-color: #f6c23e;
+        color: #fff;
+    }
+
+    /* Vàng */
+    .status-confirmed {
+        background-color: #36b9cc;
+    }
+
+    /* Xanh dương */
+    .status-done {
+        background-color: #1cc88a;
+    }
+
+    /* Xanh lá */
+    .status-cancelled {
+        background-color: #e74a3b;
+    }
+
+    /* Đỏ */
 
     /* Nút chi tiết */
     .btn-view {
-        padding: 5px 10px; background: #222; color: #fff; border: none; border-radius: 4px; cursor: pointer; transition: 0.3s;
+        padding: 5px 10px;
+        background: #222;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.3s;
     }
-    .btn-view:hover { background: #D6A354; }
+
+    .btn-view:hover {
+        background: #D6A354;
+    }
 </style>
+
 <body>
     <div class="container">
         <header>
@@ -177,7 +227,16 @@
                                             <a href="<?= BASE_URL ?>?act=lichsudatchitiet&ma_lich=<?= $item['ma_lich'] ?>">
                                                 <button class="btn-view">Chi Tiết</button>
                                             </a>
+
+                                            <?php if ($item['status'] === 'done'): ?>
+                                                <a href="<?= BASE_URL ?>?act=danhgia&ma_lich=<?= $item['ma_lich'] ?>">
+                                                    <button class="btn-view" style="background:#28a745;margin-left:5px;">
+                                                        Đánh Giá
+                                                    </button>
+                                                </a>
+                                            <?php endif; ?>
                                         </td>
+
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>

@@ -142,6 +142,36 @@ class LichDatModel
     $stmt->execute([$nhanvien_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+public function getById($ma_lich)
+{
+    $sql = "SELECT 
+                ld.*, 
+                dv.name AS ten_dichvu, dv.price,
+                kh.name AS ten_khach, kh.phone,
+                kg.time AS gio_lam,
+                nl.date AS ngay_lam,
+                t.name AS ten_tho, t.image AS anh_tho
+            FROM lichdat ld
+            JOIN dichvu dv ON ld.dichvu_id = dv.id
+            JOIN khachhang kh ON ld.khachhang_id = kh.id
+            JOIN khunggio kg ON ld.khunggio_id = kg.id
+            JOIN phan_cong pc ON pc.id = kg.phan_cong_id
+            JOIN ngay_lam_viec nl ON nl.id = pc.ngay_lv_id
+            JOIN tho t ON pc.tho_id = t.id
+            WHERE ld.ma_lich = ?
+            LIMIT 1";
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute([$ma_lich]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+public function updateRatingAndReview($ma_lich, $rating, $comment)
+{
+    // Cập nhật cột rating và review (comment) trong bảng lichdat
+    $sql = "UPDATE lichdat SET rating = ?, review = ? WHERE ma_lich = ?";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute([$rating, $comment, $ma_lich]);
+}
 
 }
 ?>
