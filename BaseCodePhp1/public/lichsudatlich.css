@@ -359,7 +359,7 @@ main {
     border-radius: 16px;
     box-shadow: 0 0 25px rgba(245, 197, 66, 0.4);
     max-width: 1000px;
-    width: 90%;
+    width: 100%;
     color: #fff;
     border: 1px solid #f5c542;
     margin-top: 100px;
@@ -388,7 +388,7 @@ main {
 .bang-lichsu th,
 .bang-lichsu td {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 12px 15px;
+    padding: 20px 15px;
     text-align: center;
     font-size: 15px;
 }

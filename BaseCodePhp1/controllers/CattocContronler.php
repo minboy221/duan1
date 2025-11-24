@@ -240,15 +240,45 @@ class CattocContronler
     }
 
     //phần hiển thị thông tin của đặt lịch(chọn thợ, ngày,khung giờ) ra trang clien
+   //phần hiển thị thông tin của đặt lịch(chọn thợ, ngày,khung giờ) ra trang clien
     public function datlich()
     {
-        //kiểm tra đăng nhập
-        // if (!isset($_SESSION['usernae'])) {
+        // --- PHẦN THÊM MỚI: Xử lý dữ liệu từ trang Chọn dịch vụ gửi sang ---
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['services'])) {
+            
+            // 1. Reset giỏ hàng để đảm bảo tính chính xác
+            $_SESSION['booking_cart']['services'] = [];
+            
+            // 2. Lấy danh sách ID dịch vụ người dùng đã tích chọn
+            $selectedIds = $_POST['services']; 
+
+            foreach ($selectedIds as $id) {
+                // 3. Tìm thông tin chi tiết trong Database
+                $service = $this->dichvuModel->find($id);
+                
+                if ($service) {
+                    // 4. Lưu vào Session để qua bên View hiển thị
+                    $_SESSION['booking_cart']['services'][] = [
+                        'id'    => $service['id'],
+                        'name'  => $service['name'],
+                        'price' => $service['price']
+                    ];
+                }
+            }
+        }
+        // --- KẾT THÚC PHẦN THÊM MỚI ---
+
+
+        //kiểm tra đăng nhập (đoạn này bạn đang comment, tùy bạn muốn mở lại hay không)
+        // if (!isset($_SESSION['username'])) {
         //     header("Location:index.php?act=dangnhap_khachhang");
         //     exit();
         // }
+
         //lấy danh sách ngày để hiển thị
         $listDays = $this->lichModel->getFutureDays();
+        
+        // Gọi View hiển thị
         require_once './views/clien/DatlichView.php';
     }
     // API lấy danh sách thợ theo ngày
