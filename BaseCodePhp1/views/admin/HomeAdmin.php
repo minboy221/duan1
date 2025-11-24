@@ -1,3 +1,14 @@
+<?php
+// Các biến từ AdminHomeController:
+// $totalStaff, $totalBookings, $dailyRevenue, $totalRevenue, $latestBookings
+
+$totalStaff      = (int)($totalStaff ?? 0);
+$totalBookings   = (int)($totalBookings ?? 0);
+$dailyRevenue    = (float)($dailyRevenue ?? 0);
+$totalRevenue    = (float)($totalRevenue ?? 0);
+$latestBookings  = $latestBookings ?? [];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,9 +18,21 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="<?= BASE_URL ?>public/homeadmin.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+
     <title>Trang Quản Trị | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 </head>
+<style>
+    .status.cancelled {
+    background-color: #ff0000;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    
+}
+
+</style>
 
 <body>
     <!-- Sidebar -->
@@ -42,10 +65,11 @@
             </li>
         </ul>
     </div>
-    <!-- End of Sidebar -->
+    <!-- End Sidebar -->
 
     <!-- Main Content -->
     <div class="content">
+
         <!-- Navbar -->
         <nav>
             <i class='bx bx-menu'></i>
@@ -55,114 +79,124 @@
                     <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
                 </div>
             </form>
+
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>
+
             <a href="#" class="notif">
                 <i class='bx bx-bell'></i>
                 <span class="count">12</span>
             </a>
+
             <a href="#" class="profile">
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
             </a>
         </nav>
+        <!-- End Navbar -->
 
-        <!-- End of Navbar -->
         <main>
-            <div class="header">
-                <div class="left">
-                    <h1>Thống Kê</h1>
-                    <ul class="breadcrumb">
-                        <li><a href="#">
-                                Analytics
-                            </a></li>
-                        /
-                        <li><a href="#" class="active">Cửa Hàng</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Insights -->
             <ul class="insights">
+
                 <li>
                     <i class='bx bx-group'></i>
                     <span class="info">
-                        <h3>
-                            20
-                        </h3>
+                        <h3><?= number_format($totalStaff) ?></h3>
                         <p>Nhân Viên</p>
                     </span>
                 </li>
-                <li><i class='bx bx-show-alt'></i>
+
+                <li>
+                    <i class='bx bx-receipt'></i>
                     <span class="info">
-                        <h3>
-                            3,944
-                        </h3>
-                        <p>Site Visit</p>
+                        <h3><?= number_format($totalBookings) ?></h3>
+                        <p>Tổng Đơn Đặt</p>
                     </span>
                 </li>
-                <li><i class='bx bx-line-chart'></i>
+
+                <li>
+                    <i class='bx bx-line-chart'></i>
                     <span class="info">
-                        <h3>
-                            14,721 VNĐ
-                        </h3>
+                        <h3><?= number_format($dailyRevenue) ?> VNĐ</h3>
                         <p>Doanh Thu Trong Ngày</p>
                     </span>
                 </li>
-                <li><i class='bx bx-dollar-circle'></i>
+
+                <li>
+                    <i class='bx bx-dollar-circle'></i>
                     <span class="info">
-                        <h3>
-                            60.742.000 VNĐ
-                        </h3>
+                        <h3><?= number_format($totalRevenue) ?> VNĐ</h3>
                         <p>Tổng Doanh Thu</p>
                     </span>
                 </li>
-            </ul>
-            <!-- End of Insights -->
 
+            </ul>
+
+            <!-- TABLE: LỊCH ĐẶT MỚI NHẤT -->
             <div class="bottom-data">
                 <div class="orders">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
-                        <h3>Lịch Đặt Mới (trong ngày)</h3>
+                        <h3>3 Lịch Đặt Mới Nhất</h3>
                     </div>
+
                     <table>
                         <thead>
                             <tr>
-                                <th>Người Dùng</th>
+                                <th>Khách Hàng</th>
                                 <th>Ngày Đặt</th>
+                                <th>Dịch Vụ (Giá)</th>
                                 <th>Trạng Thái</th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            <tr>
-                                <td>
-                                    <p>John Doe</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status completed">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>John Doe</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>John Doe</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status process">Processing</span></td>
-                            </tr>
+                            <?php if (!empty($latestBookings)): ?>
+                                <?php foreach ($latestBookings as $booking): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($booking['ten_khach'] ?? '') ?></td>
+
+                                        <td>
+                                            <?= isset($booking['created_at']) 
+                                                ? date('d-m-Y', strtotime($booking['created_at'])) 
+                                                : '' ?>
+                                        </td>
+
+                                        <td><?= number_format((float)($booking['price'] ?? 0)) ?> VNĐ</td>
+
+                                        <td>
+                                            <?php
+$statusMap = [
+    'pending'   => ['Chờ duyệt', 'status pending'],
+    'confirmed' => ['Đã duyệt', 'status process'],
+    'done'      => ['Hoàn thành', 'status completed'],
+    'cancelled' => ['Đã hủy', 'status cancelled danger'] // thêm màu đỏ
+];
+
+$status = $booking['status'] ?? 'pending';
+$statusLabel = $statusMap[$status][0] ?? $status;
+$statusClass = $statusMap[$status][1] ?? 'status';
+?>
+<span class="<?= $statusClass ?>"><?= $statusLabel ?></span>
+
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4" style="text-align:center;">Chưa có đơn đặt nào.</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
+
                     </table>
                 </div>
             </div>
-        </main>
-    </div>
 
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+        </main>
+
+    </div>
+    <!-- END CONTENT -->
+
 </body>
 
 </html>
