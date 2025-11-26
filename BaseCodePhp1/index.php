@@ -123,9 +123,7 @@ match ($act) {
     'datlich' => $clientController->datlich(),
     'chondichvu' => $clientController->chondichvu(),
     'lichsudat' => $clientController->lichSuDatLich(),
-    'lichsudatchitiet' => $clientController->lichsuChiTiet(),
-    'luu_datlich' => $clientController->luuDatLich(),
-     'cam_on' => $clientController->camOn(),   //đăng nhập và đăng ký cho khách hàng
+    'lichsudatchitiet' => $clientController->lichSuChiTiet(),    //đăng nhập và đăng ký cho khách hàng
     'dangky_khachhang' => (new KhachHangController())->register(),
     'dangnhap_khachhang' => (new KhachHangController())->login(),
     'logout' => (new KhachHangController())->logout(),
@@ -170,8 +168,8 @@ match ($act) {
 
 
     //PHẦN QUẢN LÝ LỊCH ĐẶT
-      'qlylichdat' => $lichDatController->index(),
-    'update_status_lich' => $lichDatController->updateStatus(),
+    'qlylichdat' => (new LichDatController())->index(),
+    'update_status_lich' => (new LichDatController())->updateStatus(),
     'update_status_nv' => (new LichDatController())->updateStatusNhanVien(), // Hoặc (new NhanVienController())->updateStatusNhanVien(), tùy nơi bạn đặt hàm
 
     // NHÂN VIÊN (Dashboard) 
