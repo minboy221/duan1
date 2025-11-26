@@ -124,7 +124,6 @@
                                 <th>Email</th>
                                 <th>SDT</th>
                                 <th>Giới Tính</th>
-                                <th>Mật khẩu</th>
                                 <th>Phân Quyền</th>
                                 <th>Hành Động</th>
                             </tr>
@@ -136,7 +135,6 @@
                                     <td><?= htmlspecialchars($nv['email']) ?></td>
                                     <td><?= htmlspecialchars($nv['phone'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($nv['gioitinh'] ?? '') ?></td>
-                                    <td><?= htmlspecialchars($nv['password_plain'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($nv['role_name'] ?? '') ?></td>
                                     <td style="display:flex; gap:5px;">
                                         <a class="btnsua" href="?act=admin-nhanvien-edit&id=<?= $nv['id'] ?>">Sửa</a>

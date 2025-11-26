@@ -359,10 +359,10 @@ main {
     border-radius: 16px;
     box-shadow: 0 0 25px rgba(245, 197, 66, 0.4);
     max-width: 1000px;
-    width: 90%;
+    width: 100%;
     color: #fff;
     border: 1px solid #f5c542;
-    margin-top: 100px;
+    margin-top: 250px;
 }
 
 /* Tiêu đề */
@@ -388,9 +388,10 @@ main {
 .bang-lichsu th,
 .bang-lichsu td {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 12px 15px;
+    padding: 35px 1px;
     text-align: center;
     font-size: 15px;
+    width: 400px;
 }
 
 .bang-lichsu th {
@@ -430,7 +431,7 @@ main {
 
 /* phần footer */
 .footer {
-    margin-top: 50px;
+    margin-top: 150px;
     background-color: #111;
     /* nền đen */
     color: #f5c542;

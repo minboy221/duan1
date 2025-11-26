@@ -165,6 +165,14 @@
                             </tfoot>
                         </table>
                     </div>
+                    <div class="thongtin-donhang mb-4">
+    <h2>Lý do hủy (nếu có)</h2>
+    <div class="infor-row">
+        <p>
+            <?= !empty($booking['cancel_reason']) ? nl2br(htmlspecialchars($booking['cancel_reason'])) : 'Không có' ?>
+        </p>
+    </div>
+</div>
 
                     <div class="action">
                         <a href="<?= BASE_URL ?>?act=lichsudat">
