@@ -108,61 +108,87 @@ class LichDatModel
         }
     }
 
-    // --- 5. LẤY CHI TIẾT LỊCH THEO MÃ (Trang Cảm Ơn / Chi Tiết) ---
-    public function getBookingByCode($ma_lich)
-    {
-        // Bỏ LIMIT 1 để lấy hết các dịch vụ
-        $sql = "SELECT 
-                    ld.*, 
-                    dv.name as ten_dichvu, dv.price,
-                    kh.name as ten_khach, kh.phone,
-                    kg.time as gio_lam,
-                    n.date as ngay_lam,
-                    t.name as ten_tho, t.image as anh_tho
-                FROM lichdat ld
-                JOIN dichvu dv ON ld.dichvu_id = dv.id
-                JOIN khachhang kh ON ld.khachhang_id = kh.id
-                JOIN khunggio kg ON ld.khunggio_id = kg.id
-                JOIN phan_cong pc ON kg.phan_cong_id = pc.id
-                JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
-                JOIN tho t ON pc.tho_id = t.id
-                WHERE ld.ma_lich = ?"; // XÓA LIMIT 1 ĐI
+    // get by code (chi tiết khi client được chuyển sang cam on)
+        // Trong LichDatModel.php
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([$ma_lich]);
+// Sửa hàm getBookingByCode: dùng cho cam_on
+public function getBookingByCode($ma_lich)
+{
+    $sql = "SELECT 
+                 ld.*, 
+                 dv.name as ten_dichvu, dv.price,
+                 kh.name as ten_khach, kh.phone,
+                 kg.time as gio_lam,
+                 n.date as ngay_lam,
+                 t.name as ten_tho, t.image as anh_tho,
+                 ld.cancel_reason
+             FROM lichdat ld
+             JOIN dichvu dv ON ld.dichvu_id = dv.id
+             JOIN khachhang kh ON ld.khachhang_id = kh.id
+             JOIN khunggio kg ON ld.khunggio_id = kg.id
+             JOIN phan_cong pc ON kg.phan_cong_id = pc.id
+             JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
+             JOIN tho t ON pc.tho_id = t.id
+             WHERE ld.ma_lich = ?
+             LIMIT 1";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute([$ma_lich]);
+    // 💡 SỬA: Dùng fetch() thay vì fetchAll()
+    return $stmt->fetch(PDO::FETCH_ASSOC); 
+}
 
-        // SỬA fetch -> fetchAll ĐỂ TRẢ VỀ MẢNG NHIỀU DÒNG
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+// Hàm getById (dùng cho form đánh giá) cũng cần sửa tương tự để đảm bảo trả về 1 bản ghi
+public function getById($ma_lich)
+{
+    $sql = "SELECT 
+                 ld.*, 
+                 dv.name AS ten_dichvu, dv.price,
+                 kh.name AS ten_khach, kh.phone,
+                 kg.time AS gio_lam,
+                 nl.date AS ngay_lam,
+                 t.name AS ten_tho, t.image AS anh_tho
+             FROM lichdat ld
+             JOIN dichvu dv ON ld.dichvu_id = dv.id
+             JOIN khachhang kh ON ld.khachhang_id = kh.id
+             JOIN khunggio kg ON ld.khunggio_id = kg.id
+             JOIN phan_cong pc ON pc.id = kg.phan_cong_id
+             JOIN ngay_lam_viec nl ON nl.id = pc.ngay_lv_id
+             JOIN tho t ON pc.tho_id = t.id
+             WHERE ld.ma_lich = ?
+             LIMIT 1";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute([$ma_lich]);
+    // 💡 SỬA: Dùng fetch() thay vì fetchAll()
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+    // xem lịch sử đặt của client (có phân trang)
+ public function getHistoryByCustomerPaginate($khachhang_id, $limit = 5, $offset = 0)
+{
+    $sql = "SELECT 
+                ld.id, ld.ma_lich, ld.status, ld.created_at, ld.cancel_reason,
+                ld.rating, /* 💡 CỘT RATING ĐÃ ĐƯỢC THÊM */
+                dv.name AS ten_dichvu, dv.price,
+                kg.time AS gio_lam,
+                n.date AS ngay_lam,
+                t.name AS ten_tho
+            FROM lichdat ld
+            JOIN dichvu dv ON ld.dichvu_id = dv.id
+            JOIN khunggio kg ON ld.khunggio_id = kg.id
+            JOIN phan_cong pc ON kg.phan_cong_id = pc.id
+            JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
+            JOIN tho t ON pc.tho_id = t.id
+            WHERE ld.khachhang_id = :khachhang_id
+            ORDER BY n.date DESC, kg.time DESC
+            LIMIT :limit OFFSET :offset";
 
-    // --- 6. LẤY LỊCH SỬ THEO KHÁCH HÀNG (Có phân trang) ---
-    public function getHistoryByCustomerPaginate($khachhang_id, $limit = 5, $offset = 0)
-    {
-        $sql = "SELECT 
-                    ld.id, ld.ma_lich, ld.status, ld.created_at, ld.cancel_reason,
-                    dv.name AS ten_dichvu, dv.price,
-                    kg.time AS gio_lam,
-                    n.date AS ngay_lam,
-                    t.name AS ten_tho
-                FROM lichdat ld
-                JOIN dichvu dv ON ld.dichvu_id = dv.id
-                JOIN khunggio kg ON ld.khunggio_id = kg.id
-                JOIN phan_cong pc ON kg.phan_cong_id = pc.id
-                JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
-                JOIN tho t ON pc.tho_id = t.id
-                WHERE ld.khachhang_id = :khachhang_id
-                ORDER BY n.date DESC, kg.time DESC
-                LIMIT :limit OFFSET :offset";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bindValue(':khachhang_id', $khachhang_id, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':khachhang_id', $khachhang_id, PDO::PARAM_INT);
-        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // Đếm tổng lịch sử của khách
     public function countHistoryByCustomer($khachhang_id)
     {
         $sql = "SELECT COUNT(*) as total FROM lichdat WHERE khachhang_id = ?";
@@ -201,24 +227,26 @@ class LichDatModel
     {
         // (Giữ nguyên code của bạn)
         $sql = "SELECT ld.*, 
-                    dv.name AS ten_dichvu, dv.price,
-                    kh.name AS ten_khach, kh.phone AS sdt_khach,
-                    kg.time AS gio_lam,
-                    nl.date AS ngay_lam,
-                    t.name AS ten_tho
-                FROM lichdat ld
-                JOIN dichvu dv ON ld.dichvu_id = dv.id
-                JOIN khachhang kh ON ld.khachhang_id = kh.id
-                JOIN khunggio kg ON ld.khunggio_id = kg.id
-                JOIN phan_cong pc ON pc.id = kg.phan_cong_id
-                JOIN ngay_lam_viec nl ON nl.id = pc.ngay_lv_id
-                JOIN tho t ON pc.tho_id = t.id
-                WHERE t.id = ? 
-                ORDER BY ld.id DESC";
+                dv.name AS ten_dichvu, dv.price,
+                kh.name AS ten_khach, kh.phone AS sdt_khach,
+                kg.time AS gio_lam,
+                nl.date AS ngay_lam,
+                t.name AS ten_tho
+            FROM lichdat ld
+            JOIN dichvu dv ON ld.dichvu_id = dv.id
+            JOIN khachhang kh ON ld.khachhang_id = kh.id
+            JOIN khunggio kg ON ld.khunggio_id = kg.id
+            JOIN phan_cong pc ON pc.id = kg.phan_cong_id
+            JOIN ngay_lam_viec nl ON nl.id = pc.ngay_lv_id
+            JOIN tho t ON pc.tho_id = t.id
+            WHERE t.id = ? 
+            ORDER BY ld.id DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$nhanvien_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
 
     // --- 10. LƯU ĐÁNH GIÁ ---
     public function updateRatingAndReview($ma_lich, $rating, $comment)

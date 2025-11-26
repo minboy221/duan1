@@ -97,7 +97,7 @@
                                     <th>Dịch Vụ</th>
                                     <th>Nội dung</th>
                                     <th>Số sao</th>
-                                    <th>Ngày đánh giá</th>
+                                    <th>Ngày đặt</th>
                                 </tr>
                             </thead>
 

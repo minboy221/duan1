@@ -77,26 +77,27 @@
     .btn-view:hover {
         background: #D6A354;
     }
+
     .pagination button {
-            margin: 3px;
-            padding: 8px 14px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            background: #f5f5f5;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+        margin: 3px;
+        padding: 8px 14px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background: #f5f5f5;
+        cursor: pointer;
+        transition: 0.2s;
+    }
 
-        .pagination button:hover {
-            background: #e0e0e0;
-        }
+    .pagination button:hover {
+        background: #e0e0e0;
+    }
 
-        .pagination .active {
-            background: #f6c23e !important;
-            /* màu xanh nổi bật */
-            color: white !important;
-            border-color: #0a58ca !important;
-        }
+    .pagination .active {
+        background: #f6c23e !important;
+        /* màu xanh nổi bật */
+        color: white !important;
+        border-color: #0a58ca !important;
+    }
 </style>
 
 <body>
@@ -198,37 +199,70 @@
                             </tr>
                         </thead>
                         <tbody>
-<?php if(!empty($historyList)): ?>
-<?php foreach($historyList as $item): ?>
-<?php
-$statusClass=''; $statusText='';
-switch($item['status']){
-    case 'pending': $statusClass='status-pending'; $statusText='Chờ xác nhận'; break;
-    case 'confirmed': $statusClass='status-confirmed'; $statusText='Đã duyệt'; break;
-    case 'done': $statusClass='status-done'; $statusText='Hoàn thành'; break;
-    case 'cancelled': $statusClass='status-cancelled'; $statusText='Đã hủy'; break;
-}
-?>
-<tr>
-<td>#<?= htmlspecialchars($item['ma_lich']) ?></td>
-<td><?= !empty($item['ngay_lam']) ? date('d/m/Y', strtotime($item['ngay_lam'])) : '---' ?></td>
-<td><?= htmlspecialchars($item['gio_lam'] ?? '---') ?></td>
-<td><?= htmlspecialchars($item['ten_dichvu']) ?></td>
-<td><?= htmlspecialchars($item['ten_tho']) ?></td>
-<td style="color:#d63031;font-weight:bold;"><?= number_format($item['price']??0,0,',','.') ?>đ</td>
-<td><span class="badge <?= $statusClass ?>"><?= $statusText ?></span></td>
-<td><?= !empty($item['cancel_reason']) ? nl2br(htmlspecialchars($item['cancel_reason'])) : '-' ?></td>
-<td>
-<a href="<?= BASE_URL ?>?act=lichsudatchitiet&ma_lich=<?= $item['ma_lich'] ?>">
-<button class="btn-view">Chi tiết</button>
-</a>
-</td>
-</tr>
-<?php endforeach; ?>
-<?php else: ?>
-<tr><td colspan="9" style="text-align:center;padding:20px;color:#888;">Không có lịch nào</td></tr>
-<?php endif; ?>
-</tbody>
+                            <?php if (!empty($historyList)): ?>
+                                <?php foreach ($historyList as $item): ?>
+                                    <?php
+                                    $statusClass = '';
+                                    $statusText = '';
+                                    switch ($item['status']) {
+                                        case 'pending':
+                                            $statusClass = 'status-pending';
+                                            $statusText = 'Chờ xác nhận';
+                                            break;
+                                        case 'confirmed':
+                                            $statusClass = 'status-confirmed';
+                                            $statusText = 'Đã duyệt';
+                                            break;
+                                        case 'done':
+                                            $statusClass = 'status-done';
+                                            $statusText = 'Hoàn thành';
+                                            break;
+                                        case 'cancelled':
+                                            $statusClass = 'status-cancelled';
+                                            $statusText = 'Đã hủy';
+                                            break;
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td>#<?= htmlspecialchars($item['ma_lich']) ?></td>
+                                        <td><?= !empty($item['ngay_lam']) ? date('d/m/Y', strtotime($item['ngay_lam'])) : '---' ?></td>
+                                        <td><?= htmlspecialchars($item['gio_lam'] ?? '---') ?></td>
+                                        <td><?= htmlspecialchars($item['ten_dichvu']) ?></td>
+                                        <td><?= htmlspecialchars($item['ten_tho']) ?></td>
+                                        <td style="color:#d63031;font-weight:bold;"><?= number_format($item['price'] ?? 0, 0, ',', '.') ?>đ</td>
+                                        <td><span class="badge <?= $statusClass ?>"><?= $statusText ?></span></td>
+                                        <td><?= !empty($item['cancel_reason']) ? nl2br(htmlspecialchars($item['cancel_reason'])) : '-' ?></td>
+                                        <td class="chitiet">
+                                            <a href="<?= BASE_URL ?>?act=lichsudatchitiet&ma_lich=<?= $item['ma_lich'] ?>">
+                                                <button class="btn-view">Chi Tiết</button>
+                                            </a>
+
+
+                                            <?php if ($item['status'] === 'done'): ?>
+                                                <?php if (!empty($item['rating'])): ?>
+                                                    <button
+                                                        class="btn-view"
+                                                        style="background:#6c757d; margin-left:5px;"
+                                                        onclick="alert('Đơn hàng #<?= htmlspecialchars($item['ma_lich']) ?> đã được đánh giá rồi!');">
+                                                        Đã Đánh Giá
+                                                    </button>
+                                                <?php else: ?>
+                                                    <a href="<?= BASE_URL ?>?act=danhgia&ma_lich=<?= $item['ma_lich'] ?>">
+                                                        <button class="btn-view" style="background:#28a745; margin-left:5px;">
+                                                            Đánh Giá
+                                                        </button>
+                                                    </a>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="9" style="text-align:center;padding:20px;color:#888;">Không có lịch nào</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -273,60 +307,60 @@ switch($item['status']){
 </body>
 <script src="<?= BASE_URL ?>public/main.js"></script>
 <script>
-// Số dòng mỗi trang
-const rowsPerPage = 5;
+    // Số dòng mỗi trang
+    const rowsPerPage = 5;
 
-// Lấy bảng đúng theo HTML
-const table = document.querySelector(".bang-lichsu table");
-const rows = table.querySelectorAll("tbody tr");
-const totalRows = rows.length;
+    // Lấy bảng đúng theo HTML
+    const table = document.querySelector(".bang-lichsu table");
+    const rows = table.querySelectorAll("tbody tr");
+    const totalRows = rows.length;
 
-// Tính số trang
-const totalPages = Math.ceil(totalRows / rowsPerPage);
+    // Tính số trang
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
 
-// Tạo thanh phân trang — thêm vào dưới bảng
-const pagination = document.createElement("div");
-pagination.classList.add("pagination");
-pagination.style.margin = "20px 0";
-pagination.style.textAlign = "center";
-document.querySelector(".bang-lichsu").appendChild(pagination);
+    // Tạo thanh phân trang — thêm vào dưới bảng
+    const pagination = document.createElement("div");
+    pagination.classList.add("pagination");
+    pagination.style.margin = "20px 0";
+    pagination.style.textAlign = "center";
+    document.querySelector(".bang-lichsu").appendChild(pagination);
 
-function showPage(page) {
-    // Ẩn toàn bộ
-    rows.forEach(r => r.style.display = "none");
+    function showPage(page) {
+        // Ẩn toàn bộ
+        rows.forEach(r => r.style.display = "none");
 
-    // Vị trí bắt đầu – kết thúc
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
+        // Vị trí bắt đầu – kết thúc
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
 
-    // Hiển thị đúng số dòng
-    for (let i = start; i < end && i < totalRows; i++) {
-        rows[i].style.display = "";
+        // Hiển thị đúng số dòng
+        for (let i = start; i < end && i < totalRows; i++) {
+            rows[i].style.display = "";
+        }
+
+        // Active nút
+        document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
+        const activeBtn = document.getElementById("page-" + page);
+        if (activeBtn) activeBtn.classList.add("active");
     }
 
-    // Active nút
-    document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
-    const activeBtn = document.getElementById("page-" + page);
-    if (activeBtn) activeBtn.classList.add("active");
-}
+    // Render nút phân trang
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.innerText = i;
+        btn.id = "page-" + i;
+        btn.classList.add("page-btn");
+        btn.style.margin = "3px";
+        btn.style.padding = "8px 14px";
+        btn.style.borderRadius = "5px";
+        btn.style.border = "1px solid #ccc";
+        btn.style.cursor = "pointer";
+        btn.onclick = () => showPage(i);
+        pagination.appendChild(btn);
+    }
 
-// Render nút phân trang
-for (let i = 1; i <= totalPages; i++) {
-    const btn = document.createElement("button");
-    btn.innerText = i;
-    btn.id = "page-" + i;
-    btn.classList.add("page-btn");
-    btn.style.margin = "3px";
-    btn.style.padding = "8px 14px";
-    btn.style.borderRadius = "5px";
-    btn.style.border = "1px solid #ccc";
-    btn.style.cursor = "pointer";
-    btn.onclick = () => showPage(i);
-    pagination.appendChild(btn);
-}
-
-// Hiển thị trang đầu tiên
-if (totalRows > 0) showPage(1);
+    // Hiển thị trang đầu tiên
+    if (totalRows > 0) showPage(1);
 </script>
 
 </html>
