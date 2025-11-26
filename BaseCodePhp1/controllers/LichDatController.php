@@ -1,72 +1,72 @@
 <?php
 require_once './models/LichDatModel.php';
-
 class LichDatController
 {
     public $model;
+
     public function __construct()
     {
         $this->model = new LichDatModel();
     }
-    //hiển thị danh sách đơn đặt
-    // File: controllers/LichDatController.php
 
+    // Hiển thị danh sách đơn đặt
     public function index()
     {
-        // 1. Lấy tất cả dữ liệu thô
-        $rawList = $this->model->getAllLichDat();
+        if(isset($_GET['ajax']) && $_GET['ajax']==1){
+            $limit = 10;
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            if($page<1) $page=1;
+            $offset = ($page-1)*$limit;
 
-        // 2. LOGIC GỘP MẢNG (Giống hệt bên Client)
-        $listLich = [];
+            $listLich = $this->model->getAllLichDatPaginate($limit,$offset);
+            $total = $this->model->countAllLichDat();
+            $totalPages = ceil($total/$limit);
 
-        foreach ($rawList as $item) {
-            $ma = $item['ma_lich'];
-
-            if (!isset($listLich[$ma])) {
-                $listLich[$ma] = $item;
-                $listLich[$ma]['total_price'] = (float) $item['price'];
-            } else {
-                $listLich[$ma]['ten_dichvu'] .= ', <br>' . $item['ten_dichvu']; // Bên Admin dùng <br> cho dễ nhìn
-                $listLich[$ma]['total_price'] += (float) $item['price'];
-            }
+            echo json_encode([
+                'listLich'=>$listLich,
+                'page'=>$page,
+                'totalPages'=>$totalPages
+            ]);
+            exit;
         }
 
-        // 3. Gửi danh sách đã gộp sang View Admin
+        $listLich = $this->model->getAllLichDat();
         require_once './views/admin/lichdat/list.php';
     }
 
-
-    // Ví dụ tạo hàm trong LichDatController, và sẽ gọi nó bằng route mới
-    public function updateStatusNhanVien()
+    // Cập nhật trạng thái (admin)
+    public function updateStatus()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'];
-            $status = $_POST['status'];
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = $_POST['id'] ?? null;
+            $status = $_POST['status'] ?? null;
 
-            // Cập nhật trạng thái (vẫn dùng chung model update)
-            $this->model->updateStatus($id, $status);
+            // FIX LỖI TẠI ĐÂY — lấy đúng tên biến
+            $reason = $_POST['cancel_reason'] ?? null;
 
-            // 💡 Chuyển hướng về Dashboard Nhân viên
-            header("Location: index.php?act=nv-dashboard");
-            exit();
-        } else {
-            // Xử lý truy cập bằng GET
-            header("Location: index.php?act=nv-dashboard");
+            if($id && $status){
+                $this->model->updateStatus($id,$status,$reason);
+            }
+            header("Location: index.php?act=qlylichdat");
             exit();
         }
     }
-    //hàm cập nhật trạng thái cho ADMIN
-    public function updateStatus()
+
+    // Cập nhật trạng thái (nhân viên)
+    public function updateStatusNhanVien()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Lấy ma_lich thay vì id
-            $ma_lich = $_POST['ma_lich'];
-            $status = $_POST['status'];
+            $id = $_POST['id'] ?? null;
+            $status = $_POST['status'] ?? null;
 
-            // Gọi model cập nhật toàn bộ dịch vụ của mã này
-            $this->model->updateStatus($ma_lich, $status);
-
-            header("Location: index.php?act=qlylichdat");
+            if($id && $status){
+                $this->model->updateStatus($id,$status);
+            }
+            header("Location: index.php?act=nv-dashboard"); 
+            exit();
+        } else {
+            header("Location: index.php?act=nv-dashboard");
+            exit();
         }
     }
 }

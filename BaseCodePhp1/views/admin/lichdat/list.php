@@ -131,7 +131,7 @@
             </a>
         </nav>
         <main>
-            <div class="header">
+<div class="header">
                 <div class="left">
                     <h1>Quản Lý Đơn Đặt Lịch</h1>
                     <ul class="breadcrumb">
@@ -141,159 +141,157 @@
                     </ul>
                 </div>
             </div>
-
-            <div class="bottom-data">
+                    <div class="bottom-data">
                 <div class="orders">
 
                     <div class="header">
                         <i class='bx bx-calendar-event'></i>
                         <h3>Danh Sách Lịch Hẹn</h3>
                     </div>
+        <table id="lichTable">
+            <thead>
+                <tr>
+                    <th>Mã</th>
+                    <th>Khách hàng</th>
+                    <th>Dịch vụ</th>
+                    <th>Thợ</th>
+                    <th>Ngày</th>
+                    <th>Giờ</th>
+                    <th>Giá</th>
+                    <th>Trạng thái</th>
+                    <th>Lý do hủy</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if(!empty($listLich)): ?>
+                    <?php foreach($listLich as $item): 
+                        $st = $item['status'];
+                        $class = 'status-pending';
+                        $text = 'Chờ duyệt';
+                        if($st=='confirmed') { $class='status-confirmed'; $text='Đã duyệt'; }
+                        if($st=='done') { $class='status-done'; $text='Hoàn thành'; }
+                        if($st=='cancelled') { $class='status-cancelled'; $text='Đã hủy'; }
+                    ?>
+                    <tr>
+                        <td>#<?= htmlspecialchars($item['ma_lich']) ?></td>
+                        <td><?= htmlspecialchars($item['ten_khach']) ?><br><?= htmlspecialchars($item['sdt_khach']) ?></td>
+                        <td><?= htmlspecialchars($item['ten_dichvu']) ?></td>
+                        <td><?= htmlspecialchars($item['ten_tho']) ?></td>
+                        <td><?= date('d/m/Y', strtotime($item['ngay_lam'])) ?></td>
+                        <td><?= htmlspecialchars($item['gio_lam']) ?></td>
+                        <td><?= number_format($item['price'],0,',','.') ?>đ</td>
+                        <td><span class="status-badge <?= $class ?>"><?= $text ?></span></td>
+                        <td><?= !empty($item['cancel_reason']) ? htmlspecialchars($item['cancel_reason']) : '---' ?></td>
+                        <td>
+                            <form action="index.php?act=update_status_lich" method="POST" style="display:inline-block" class="status-form">
+                                <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                                <?php if($st=='pending'): ?>
+                                    <button name="status" value="confirmed" class="btn-action btn-approve" title="Duyệt"><i class='bx bx-check'></i></button>
+                                    <button type="button" class="btn-action btn-cancel btn-cancel-popup" title="Hủy"><i class='bx bx-x'></i></button>
+                                <?php elseif($st=='confirmed'): ?>
+                                    <button name="status" value="done" class="btn-action btn-complete" title="Hoàn thành"><i class='bx bx-check-double'></i></button>
+                                    <button type="button" class="btn-action btn-cancel btn-cancel-popup" title="Hủy"><i class='bx bx-x'></i></button>
+                                <?php else: ?>
+                                    <span style="color:#ccc; font-size:20px;"><i class='bx bx-lock-alt'></i></span>
+                                <?php endif; ?>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><td colspan="10" style="text-align:center; padding:30px; color:#888;">
+                    <i class='bx bx-calendar-x' style="font-size:40px; display:block; margin-bottom:10px;"></i>Chưa có lịch đặt nào.
+                    </td></tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Mã Lịch</th>
-                                <th>Khách Hàng</th>
-                                <th>Dịch Vụ</th>
-                                <th>Giá</th>
-                                <th>Thời Gian & Thợ</th>
-                                <th>Ghi Chú</th>
-                                <th>Trạng Thái</th>
-                                <th>Hành Động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($listLich)): ?>
-                                <?php foreach ($listLich as $item): ?>
-                                    <tr>
-                                        <td>
-                                            <span style="font-weight: bold; color: #555;">
-                                                #<?= htmlspecialchars($item['ma_lich']) ?>
-                                            </span>
-                                        </td>
+        <div class="pagination" id="pagination"></div>
+    </main>
 
-                                        <td>
-                                            <div style="display:flex; align-items:center; gap:10px;">
-                                                <div
-                                                    style="width:35px; height:35px; background:#eee; border-radius:50%; display:flex; align-items:center; justify-content:center;">
-                                                    <i class='bx bx-user'></i>
-                                                </div>
-                                                <div>
-                                                    <p style="font-weight:600; margin:0;">
-                                                        <?= htmlspecialchars($item['ten_khach']) ?>
-                                                    </p>
-                                                    <small
-                                                        style="color:#888;"><?= htmlspecialchars($item['sdt_khach']) ?></small>
-                                                </div>
-                                            </div>
-                                        </td>
+<script>
+// Phân trang
+const rowsPerPage = 5;
+const table = document.getElementById('lichTable');
+const tbody = table.querySelector('tbody');
+const rows = Array.from(tbody.querySelectorAll('tr'));
+const totalPages = Math.ceil(rows.length / rowsPerPage);
+const pagination = document.getElementById('pagination');
+let currentPage = 1;
 
-                                        <td>
-                                            <p style="margin:0; font-size: 14px; line-height: 1.5;">
-                                                <?= $item['ten_dichvu'] ?>
-                                            </p>
-                                        </td>
-                                        <td>
-                                            <strong style="color: #DB504A; display: block; margin-top: 5px;">
-                                                <?= number_format($item['total_price']) ?> đ
-                                            </strong>
-                                        </td>
+function showPage(page){
+    currentPage = page;
+    rows.forEach((row,i)=>row.style.display=(i>=(page-1)*rowsPerPage&&i<page*rowsPerPage?'':'none'));
+    Array.from(pagination.querySelectorAll('button')).forEach(btn=>btn.classList.remove('active'));
+    pagination.querySelector('#page-'+page)?.classList.add('active');
+    document.getElementById('prevBtn').disabled=(page===1);
+    document.getElementById('nextBtn').disabled=(page===totalPages);
+}
 
-                                        <td>
-                                            <div style="font-size:13px;">
-                                                <div style="margin-bottom:4px;">
-                                                    <i class='bx bx-calendar'></i>
-                                                    <?= date('d/m/Y', strtotime($item['ngay_lam'])) ?>
-                                                </div>
-                                                <div style="margin-bottom:4px;">
-                                                    <i class='bx bx-time'></i> <strong><?= $item['gio_lam'] ?></strong>
-                                                </div>
-                                                <div style="color:#3C91E6;">
-                                                    <i class='bx bx-cut'></i> <?= htmlspecialchars($item['ten_tho']) ?>
-                                                </div>
-                                            </div>
-                                        </td>
+const prevBtn=document.createElement('button'); 
+prevBtn.textContent='« Trước'; 
+prevBtn.id='prevBtn'; 
+prevBtn.addEventListener('click',()=>showPage(currentPage-1)); 
+pagination.appendChild(prevBtn);
 
-                                        <td>
-                                            <span style="color:#666; font-style:italic; font-size:13px;">
-                                                <?= !empty($item['note']) ? htmlspecialchars($item['note']) : '---' ?>
-                                            </span>
-                                        </td>
+for(let i=1;i<=totalPages;i++){
+    const btn=document.createElement('button'); 
+    btn.textContent=i; 
+    btn.id='page-'+i; 
+    btn.addEventListener('click',()=>showPage(i)); 
+    pagination.appendChild(btn);
+}
 
-                                        <td>
-                                            <?php
-                                            $st = $item['status'];
-                                            $class = 'status-pending';
-                                            $text = 'Chờ duyệt';
+const nextBtn=document.createElement('button'); 
+nextBtn.textContent='Sau »'; 
+nextBtn.id='nextBtn'; 
+nextBtn.addEventListener('click',()=>showPage(currentPage+1)); 
+pagination.appendChild(nextBtn);
+if(totalPages>0) showPage(1);
 
-                                            if ($st == 'confirmed') {
-                                                $class = 'status-confirmed';
-                                                $text = 'Đã duyệt';
-                                            }
-                                            if ($st == 'done') {
-                                                $class = 'status-done';
-                                                $text = 'Hoàn thành';
-                                            }
-                                            if ($st == 'cancelled') {
-                                                $class = 'status-cancelled';
-                                                $text = 'Đã hủy';
-                                            }
-                                            ?>
-                                            <span class="status-badge <?= $class ?>"><?= $text ?></span>
-                                        </td>
 
-                                        <td>
-                                            <form action="index.php?act=update_status_lich" method="POST"
-                                                style="display:inline-block">
+// SweetAlert2: popup nhập lý do hủy
+document.querySelectorAll('.btn-cancel-popup').forEach(button=>{
+    button.addEventListener('click', function(){
+        const form = button.closest('form');
+        Swal.fire({
+            title: 'Nhập lý do hủy',
+            input: 'text',
+            inputPlaceholder: 'Nhập lý do hủy...',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy',
+            preConfirm: (reason)=>{
+                if(!reason){
+                    Swal.showValidationMessage('Bạn phải nhập lý do hủy');
+                }
+                return reason;
+            }
+        }).then((result)=>{
+            if(result.isConfirmed){
+                // Xóa input ẩn cũ nếu click lại nhiều lần
+                form.querySelectorAll('input[name="cancel_reason"], input[name="status"]').forEach(i=>i.remove());
 
-                                                <input type="hidden" name="ma_lich" value="<?= $item['ma_lich'] ?>">
+                // Thêm input ẩn
+                let inputReason = document.createElement('input');
+                inputReason.type='hidden';
+                inputReason.name='cancel_reason';
+                inputReason.value=result.value;
+                form.appendChild(inputReason);
 
-                                                <?php if ($st == 'pending'): ?>
-                                                    <button name="status" value="confirmed" class="btn-action btn-approve"
-                                                        title="Duyệt">
-                                                        <i class='bx bx-check'></i>
-                                                    </button>
-                                                    <button name="status" value="cancelled" class="btn-action btn-cancel"
-                                                        title="Hủy" onclick="return confirm('Hủy lịch này?')">
-                                                        <i class='bx bx-x'></i>
-                                                    </button>
-
-                                                <?php elseif ($st == 'confirmed'): ?>
-                                                    <button name="status" value="done" class="btn-action btn-complete"
-                                                        title="Hoàn thành">
-                                                        <i class='bx bx-check-double'></i>
-                                                    </button>
-                                                    <button name="status" value="cancelled" class="btn-action btn-cancel"
-                                                        title="Hủy" onclick="return confirm('Hủy lịch này?')">
-                                                        <i class='bx bx-x'></i>
-                                                    </button>
-
-                                                <?php else: ?>
-                                                    <span style="color:#ccc; font-size:20px;"><i class='bx bx-lock-alt'></i></span>
-                                                <?php endif; ?>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="7" style="text-align:center; padding:30px; color:#888;">
-                                        <i class='bx bx-calendar-x'
-                                            style="font-size:40px; display:block; margin-bottom:10px;"></i>
-                                        Chưa có lịch đặt nào.
-                                    </td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </main>
-    </div>
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+                let inputStatus = document.createElement('input');
+                inputStatus.type='hidden';
+                inputStatus.name='status';
+                inputStatus.value='cancelled';
+                form.appendChild(inputStatus);
+                
+                form.submit();
+            }
+        });
+    });
+});
+</script>
 
 </body>
-
 </html>
