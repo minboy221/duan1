@@ -134,6 +134,7 @@
                                 <p class="label">Dịch vụ</p>
                                 <p class="value" style="font-weight: bold;">
                                     <?= htmlspecialchars($booking['ten_dichvu']) ?>
+
                                 </p>
                             </div>
 
@@ -176,7 +177,9 @@
                                 cho anh."
                             </p>
 
-                            <div class="menu-item" onclick="window.location.href='lichsudatchitiet.php'">
+                            <div class="menu-item"
+                                onclick="window.location.href='<?= BASE_URL ?>?act=lichsudatchitiet&ma_lich=<?= $item['ma_lich'] ?>'">
+
                                 <div class="menu-left">
                                     <div class="icon-box">
                                         <i class="fa-solid fa-align-justify"></i>

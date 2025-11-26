@@ -163,7 +163,7 @@ class CattocContronler
 
         require_once './views/admin/Qlykhachhang.php';
     }
-    // phần tìm kiếm cliên
+    // phần tìm kiếm clien
     // Tìm kiếm dịch vụ theo danh mục, giá và từ khóa
     public function searchClient()
     {
@@ -240,45 +240,31 @@ class CattocContronler
     }
 
     //phần hiển thị thông tin của đặt lịch(chọn thợ, ngày,khung giờ) ra trang clien
-   //phần hiển thị thông tin của đặt lịch(chọn thợ, ngày,khung giờ) ra trang clien
     public function datlich()
     {
-        // --- PHẦN THÊM MỚI: Xử lý dữ liệu từ trang Chọn dịch vụ gửi sang ---
+        // 1. XỬ LÝ POST TỪ TRANG CHỌN DỊCH VỤ
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['services'])) {
-            
-            // 1. Reset giỏ hàng để đảm bảo tính chính xác
-            $_SESSION['booking_cart']['services'] = [];
-            
-            // 2. Lấy danh sách ID dịch vụ người dùng đã tích chọn
-            $selectedIds = $_POST['services']; 
+
+            $_SESSION['booking_cart']['services'] = []; // Reset giỏ
+            $selectedIds = $_POST['services'];
 
             foreach ($selectedIds as $id) {
-                // 3. Tìm thông tin chi tiết trong Database
                 $service = $this->dichvuModel->find($id);
-                
                 if ($service) {
-                    // 4. Lưu vào Session để qua bên View hiển thị
                     $_SESSION['booking_cart']['services'][] = [
-                        'id'    => $service['id'],
-                        'name'  => $service['name'],
+                        'id' => $service['id'],
+                        'name' => $service['name'],
                         'price' => $service['price']
                     ];
                 }
             }
+
+            header("Location: index.php?act=datlich");
+            exit;
         }
-        // --- KẾT THÚC PHẦN THÊM MỚI ---
 
-
-        //kiểm tra đăng nhập (đoạn này bạn đang comment, tùy bạn muốn mở lại hay không)
-        // if (!isset($_SESSION['username'])) {
-        //     header("Location:index.php?act=dangnhap_khachhang");
-        //     exit();
-        // }
-
-        //lấy danh sách ngày để hiển thị
+        // 2. HIỂN THỊ VIEW
         $listDays = $this->lichModel->getFutureDays();
-        
-        // Gọi View hiển thị
         require_once './views/clien/DatlichView.php';
     }
     // API lấy danh sách thợ theo ngày
@@ -301,52 +287,92 @@ class CattocContronler
     public function luuDatLich()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $khachhang_id = 1;
-            if (isset($_SESSION['user_id'])) {
-                $khachhang_id = $_SESSION['user_id'];
-                $khachhang_id = $_SESSION['user_id'];
-            }
+            // Lấy thông tin cơ bản
+            $khachhang_id = $_SESSION['user_id'] ?? 1; // ID khách (nếu chưa login thì tạm là 1)
             $khunggio_id = $_POST['khunggio_id'];
             $note = $_POST['note'] ?? '';
-            //lấy dịch vụ từ giỏ hàng
-            if (isset($_SESSION['booking_cart']['services'])) {
-                //khởi tạo lịch đặt
+
+            // Kiểm tra giỏ hàng có dịch vụ không
+            if (isset($_SESSION['booking_cart']['services']) && !empty($_SESSION['booking_cart']['services'])) {
+
                 $lichDatModel = new LichDatModel();
+
+                // --- BƯỚC QUAN TRỌNG: TẠO MÃ LỊCH CHUNG Ở ĐÂY ---
+                // Tạo 1 lần duy nhất trước vòng lặp
+                $ma_lich_chung = "ML-" . strtoupper(substr(uniqid(), -6));
+
+                // --- BƯỚC LƯU: Dùng vòng lặp để lưu từng dịch vụ với MÃ CHUNG ---
                 foreach ($_SESSION['booking_cart']['services'] as $sv) {
-                    //lưu từng dịch vụ
-                    $ma_code = $lichDatModel->insertBooking($khachhang_id, $sv['id'], $khunggio_id, $note);
+                    // Gọi hàm insertBooking với mã chung vừa tạo
+                    $lichDatModel->insertBooking(
+                        $ma_lich_chung, // Truyền mã chung vào đây
+                        $khachhang_id,
+                        $sv['id'],
+                        $khunggio_id,
+                        $note
+                    );
                 }
-                //xoá giỏ hàng sau khi đặt
-                unset($_SESSION['booking_cart']);
+
+                // --- BƯỚC KẾT THÚC ---
+                unset($_SESSION['booking_cart']); // Xóa giỏ hàng
+
+                // Chuyển hướng sang trang cảm ơn với mã chung
                 echo "<script>
-                        window.location.href = 'index.php?act=cam_on&ma_lich=$ma_code';
-                      </script>";
+                    window.location.href = 'index.php?act=cam_on&ma_lich=$ma_lich_chung';
+                  </script>";
                 exit();
+
             } else {
-                echo "<script>alert('Giỏ hàng trống!'); window.history.back();</script>";
+                echo "<script>alert('Giỏ hàng trống, vui lòng chọn dịch vụ!'); window.history.back();</script>";
             }
         }
     }
-
     //chuyển sang trang đặt lịch thành công
     public function camOn()
     {
-        // Lấy mã lịch từ URL để hiện ra cho khách
+        // Lấy mã lịch từ URL
         $ma_lich = $_GET['ma_lich'] ?? '';
         if (!$ma_lich) {
             header("Location:index.php");
             exit;
         }
+
         $lichDatModel = new LichDatModel();
-        $booking = new $lichDatModel();
-        $booking = $lichDatModel->getBookingByCode($ma_lich);
-        if (!$booking) {
-            echo "Không tìm thấy đơn đặt lịch!";
+
+        // Lấy danh sách (Nó sẽ trả về mảng gồm nhiều dòng nếu đặt nhiều dịch vụ)
+        $bookingList = $lichDatModel->getBookingByCode($ma_lich);
+
+        if (empty($bookingList)) {
+            echo "Không tìm thấy đơn đặt lịch hoặc mã lịch sai!";
             exit;
         }
+
+        // --- BẮT ĐẦU XỬ LÝ GỘP DỮ LIỆU ---
+
+        // 1. Lấy thông tin chung (Khách, Thợ, Giờ) từ dòng đầu tiên
+        $finalBooking = $bookingList[0];
+
+        // 2. Tạo biến để cộng dồn
+        $totalPrice = 0;
+        $serviceNames = [];
+
+        // 3. Chạy vòng lặp qua tất cả các dòng tìm được
+        foreach ($bookingList as $item) {
+            $totalPrice += $item['price'];
+            $serviceNames[] = $item['ten_dichvu'];
+        }
+
+        // 4. Cập nhật lại dữ liệu đã xử lý vào biến $finalBooking
+        $finalBooking['ten_dichvu'] = implode(', ', $serviceNames);
+
+        // Gán tổng tiền đã cộng
+        $finalBooking['price'] = $totalPrice;
+
+        // 5. Gán biến $booking để View sử dụng (Vì View của bạn đang dùng biến $booking)
+        $booking = $finalBooking;
+
         require_once './views/clien/CamOnView.php';
     }
-
     // chọn dịch vụ trong đặt lịch
     public function addService()
     {
@@ -405,37 +431,81 @@ class CattocContronler
     }
 
     // PHẦN LỊCH SỬ ĐẶT LỊCH CỦA CLIEN
+    // File: controllers/CattocController.php
+
     public function lichSuDatLich()
     {
-        //kiểm tra đăng nhập
+        // 1. Kiểm tra đăng nhập
         if (!isset($_SESSION['user_id'])) {
             header("Location: index.php?act=dangnhap_khachhang");
             exit;
         }
         $user_id = $_SESSION['user_id'];
-        //gọi model lấy dữ liệu
+
+        // 2. Gọi model lấy dữ liệu thô
         if (!isset($this->lichDatModel)) {
-            require_once './models/LichDatModle.php';
+            require_once './models/LichDatModel.php';
             $this->lichDatModel = new LichDatModel();
         }
-        $historyList = $this->lichDatModel->getHistoryByCustomer($user_id);
+
+        // Lấy dữ liệu thô (đang bị tách rời từng dòng)
+        $rawHistory = $this->lichDatModel->getHistoryByCustomer($user_id);
+
+        // 3. XỬ LÝ GỘP MẢNG (LOGIC GỘP)
+        $historyList = [];
+
+        foreach ($rawHistory as $item) {
+            $ma = $item['ma_lich'];
+
+            if (!isset($historyList[$ma])) {
+                // Nếu mã này chưa có trong danh sách -> Thêm mới
+                $historyList[$ma] = $item;
+                $historyList[$ma]['total_price'] = (float) $item['price']; // Tạo biến tổng tiền riêng
+            } else {
+                // Nếu mã này đã có -> Gộp thông tin
+                $historyList[$ma]['ten_dichvu'] .= ', ' . $item['ten_dichvu']; // Nối tên dịch vụ
+                $historyList[$ma]['total_price'] += (float) $item['price'];      // Cộng dồn tiền
+            }
+        }
+
+        // Gửi biến $historyList sang View
         require_once './views/clien/Lichsudatlich.php';
     }
 
     //Phần Lịch Sử Đặt Lịch Chi Tiết Của CLien
     public function lichsuChiTiet()
     {
-        //lấy mã lịch
         $ma_lich = $_GET['ma_lich'] ?? '';
         if (!$ma_lich) {
             header("Location: index.php?act=lichsudat");
             exit();
         }
-        $booking = $this->lichDatModel->getBookingByCode($ma_lich);
-        if (!$booking) {
+
+        // Lấy danh sách (vì 1 mã lịch có nhiều dịch vụ)
+        $bookingList = $this->lichDatModel->getBookingByCode($ma_lich);
+
+        if (empty($bookingList)) {
             echo 'Không tìm thấy lịch đặt!';
             exit;
         }
+
+        // XỬ LÝ DỮ LIỆU CHO VIEW
+        // Lấy thông tin chung từ dòng đầu tiên
+        $booking = $bookingList[0];
+
+        // Tính tổng tiền và gộp tên các dịch vụ
+        $totalPrice = 0;
+        $serviceNames = [];
+
+        foreach ($bookingList as $item) {
+            $totalPrice += $item['price'];
+            $serviceNames[] = $item['ten_dichvu'];
+        }
+
+        // Ghi đè lại dữ liệu đã xử lý để View dùng
+        $booking['ten_dichvu'] = implode(', ', $serviceNames); // Ví dụ: "Cắt tóc, Gội đầu"
+        $booking['price'] = $totalPrice; // Tổng tiền cả đơn
+
         require_once './views/clien/Lichsudat_chitiet.php';
     }
 
@@ -447,20 +517,23 @@ class CattocContronler
             echo "<script>alert('Vui lòng đăng nhập lại!'); window.location.href='index.php?act=dangnhap_khachhang';</script>";
             exit;
         }
-        //phần lấy ID
+
         $id = $_GET['id'] ?? 0;
         $user_id = $_SESSION['user_id'];
 
         //phần gọi model
         if (!isset($this->lichDatModel)) {
             require_once './models/LichDatModel.php';
-            $this->lichModel = new LichDatModel();
+            // SỬA TÊN BIẾN CHO ĐỒNG NHẤT
+            $this->lichDatModel = new LichDatModel();
         }
+
         $result = $this->lichDatModel->cancelBooking($id, $user_id);
+
         if ($result) {
             echo "<script>
                     alert('Đã hủy lịch thành công!');
-                    window.location.href = 'index.php'; // Hoặc về trang lịch sử
+                    window.location.href = 'index.php?act=lichsu'; // Sửa lại act cho đúng trang lịch sử của bạn
                   </script>";
         } else {
             echo "<script>
@@ -468,5 +541,16 @@ class CattocContronler
                     window.history.back();
                   </script>";
         }
+    }
+    //phần hiển thị thông báo thời gian cho người dùng
+    public function index()
+    {
+        $upcomingBooking = null;
+        if (isset($_SESSION['user_id'])) {
+            $lichDatModel = new LichDatModel();
+            $upcomingBooking = $lichDatModel->getUpcomingBooking($_SESSION['user_id']);
+        }
+
+        require_once './views/clien/home.php'; // Hoặc file view tương ứng
     }
 }

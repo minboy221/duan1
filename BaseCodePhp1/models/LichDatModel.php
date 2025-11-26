@@ -32,22 +32,26 @@ class LichDatModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     //Phần cho Admin cập nhật trạng thái
-    public function updateStatus($id, $status)
+    public function updateStatus($ma_lich, $status)
     {
-        $sql = "UPDATE lichdat SET status = ? WHERE id = ?";
+        // Đổi WHERE id = ? thành WHERE ma_lich = ?
+        $sql = "UPDATE lichdat SET status = ? WHERE ma_lich = ?";
         $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([$status, $id]);
+        return $stmt->execute([$status, $ma_lich]);
     }
     //PHẦN hiển thị CLIEN tạo lịch đặt mới (mã lịch đặt bất kỳ)
-    public function insertBooking($khachhang_id, $dichvu_id, $khunggio_id, $note)
+    public function insertBooking($ma_lich, $khachhang_id, $dichvu_id, $khunggio_id, $note)
     {
         try {
-            //tạo mã lịch ngẫu nhiên
-            $ma_lich = "ML-" . strtoupper(substr(uniqid(), -6));
-            $sql = "INSERT INTO lichdat (ma_lich,khachhang_id,dichvu_id,khunggio_id,note,status) VALUES (?,?,?,?,?,'pending')";
+            // Giữ nguyên câu lệnh SQL
+            $sql = "INSERT INTO lichdat (ma_lich, khachhang_id, dichvu_id, khunggio_id, note, status) VALUES (?,?,?,?,?,'pending')";
+
             $stmt = $this->conn->prepare($sql);
+
+            // 3. Truyền biến $ma_lich vào execute
             $stmt->execute([$ma_lich, $khachhang_id, $dichvu_id, $khunggio_id, $note]);
-            return $ma_lich;
+
+            return true;
         } catch (Exception $e) {
             return false;
         }
@@ -56,24 +60,24 @@ class LichDatModel
     public function getBookingByCode($ma_lich)
     {
         $sql = "SELECT 
-                    ld.*, 
-                    dv.name as ten_dichvu, dv.price,
-                    kh.name as ten_khach, kh.phone,
-                    kg.time as gio_lam,
-                    n.date as ngay_lam,
-                    t.name as ten_tho, t.image as anh_tho
-                FROM lichdat ld
-                JOIN dichvu dv ON ld.dichvu_id = dv.id
-                JOIN khachhang kh ON ld.khachhang_id = kh.id
-                JOIN khunggio kg ON ld.khunggio_id = kg.id
-                JOIN phan_cong pc ON kg.phan_cong_id = pc.id
-                JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
-                JOIN tho t ON pc.tho_id = t.id
-                WHERE ld.ma_lich = ?";
+                ld.*, 
+                dv.name as ten_dichvu, dv.price,
+                kh.name as ten_khach, kh.phone,
+                kg.time as gio_lam,
+                n.date as ngay_lam,
+                t.name as ten_tho, t.image as anh_tho
+            FROM lichdat ld
+            JOIN dichvu dv ON ld.dichvu_id = dv.id
+            JOIN khachhang kh ON ld.khachhang_id = kh.id
+            JOIN khunggio kg ON ld.khunggio_id = kg.id
+            JOIN phan_cong pc ON pc.id = kg.phan_cong_id
+            JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
+            JOIN tho t ON pc.tho_id = t.id
+            WHERE ld.ma_lich = ?";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$ma_lich]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     //phần xem lịch sử đặt của clien
@@ -121,8 +125,8 @@ class LichDatModel
         }
     }
     public function getByNhanVien($nhanvien_id)
-{
-    $sql = "SELECT ld.*, 
+    {
+        $sql = "SELECT ld.*, 
             dv.name AS ten_dichvu, dv.price,
             kh.name AS ten_khach, kh.phone AS sdt_khach,
             kg.time AS gio_lam,
@@ -138,13 +142,13 @@ class LichDatModel
         WHERE t.id = ? 
         ORDER BY ld.id DESC";
 
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute([$nhanvien_id]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-public function getById($ma_lich)
-{
-    $sql = "SELECT 
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$nhanvien_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getById($ma_lich)
+    {
+        $sql = "SELECT 
                 ld.*, 
                 dv.name AS ten_dichvu, dv.price,
                 kh.name AS ten_khach, kh.phone,
@@ -161,17 +165,45 @@ public function getById($ma_lich)
             WHERE ld.ma_lich = ?
             LIMIT 1";
 
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute([$ma_lich]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-public function updateRatingAndReview($ma_lich, $rating, $comment)
-{
-    // Cập nhật cột rating và review (comment) trong bảng lichdat
-    $sql = "UPDATE lichdat SET rating = ?, review = ? WHERE ma_lich = ?";
-    $stmt = $this->conn->prepare($sql);
-    return $stmt->execute([$rating, $comment, $ma_lich]);
-}
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$ma_lich]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function updateRatingAndReview($ma_lich, $rating, $comment)
+    {
+        // Cập nhật cột rating và review (comment) trong bảng lichdat
+        $sql = "UPDATE lichdat SET rating = ?, review = ? WHERE ma_lich = ?";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([$rating, $comment, $ma_lich]);
+    }
 
+    //phần hiển thị thông báo thời gian cho người dùng
+
+    public function getUpcomingBooking($khachhang_id)
+    {
+        // Lấy đơn gần nhất có trạng thái 'pending' hoặc 'confirmed'
+        // và thời gian phải lớn hơn thời điểm hiện tại
+        $sql = "SELECT 
+                ld.ma_lich, ld.status,
+                kg.time as gio_lam,
+                n.date as ngay_lam,
+                t.name as ten_tho,
+                kh.phone
+            FROM lichdat ld
+            JOIN khunggio kg ON ld.khunggio_id = kg.id
+            JOIN phan_cong pc ON kg.phan_cong_id = pc.id
+            JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
+            JOIN tho t ON pc.tho_id = t.id
+            JOIN khachhang kh ON ld.khachhang_id = kh.id
+            WHERE ld.khachhang_id = ? 
+            AND ld.status IN ('pending', 'confirmed')
+            AND CONCAT(n.date, ' ', kg.time) > NOW()
+            ORDER BY n.date ASC, kg.time ASC
+            LIMIT 1"; // Chỉ lấy 1 đơn gần nhất
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$khachhang_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>

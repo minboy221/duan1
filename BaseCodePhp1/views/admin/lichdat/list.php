@@ -12,7 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
-
     /* CSS riêng cho trang quản lý lịch để hiển thị đẹp hơn */
     .status-badge {
         padding: 6px 12px;
@@ -157,6 +156,7 @@
                                 <th>Mã Lịch</th>
                                 <th>Khách Hàng</th>
                                 <th>Dịch Vụ</th>
+                                <th>Giá</th>
                                 <th>Thời Gian & Thợ</th>
                                 <th>Ghi Chú</th>
                                 <th>Trạng Thái</th>
@@ -190,8 +190,14 @@
                                         </td>
 
                                         <td>
-                                            <p style="margin:0;"><?= htmlspecialchars($item['ten_dichvu']) ?></p>
-                                            <strong style="color: #DB504A;"><?= number_format($item['price']) ?> đ</strong>
+                                            <p style="margin:0; font-size: 14px; line-height: 1.5;">
+                                                <?= $item['ten_dichvu'] ?>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <strong style="color: #DB504A; display: block; margin-top: 5px;">
+                                                <?= number_format($item['total_price']) ?> đ
+                                            </strong>
                                         </td>
 
                                         <td>
@@ -240,7 +246,8 @@
                                         <td>
                                             <form action="index.php?act=update_status_lich" method="POST"
                                                 style="display:inline-block">
-                                                <input type="hidden" name="id" value="<?= $item['id'] ?>">
+
+                                                <input type="hidden" name="ma_lich" value="<?= $item['ma_lich'] ?>">
 
                                                 <?php if ($st == 'pending'): ?>
                                                     <button name="status" value="confirmed" class="btn-action btn-approve"

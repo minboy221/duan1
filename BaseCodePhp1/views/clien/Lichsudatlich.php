@@ -77,6 +77,26 @@
     .btn-view:hover {
         background: #D6A354;
     }
+    .pagination button {
+            margin: 3px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .pagination button:hover {
+            background: #e0e0e0;
+        }
+
+        .pagination .active {
+            background: #f6c23e !important;
+            /* màu xanh nổi bật */
+            color: white !important;
+            border-color: #0a58ca !important;
+        }
 </style>
 
 <body>
@@ -216,7 +236,7 @@
                                         <td><?= htmlspecialchars($item['ten_tho']) ?></td>
 
                                         <td style="color: #d63031; font-weight: bold;">
-                                            <?= number_format($item['price'], 0, ',', '.') ?>đ
+                                            <?= number_format($item['total_price'], 0, ',', '.') ?>đ
                                         </td>
 
                                         <td>
@@ -290,5 +310,61 @@
     </footer>
 </body>
 <script src="<?= BASE_URL ?>public/main.js"></script>
+<script>
+// Số dòng mỗi trang
+const rowsPerPage = 5;
+
+// Lấy bảng đúng theo HTML
+const table = document.querySelector(".bang-lichsu table");
+const rows = table.querySelectorAll("tbody tr");
+const totalRows = rows.length;
+
+// Tính số trang
+const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+// Tạo thanh phân trang — thêm vào dưới bảng
+const pagination = document.createElement("div");
+pagination.classList.add("pagination");
+pagination.style.margin = "20px 0";
+pagination.style.textAlign = "center";
+document.querySelector(".bang-lichsu").appendChild(pagination);
+
+function showPage(page) {
+    // Ẩn toàn bộ
+    rows.forEach(r => r.style.display = "none");
+
+    // Vị trí bắt đầu – kết thúc
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    // Hiển thị đúng số dòng
+    for (let i = start; i < end && i < totalRows; i++) {
+        rows[i].style.display = "";
+    }
+
+    // Active nút
+    document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
+    const activeBtn = document.getElementById("page-" + page);
+    if (activeBtn) activeBtn.classList.add("active");
+}
+
+// Render nút phân trang
+for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement("button");
+    btn.innerText = i;
+    btn.id = "page-" + i;
+    btn.classList.add("page-btn");
+    btn.style.margin = "3px";
+    btn.style.padding = "8px 14px";
+    btn.style.borderRadius = "5px";
+    btn.style.border = "1px solid #ccc";
+    btn.style.cursor = "pointer";
+    btn.onclick = () => showPage(i);
+    pagination.appendChild(btn);
+}
+
+// Hiển thị trang đầu tiên
+if (totalRows > 0) showPage(1);
+</script>
 
 </html>

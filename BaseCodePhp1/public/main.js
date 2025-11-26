@@ -33,17 +33,19 @@ if (dropdownBtn && dropdownContent) {
 
 //phần hiên thị popup đăng nhập
 function openPopup() {
-        document.getElementById("login-popup").style.display = "flex";
-    }
+    const popup = document.getElementById("login-popup");
+    if (popup) popup.style.display = "flex";
+}
 
-    function closePopup() {
-        document.getElementById("login-popup").style.display = "none";
-    }
+function closeLoginPopup() { // Đổi tên để tránh trùng
+    const popup = document.getElementById("login-popup");
+    if (popup) popup.style.display = "none";
+}
 
-    // Đóng khi click ra ngoài
-    window.onclick = function(event) {
-        let popup = document.getElementById("login-popup");
-        if (event.target == popup) {
-            popup.style.display = "none";
-        }
+// Đóng khi click ra ngoài popup đăng nhập
+window.onclick = function (event) {
+    let popup = document.getElementById("login-popup");
+    if (event.target == popup) {
+        popup.style.display = "none";
+    }
 }
