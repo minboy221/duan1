@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wgh…0;700&family=Roboto:wght@300;400;500;700;900&display=swap');
 
 /* Reset cơ bản */
 * {
@@ -174,7 +174,7 @@ body {
     position: absolute;
     right: 35px;
     top: 40px;
-    background: #fff;
+background: #fff;
     border-radius: 20px;
     display: flex;
     align-items: center;
@@ -355,7 +355,7 @@ main {
 /* Khung chứa hóa đơn */
 .baohoadon {
     background: rgba(35, 86, 128, 0.1);
-    backdrop-filter: blur(15px);
+backdrop-filter: blur(15px);
     padding: 40px;
     border-radius: 20px;
     width: 800px;
@@ -534,7 +534,7 @@ tfoot td {
 }
 
 .comment-box textarea:focus {
-    border-color: #ffd700;
+border-color: #ffd700;
 }
 
 .btn.submit-review {

@@ -144,26 +144,26 @@
                             <img src="/duan1/BaseCodePhp1/anhmau/thogoi1.192Z.png" alt="">
                             <div class="infotho">
                                 <div class="ten">
-                                    <p>Việt Hùng</p>
+                                    <p>Ngọc Anh</p>
                                 </div>
                             </div>
                         </div>
                         <div class="tho">
                             <img src="/duan1/BaseCodePhp1/anhmau/thogoi2.792Z.png" alt="">
                             <div class="ten">
-                                <p>Mạnh Dũng</p>
+                                <p>Thúy Hằng</p>
                             </div>
                         </div>
                         <div class="tho">
                             <img src="/duan1/BaseCodePhp1/anhmau/thonu2.493Z.png" alt="">
                             <div class="ten">
-                                <p>Công Huy</p>
+                                <p>Nguyễn Dung</p>
                             </div>
                         </div>
                         <div class="tho">
                             <img src="/duan1/BaseCodePhp1/anhmau/goidauthugian.679Z.png" alt="">
                             <div class="ten">
-                                <p>Nhật Minh</p>
+                                <p>Diệu Linh </p>
                             </div>
                         </div>
                     </div>
