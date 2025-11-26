@@ -136,7 +136,8 @@
                             </div>
                             <div class="thongtindichvu">
                                 <h2>Cắt Tóc</h2>
-                                <p>Trải nghiệm cắt tóc phong cách dành riêng cho phái mạnh, vừa tiện lợi vừa thư giãn
+                                <p>Trải nghiệm cắt tóc phong cách dành riêng cho phái mạnh, vừa tiện lợi vừa thư
+                                    giãn
                                     tại
                                     đây
                                 </p>
@@ -161,7 +162,8 @@
                             </div>
                             <div class="thongtindichvu">
                                 <h2>Thay đổi màu tóc</h2>
-                                <p>Màu tóc giúp định hình phong cách và thay đổi diện mạo một cách đột phá mà bất cứ ai
+                                <p>Màu tóc giúp định hình phong cách và thay đổi diện mạo một cách đột phá mà bất cứ
+                                    ai
                                     cũng
                                     nên thử.
                                 </p>
@@ -243,7 +245,8 @@
         </div>
         <div class="titlenoidung">
             <h2>DỊCH VỤ CHÚNG TÔI CUNG CẤP</h2>
-            <p>31Shine không tạo ra chúng. Chúng tôi là điểm tựa, giúp anh thể hiện trọn vẹn phong thái, khí chất và sẵn
+            <p>31Shine không tạo ra chúng. Chúng tôi là điểm tựa, giúp anh thể hiện trọn vẹn phong thái, khí chất và
+                sẵn
                 sàng cho những điều quan trọng phía trước.
             </p>
         </div>

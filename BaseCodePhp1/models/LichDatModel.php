@@ -90,8 +90,11 @@ class LichDatModel
             $sql = "INSERT INTO lichdat (ma_lich, khachhang_id, dichvu_id, khunggio_id, note, status, created_at) 
                     VALUES (?, ?, ?, ?, ?, 'pending', NOW())";
             $stmt = $this->conn->prepare($sql);
+
+            // 3. Truyền biến $ma_lich vào execute
             $stmt->execute([$ma_lich, $khachhang_id, $dichvu_id, $khunggio_id, $note]);
-            return $ma_lich;
+
+            return true;
         } catch (Exception $e) {
             return false;
         }
@@ -119,7 +122,7 @@ class LichDatModel
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$ma_lich]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // xem lịch sử đặt của client (có phân trang)

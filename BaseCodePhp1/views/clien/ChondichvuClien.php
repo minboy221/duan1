@@ -2,13 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chọn dịch vụ | 31Shine</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/chondichvu.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
-</head>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/chondichvu.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png" />
 </head>
 
 <body>
@@ -33,36 +32,28 @@
             <aside class="aside">
                 <div class="logo">
                     <a href="<?= BASE_URL ?>?act=home">
-                        <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
+                        <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="" />
                     </a>
                 </div>
                 <div class="menu">
                     <ul>
-                        <li>
-                            <a href="<?= BASE_URL ?>?act=home">Trang Chủ</a>
-                        </li>
-                        <li>
-                            <a href="<?= BASE_URL ?>?act=about">Về 31Shine</a>
-                        </li>
-                        <li>
-                            <a href="<?= BASE_URL ?>?act=dichvu">Dịch Vụ</a>
-                        </li>
-                        <li>
-                            <a href="<?= BASE_URL ?>?act=nhanvien">Nhân Viên</a>
-                        </li>
+                        <li><a href="<?= BASE_URL ?>?act=home">Trang Chủ</a></li>
+                        <li><a href="<?= BASE_URL ?>?act=about">Về 31Shine</a></li>
+                        <li><a href="<?= BASE_URL ?>?act=dichvu">Dịch Vụ</a></li>
+                        <li><a href="<?= BASE_URL ?>?act=nhanvien">Nhân Viên</a></li>
                     </ul>
                     <div class="icon">
                         <i class="fa fa-search" id="timkiem"></i>
                         <div class="search-box" id="search-box">
                             <form action="" method="GET">
-                                <input type="hidden" name="act" value="search_client">
+                                <input type="hidden" name="act" value="search_client" />
                                 <input type="text" name="keyword" placeholder="Tìm kiếm dịch vụ, giá dịch vụ..."
-                                    value="<?= $_GET['keyword'] ?? '' ?>">
+                                    value="<?= $_GET['keyword'] ?? '' ?>" />
                                 <button type="submit"><i class="fa fa-arrow-right"></i></button>
                             </form>
                         </div>
                     </div>
-                    <!-- phần hiển thị các nút cho người dùng khi đã đăng nhập tài khoản -->
+
                     <div class="dangky">
                         <div class="dropdown">
                             <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
@@ -76,9 +67,7 @@
                                 </div>
                             <?php else: ?>
                                 <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
-                                    <button>
-                                        Đăng Nhập / Đăng Ký
-                                    </button>
+                                    <button>Đăng Nhập / Đăng Ký</button>
                                 </a>
                             <?php endif; ?>
                         </div>
@@ -87,10 +76,12 @@
             </aside>
         </header>
     </div>
+
     <div class="conten">
         <div class="background">
-            <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
+            <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="" />
         </div>
+
         <main>
             <div class="chondichvu">
                 <div class="tieude">
@@ -103,70 +94,114 @@
                     </a>
                     <h2>Chọn dịch vụ</h2>
                 </div>
+                <h1>CHỌN DỊCH VỤ</h1>
 
-                <div class="search">
-                    <input type="text" placeholder="Tìm kiếm dịch vụ...">
-                    <button><i class="fa fa-search"></i></button>
-                </div>
-
-                <form action="<?= BASE_URL ?>?act=datlich" method="POST" id="bookingForm"></form>
-
-                <div class="baodichvu">
-                    <?php if (!empty($categoriesWithServices)):
-                        foreach ($categoriesWithServices as $category):
-                            if (!empty(($category['services']))): ?>
-                                <div class="dichvu">
-                                    <h3><?= htmlspecialchars($category['name']) ?></h3>
-                                    <div class="cacdichvu">
-                                        <?php foreach ($category['services'] as $service): ?>
-                                            <div class="dichvucon">
-                                                <div class="baoanh">
-                                                    <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($service['image']) ?>"
-                                                        alt="<?= htmlspecialchars($service['name']) ?>">
-                                                    <span class="duration"><?= htmlspecialchars($service['time']) ?>p</span>
-                                                </div>
-                                                <div class="infor">
-                                                    <div>
-                                                        <p><?= htmlspecialchars($service['name']) ?></p>
-                                                        <div class="infor-gia">
-                                                            <span>Giá tiêu chuẩn</span>
-                                                            <p><?= number_format($service['price']) ?> VNĐ</p>
-                                                        </div>
+                <!-- FORM BẮT ĐẦU Ở ĐÂY -->
+                <form action="<?= BASE_URL ?>?act=datlich" method="POST" id="bookingForm">
+                    <div class="baodichvu">
+                        <?php if (!empty($categoriesWithServices)):
+                            foreach ($categoriesWithServices as $category):
+                                if (!empty(($category['services']))): ?>
+                                    <div class="dichvu">
+                                        <h3><?= htmlspecialchars($category['name']) ?></h3>
+                                        <div class="cacdichvu">
+                                            <?php foreach ($category['services'] as $service): ?>
+                                                <div class="dichvucon">
+                                                    <div class="baoanh">
+                                                        <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($service['image']) ?>"
+                                                            alt="<?= htmlspecialchars($service['name']) ?>" />
+                                                        <span class="duration"><?= htmlspecialchars($service['time']) ?>p</span>
                                                     </div>
-                                                    <a class="btn-select"
-                                                        href="index.php?act=add_service&id=<?= $service['id'] ?>">
-                                                        CHỌN
-                                                    </a>
-
-
+                                                    <div class="infor">
+                                                        <div>
+                                                            <p><?= htmlspecialchars($service['name']) ?></p>
+                                                            <div class="infor-gia">
+                                                                <span>Giá tiêu chuẩn</span>
+                                                                <p><?= number_format($service['price']) ?> VNĐ</p>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn-select" data-id="<?= $service['id'] ?>">CHỌN</button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        <?php endforeach; ?>
+                                            <?php endforeach; ?>
+                                        </div>
                                     </div>
-                                </div>
-                        <?php endif;
-                        endforeach;
-                    else: ?>
-                        <p style="text-align: center; padding: 20px;">Hiện chưa có dịch vụ nào.</p>
-                    <?php endif; ?>
-                </div>
-            </div>
+                                <?php endif; endforeach; else: ?>
+                            <p style="text-align:center; padding:20px;">Hiện chưa có dịch vụ nào.</p>
+                        <?php endif; ?>
+                    </div>
 
-            <div class="dachon">
-                <div class="danhsach">
-                    <p>Đã chọn: <strong id="total-count">0</strong></p>
-                    <span><strong id="total-price">0</strong> VNĐ</span>
-                    <button type="submit" form="bookingForm">
-                        HOÀN TẤT
-                    </button>
-                </div>
+                    <div class="dachon">
+                        <div class="danhsach">
+                            <div class="left">
+                                <p>Đã chọn: <strong id="total-count">0</strong></p>
+                            </div>
+                            <div class="center">
+                                <span><strong id="total-price">0</strong> VNĐ</span>
+                            </div>
+                            <div class="right">
+                                <button type="submit">HOÀN TẤT</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- FORM KẾT THÚC Ở ĐÂY -->
             </div>
         </main>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let totalCount = 0;
+            let totalPrice = 0;
+
+            const countEl = document.getElementById("total-count");
+            const priceEl = document.getElementById("total-price");
+            const form = document.getElementById("bookingForm");
+            const selectButtons = document.querySelectorAll(".btn-select");
+
+            selectButtons.forEach(btn => {
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    let serviceItem = this.closest(".dichvucon");
+                    let serviceID = this.dataset.id;
+
+                    let servicePrice = parseInt(
+                        serviceItem.querySelector(".infor-gia p").innerText.replace(/\D/g, "")
+                    );
+
+                    if (!this.classList.contains("btn-selected")) {
+                        this.classList.add("btn-selected");
+                        this.innerText = "ĐÃ CHỌN";
+
+                        let input = document.createElement("input");
+                        input.type = "hidden";
+                        input.name = "services[]";
+                        input.value = serviceID;
+                        input.id = "service-" + serviceID;
+                        form.appendChild(input);
+
+                        totalCount++;
+                        totalPrice += servicePrice;
+                    } else {
+                        this.classList.remove("btn-selected");
+                        this.innerText = "CHỌN";
+
+                        let removeInput = document.getElementById("service-" + serviceID);
+                        if (removeInput) removeInput.remove();
+
+                        totalCount--;
+                        totalPrice -= servicePrice;
+                    }
+
+                    countEl.innerText = totalCount;
+                    priceEl.innerText = totalPrice.toLocaleString();
+                });
+            });
+        });
+    </script>
+
 </body>
-<script src="<?= BASE_URL ?>public/main.js"></script>
-<script>
-    
-</script>
 
 </html>
