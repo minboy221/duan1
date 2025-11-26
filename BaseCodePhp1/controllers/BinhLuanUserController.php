@@ -52,70 +52,88 @@ class BinhLuanUserController
     }
     // Trong BinhLuanUserController.php
 
-// Trong BinhLuanUserController.php
+    // Trong BinhLuanUserController.php
 
-public function submitDanhGia()
-{
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        echo "Phương thức không hợp lệ!";
-        return;
+    public function submitDanhGia()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo "Phương thức không hợp lệ!";
+            return;
+        }
+
+        // 1. Lấy dữ liệu
+        $ma_lich = $_POST['ma_lich'] ?? null;
+        $rating = $_POST['rating'] ?? null;
+        $comment = $_POST['comment'] ?? null;
+
+        // Lấy ID khách từ session
+        $khachhang_id = $_SESSION['user_id'] ?? null;
+
+        // Kiểm tra dữ liệu đầu vào
+        if (!$ma_lich || !$rating || !$khachhang_id) {
+            echo "<script>alert('Thiếu dữ liệu hoặc phiên đăng nhập hết hạn!'); window.history.back();</script>";
+            return;
+        }
+
+        // 2. Gọi Model lấy thông tin đơn hàng
+        $lichModel = new LichDatModel();
+        $bookingInfo = $lichModel->getBookingByCode($ma_lich);
+
+        // --- 🛑 BẮT ĐẦU ĐOẠN SỬA LỖI 🛑 ---
+
+        // Kiểm tra nếu không có dữ liệu
+        if (!$bookingInfo) {
+            echo "<script>alert('Không tìm thấy đơn đặt lịch!'); window.history.back();</script>";
+            return;
+        }
+
+        // XỬ LÝ LỖI FETCH/FETCHALL:
+        // Nếu model trả về mảng nhiều dòng (có số 0 ở đầu), ta lấy dòng đầu tiên
+        if (isset($bookingInfo[0]) && is_array($bookingInfo[0])) {
+            $bookingInfo = $bookingInfo[0];
+        }
+
+        // Debug: Nếu vẫn lỗi, hãy bỏ comment dòng dưới để xem nó in ra gì
+        // echo "<pre>"; print_r($bookingInfo); die();
+
+        // Kiểm tra xem key 'khachhang_id' có tồn tại không
+        if (!isset($bookingInfo['khachhang_id'])) {
+            echo "Lỗi dữ liệu: Không tìm thấy thông tin khách hàng trong đơn hàng.";
+            return;
+        }
+
+        // --- KẾT THÚC ĐOẠN SỬA LỖI ---
+
+        // 3. Kiểm tra quyền sở hữu (ID trong đơn phải trùng ID người đang đăng nhập)
+        if ($bookingInfo['khachhang_id'] != $khachhang_id) {
+            echo "<script>alert('Bạn không có quyền đánh giá đơn hàng này!'); window.history.back();</script>";
+            return;
+        }
+
+        // 4. Kiểm tra trạng thái (Chỉ đơn 'done' mới được đánh giá)
+        if ($bookingInfo['status'] !== 'done') {
+            echo "<script>alert('Đơn hàng chưa hoàn thành nên chưa thể đánh giá.'); window.history.back();</script>";
+            return;
+        }
+
+        // 5. Kiểm tra xem đã đánh giá chưa (Dựa vào cột rating trong DB)
+        if (!empty($bookingInfo['rating'])) {
+            echo "<script>alert('Đơn hàng này đã được đánh giá rồi.'); window.history.back();</script>";
+            return;
+        }
+
+        // 6. Lưu đánh giá
+        // Gọi hàm cập nhật rating và review vào bảng lichdat
+        $updateSuccess = $lichModel->updateRatingAndReview($ma_lich, $rating, $comment);
+
+        if ($updateSuccess) {
+            echo "<script>
+                    alert('Cảm ơn bạn đã đánh giá!'); 
+                    window.location.href = 'index.php?act=lichsudatchitiet&ma_lich=" . $ma_lich . "';
+                  </script>";
+            exit;
+        } else {
+            echo "<script>alert('Lỗi khi lưu đánh giá!'); window.history.back();</script>";
+        }
     }
-
-    // 💡 KHÔI PHỤC: Lấy dữ liệu từ POST và SESSION
-    $ma_lich = $_POST['ma_lich'] ?? null;
-    $rating  = $_POST['rating'] ?? null;
-    $comment = $_POST['comment'] ?? null;
-    
-    // Lấy ID khách hàng từ Session (Đã sửa khóa thành 'user_id' ở các bước trước)
-    $khachhang_id = $_SESSION['user_id'] ?? null; 
-
-    // 💡 KHÔI PHỤC: Kiểm tra dữ liệu cần thiết
-    if (!$ma_lich || !$rating || !$khachhang_id) {
-        echo "Thiếu dữ liệu cần thiết (Mã lịch, Số sao, hoặc bạn chưa đăng nhập).";
-        return;
-    }
-    // ----------------------------------------------------------------------
-    
-    $lichModel = new LichDatModel();
-
-    // Lấy thông tin booking (Lưu ý: hàm này phải trả về mảng 1 chiều hoặc false)
-    $bookingInfo = $lichModel->getBookingByCode($ma_lich); 
-
-    // 💡 SỬA: Kiểm tra trực tiếp $bookingInfo (nếu nó là false)
-    if (!$bookingInfo) {
-        echo "Không tìm thấy đơn đặt lịch!";
-        return;
-    }
-
-    // Kiểm tra quyền sở hữu
-    if ($bookingInfo['khachhang_id'] != $khachhang_id) {
-        // Lỗi này xảy ra khi ID trong session không khớp với ID khách hàng trong đơn
-        echo "Bạn không có quyền đánh giá đơn hàng này.";
-        return;
-    }
-
-    // Kiểm tra trạng thái (Chỉ đơn 'done' mới được đánh giá)
-    if ($bookingInfo['status'] !== 'done') {
-        echo "Đơn hàng chưa hoàn thành nên chưa thể đánh giá.";
-        return;
-    }
-
-    // Kiểm tra xem đã đánh giá chưa
-    if (!is_null($bookingInfo['rating'])) {
-        echo "Đơn hàng này đã được đánh giá rồi.";
-        return;
-    }
-
-    // ----------------------------------------------------
-    // LƯU ĐÁNH GIÁ (Gọi hàm model cập nhật cột rating/review trong lichdat)
-    // ----------------------------------------------------
-    $updateSuccess = $lichModel->updateRatingAndReview($ma_lich, $rating, $comment);
-
-    if ($updateSuccess) {
-        header("Location: index.php?act=lichsudatchitiet&ma_lich=" . $ma_lich);
-        exit;
-    } else {
-        echo "Lỗi khi lưu đánh giá vào cơ sở dữ liệu.";
-    }
-}
 }

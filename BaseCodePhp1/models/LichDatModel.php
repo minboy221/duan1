@@ -109,12 +109,12 @@ class LichDatModel
     }
 
     // get by code (chi tiết khi client được chuyển sang cam on)
-        // Trong LichDatModel.php
+    // Trong LichDatModel.php
 
-// Sửa hàm getBookingByCode: dùng cho cam_on
-public function getBookingByCode($ma_lich)
-{
-    $sql = "SELECT 
+    // Sửa hàm getBookingByCode: dùng cho cam_on
+    public function getBookingByCode($ma_lich)
+    {
+        $sql = "SELECT 
                  ld.*, 
                  dv.name as ten_dichvu, dv.price,
                  kh.name as ten_khach, kh.phone,
@@ -129,18 +129,17 @@ public function getBookingByCode($ma_lich)
              JOIN phan_cong pc ON kg.phan_cong_id = pc.id
              JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
              JOIN tho t ON pc.tho_id = t.id
-             WHERE ld.ma_lich = ?
-             LIMIT 1";
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute([$ma_lich]);
-    // 💡 SỬA: Dùng fetch() thay vì fetchAll()
-    return $stmt->fetch(PDO::FETCH_ASSOC); 
-}
+             WHERE ld.ma_lich = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$ma_lich]);
+        // 💡 SỬA: Dùng fetch() thay vì fetchAll()
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-// Hàm getById (dùng cho form đánh giá) cũng cần sửa tương tự để đảm bảo trả về 1 bản ghi
-public function getById($ma_lich)
-{
-    $sql = "SELECT 
+    // Hàm getById (dùng cho form đánh giá) cũng cần sửa tương tự để đảm bảo trả về 1 bản ghi
+    public function getById($ma_lich)
+    {
+        $sql = "SELECT 
                  ld.*, 
                  dv.name AS ten_dichvu, dv.price,
                  kh.name AS ten_khach, kh.phone,
@@ -156,15 +155,15 @@ public function getById($ma_lich)
              JOIN tho t ON pc.tho_id = t.id
              WHERE ld.ma_lich = ?
              LIMIT 1";
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute([$ma_lich]);
-    // 💡 SỬA: Dùng fetch() thay vì fetchAll()
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$ma_lich]);
+        // 💡 SỬA: Dùng fetch() thay vì fetchAll()
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     // xem lịch sử đặt của client (có phân trang)
- public function getHistoryByCustomerPaginate($khachhang_id, $limit = 5, $offset = 0)
-{
-    $sql = "SELECT 
+    public function getHistoryByCustomerPaginate($khachhang_id, $limit = 5, $offset = 0)
+    {
+        $sql = "SELECT 
                 ld.id, ld.ma_lich, ld.status, ld.created_at, ld.cancel_reason,
                 ld.rating, /* 💡 CỘT RATING ĐÃ ĐƯỢC THÊM */
                 dv.name AS ten_dichvu, dv.price,
@@ -181,13 +180,13 @@ public function getById($ma_lich)
             ORDER BY n.date DESC, kg.time DESC
             LIMIT :limit OFFSET :offset";
 
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bindValue(':khachhang_id', $khachhang_id, PDO::PARAM_INT);
-    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':khachhang_id', $khachhang_id, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function countHistoryByCustomer($khachhang_id)
     {

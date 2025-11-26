@@ -225,24 +225,24 @@
                                     ?>
                                     <tr>
                                         <td>#<?= htmlspecialchars($item['ma_lich']) ?></td>
-                                        <td><?= !empty($item['ngay_lam']) ? date('d/m/Y', strtotime($item['ngay_lam'])) : '---' ?></td>
+                                        <td><?= !empty($item['ngay_lam']) ? date('d/m/Y', strtotime($item['ngay_lam'])) : '---' ?>
+                                        </td>
                                         <td><?= htmlspecialchars($item['gio_lam'] ?? '---') ?></td>
                                         <td><?= htmlspecialchars($item['ten_dichvu']) ?></td>
                                         <td><?= htmlspecialchars($item['ten_tho']) ?></td>
-                                        <td style="color:#d63031;font-weight:bold;"><?= number_format($item['price'] ?? 0, 0, ',', '.') ?>đ</td>
+                                        <td style="color: #d63031; font-weight: bold;">
+                                            <?= number_format($item['total_price'], 0, ',', '.') ?>đ
+                                        </td>
                                         <td><span class="badge <?= $statusClass ?>"><?= $statusText ?></span></td>
-                                        <td><?= !empty($item['cancel_reason']) ? nl2br(htmlspecialchars($item['cancel_reason'])) : '-' ?></td>
+                                        <td><?= !empty($item['cancel_reason']) ? nl2br(htmlspecialchars($item['cancel_reason'])) : '-' ?>
+                                        </td>
                                         <td class="chitiet">
                                             <a href="<?= BASE_URL ?>?act=lichsudatchitiet&ma_lich=<?= $item['ma_lich'] ?>">
                                                 <button class="btn-view">Chi Tiết</button>
                                             </a>
-
-
                                             <?php if ($item['status'] === 'done'): ?>
                                                 <?php if (!empty($item['rating'])): ?>
-                                                    <button
-                                                        class="btn-view"
-                                                        style="background:#6c757d; margin-left:5px;"
+                                                    <button class="btn-view" style="background:#6c757d; margin-left:5px;"
                                                         onclick="alert('Đơn hàng #<?= htmlspecialchars($item['ma_lich']) ?> đã được đánh giá rồi!');">
                                                         Đã Đánh Giá
                                                     </button>
@@ -259,7 +259,8 @@
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="9" style="text-align:center;padding:20px;color:#888;">Không có lịch nào</td>
+                                    <td colspan="9" style="text-align:center;padding:20px;color:#888;">Không có lịch nào
+                                    </td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>

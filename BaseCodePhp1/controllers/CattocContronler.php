@@ -325,45 +325,47 @@ class CattocContronler
     //chuyển sang trang đặt lịch thành công
     public function camOn()
     {
-        // Lấy mã lịch từ URL
+        // 1. Lấy mã lịch
         $ma_lich = $_GET['ma_lich'] ?? '';
         if (!$ma_lich) {
-            header("Location:index.php");
+            header("Location: index.php");
             exit;
         }
 
-        $lichDatModel = new LichDatModel();
+        // 2. Khởi tạo Model & Lấy dữ liệu
+        if (!isset($this->lichDatModel)) {
+            $this->lichDatModel = new LichDatModel();
+        }
 
-        // Lấy danh sách (Nó sẽ trả về mảng gồm nhiều dòng nếu đặt nhiều dịch vụ)
-        $bookingList = $lichDatModel->getBookingByCode($ma_lich);
+        // Dữ liệu trả về là Mảng các dòng (do dùng fetchAll)
+        $bookingList = $this->lichDatModel->getBookingByCode($ma_lich);
 
+        // 3. Kiểm tra dữ liệu có rỗng không
         if (empty($bookingList)) {
             echo "Không tìm thấy đơn đặt lịch hoặc mã lịch sai!";
             exit;
         }
 
-        // --- BẮT ĐẦU XỬ LÝ GỘP DỮ LIỆU ---
+        // --- XỬ LÝ GỘP DỮ LIỆU ---
 
-        // 1. Lấy thông tin chung (Khách, Thợ, Giờ) từ dòng đầu tiên
-        $finalBooking = $bookingList[0];
+        // Lấy dòng đầu tiên để lấy thông tin chung (Tên khách, thợ, giờ...)
+        // Vì tất cả các dòng đều chung mã lịch nên thông tin này giống nhau
+        $finalBooking = $bookingList[0]; // Dòng này sẽ KHÔNG lỗi nữa nếu dùng fetchAll
 
-        // 2. Tạo biến để cộng dồn
         $totalPrice = 0;
         $serviceNames = [];
 
-        // 3. Chạy vòng lặp qua tất cả các dòng tìm được
+        // Lặp qua từng dòng để cộng tiền và nối tên dịch vụ
         foreach ($bookingList as $item) {
             $totalPrice += $item['price'];
             $serviceNames[] = $item['ten_dichvu'];
         }
 
-        // 4. Cập nhật lại dữ liệu đã xử lý vào biến $finalBooking
+        // Gán lại dữ liệu tổng hợp
         $finalBooking['ten_dichvu'] = implode(', ', $serviceNames);
-
-        // Gán tổng tiền đã cộng
         $finalBooking['price'] = $totalPrice;
 
-        // 5. Gán biến $booking để View sử dụng (Vì View của bạn đang dùng biến $booking)
+        // Gán vào biến $booking để View sử dụng
         $booking = $finalBooking;
 
         require_once './views/clien/CamOnView.php';
@@ -437,23 +439,17 @@ class CattocContronler
         }
         $user_id = $_SESSION['user_id'];
 
-        // 2. Gọi model lấy dữ liệu thô
-        if (!isset($this->lichDatModel)) {
-            require_once './models/LichDatModel.php';
-            $this->lichDatModel = new LichDatModel();
-        }
-
-        // Lấy dữ liệu thô (đang bị tách rời từng dòng)
+        // 2. Lấy dữ liệu thô (dạng từng dòng dịch vụ lẻ)
         $rawHistory = $this->lichDatModel->getHistoryByCustomer($user_id);
 
-        // 3. XỬ LÝ GỘP MẢNG (LOGIC GỘP)
+        // 3. XỬ LÝ GỘP MẢNG
         $historyList = [];
 
         foreach ($rawHistory as $item) {
             $ma = $item['ma_lich'];
 
             if (!isset($historyList[$ma])) {
-                // Nếu mã này chưa có trong danh sách -> Thêm mới
+                // Nếu mã này chưa có -> Thêm mới
                 $historyList[$ma] = $item;
                 $historyList[$ma]['total_price'] = (float) $item['price']; // Tạo biến tổng tiền riêng
             } else {
@@ -463,7 +459,9 @@ class CattocContronler
             }
         }
 
-        // Gửi biến $historyList sang View
+        // (Tùy chọn) Chuyển key mã lịch thành key số để dễ xử lý ở view nếu cần
+        // $historyList = array_values($historyList);
+
         require_once './views/clien/Lichsudatlich.php';
     }
 
@@ -507,28 +505,23 @@ class CattocContronler
     //PHẦN HUỶ LỊCH CỦA CLIEN
     public function huyLich()
     {
-        //kiểm tra đăng nhập
-        if (!isset($_SESSION['username']) || !isset($_SESSION['user_id'])) {
+        if (!isset($_SESSION['user_id'])) {
             echo "<script>alert('Vui lòng đăng nhập lại!'); window.location.href='index.php?act=dangnhap_khachhang';</script>";
             exit;
         }
 
+        // Lấy ID của bản ghi trong bảng lichdat
+        // Lưu ý: Nếu 1 mã lịch có nhiều dòng (nhiều dịch vụ), bạn cần hủy theo ma_lich hoặc hủy từng id
+        // Ở đây giả sử bạn hủy theo id dòng (hoặc bạn nên sửa model để hủy theo ma_lich sẽ tốt hơn)
         $id = $_GET['id'] ?? 0;
         $user_id = $_SESSION['user_id'];
-
-        //phần gọi model
-        if (!isset($this->lichDatModel)) {
-            require_once './models/LichDatModel.php';
-            // SỬA TÊN BIẾN CHO ĐỒNG NHẤT
-            $this->lichDatModel = new LichDatModel();
-        }
 
         $result = $this->lichDatModel->cancelBooking($id, $user_id);
 
         if ($result) {
             echo "<script>
                     alert('Đã hủy lịch thành công!');
-                    window.location.href = 'index.php?act=lichsu'; // Sửa lại act cho đúng trang lịch sử của bạn
+                    window.location.href = 'index.php?act=lichsu_datlich'; 
                   </script>";
         } else {
             echo "<script>
