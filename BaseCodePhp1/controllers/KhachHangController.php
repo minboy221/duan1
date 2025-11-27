@@ -111,4 +111,52 @@ class KhachHangController
         header('Location: index.php?act=home');
         exit();
     }
+    public function forgotPassword()
+    {
+        $error = '';
+        $success = '';
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'] ?? '';
+            $phone = $_POST['phone'] ?? '';
+            $new_pass = $_POST['new_password'] ?? '';
+            $confirm_pass = $_POST['confirm_password'] ?? '';
+
+            // 1. Validate dữ liệu trống
+            if (empty($email) || empty($phone) || empty($new_pass) || empty($confirm_pass)) {
+                $error = "Vui lòng nhập đầy đủ thông tin!";
+            } 
+            // 2. Validate mật khẩu nhập lại
+            elseif ($new_pass !== $confirm_pass) {
+                $error = "Mật khẩu xác nhận không khớp!";
+            } else {
+                // 3. Kiểm tra xem Email và SĐT có đúng của user đó không
+                $user = $this->khachhang->checkUserReset($email, $phone);
+
+                if ($user) {
+                    // 4. Nếu đúng, tiến hành đổi mật khẩu
+                    // Lưu ý: Code cũ của bạn dùng md5, nên ở đây cũng phải dùng md5
+                    $new_pass_md5 = md5($new_pass);
+                    
+                    $result = $this->khachhang->updatePassword($email, $new_pass_md5);
+
+                    if ($result) {
+                        echo "<script>
+                                alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại.'); 
+                                window.location.href='index.php?act=dangnhap_khachhang';
+                              </script>";
+                        exit();
+                    } else {
+                        $error = "Lỗi hệ thống, vui lòng thử lại sau.";
+                    }
+                } else {
+                    $error = "Email hoặc số điện thoại không chính xác!";
+                }
+            }
+        }
+
+        // Gọi view hiển thị form quên mật khẩu
+        require_once './views/clien/QuenmatkhauView.php';
+    }
+    
 }

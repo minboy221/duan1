@@ -43,6 +43,7 @@
 
                     <div class="footer">
                         <a href="<?= BASE_URL ?>?act=dangky_khachhang" class="link">Đăng Ký</a>
+                        <a href="<?= BASE_URL ?>?act=quenmatkhau" class="quen">?Bạn quên mật khẩu</a>
                     </div>
                 </form>
 

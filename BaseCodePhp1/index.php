@@ -128,6 +128,7 @@ match ($act) {
     'dangnhap_khachhang' => (new KhachHangController())->login(),
     'logout' => (new KhachHangController())->logout(),
     'huylich' => $clientController->huyLich(),
+    'quenmatkhau'=>(new KhachHangController())->forgotPassword(),//quên mật khẩu
     //phần hiển thị dữ liệu ra clien
     //phần hiển thị giao diện admin
     'homeadmin' => (new AdminHomeController())->index(),
