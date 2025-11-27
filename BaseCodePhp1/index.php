@@ -141,7 +141,7 @@ match ($act) {
     'update_danhmuc' => (new CategoryController())->update(),
     'delete_danhmuc' => (new CategoryController())->delete(),
 
-    'homeadmin' => (new HomeAdminController())->index(),
+    'homeadmin' => (new AdminHomeController())->index(),
     // dich vụ
     'qlydichvu' => (new DichVuController())->quanlydichvu(),
     'createdichvu' => (new DichVuController())->createdichvu(),

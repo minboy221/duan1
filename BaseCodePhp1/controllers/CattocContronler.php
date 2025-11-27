@@ -284,44 +284,51 @@ class CattocContronler
         echo json_encode($slots);
     }
     //xử lý lưu lịch đặt
-    public function luuDatLich()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $khachhang_id = $_SESSION['user_id'] ?? 1;
-            $khunggio_id = $_POST['khunggio_id'];
-            $note = $_POST['note'] ?? '';
+// Trong CattocContronler.php
 
-            if (isset($_SESSION['booking_cart']['services']) && !empty($_SESSION['booking_cart']['services'])) {
+// Trong CattocContronler.php, hàm luuDatLich()
 
-                $lichDatModel = new LichDatModel();
+public function luuDatLich() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $khachhang_id = $_SESSION['user_id'] ?? 1;
+        $khunggio_id = $_POST['khunggio_id'];
+        $note = $_POST['note'] ?? '';
 
-                // 1. Tạo mã lịch chung DUY NHẤT cho cả đơn này
-                $ma_lich_chung = "ML-" . strtoupper(substr(uniqid(), -6));
+        // 💡 1. KIỂM TRA GIỚI HẠN ĐẶT LỊCH (1 lịch/ngày)
+        if ($this->lichDatModel->hasBookingOnSameDay($khachhang_id, $khunggio_id)) {
+            
+            // 🛑 PHẦN CẦN THAY THẾ (Thay thế toàn bộ khối if này) 🛑
+            $_SESSION['error_sa'] = 'Lỗi: Bạn chỉ được đặt tối đa một lịch hẹn mỗi ngày!';
+            header("Location: index.php?act=datlich"); // Chuyển hướng trở lại trang đặt lịch
+            exit();
+        }
 
-                $checkSuccess = true;
-
-                foreach ($_SESSION['booking_cart']['services'] as $sv) {
-                    // Truyền mã chung vào hàm insert
-                    $result = $lichDatModel->insertBooking($khachhang_id, $sv['id'], $khunggio_id, $note, $ma_lich_chung);
-                    if (!$result)
-                        $checkSuccess = false;
-                }
-
-                if ($checkSuccess) {
-                    unset($_SESSION['booking_cart']);
-                    // Chuyển hướng với mã lịch chung
-                    echo "<script>
-                            window.location.href = 'index.php?act=cam_on&ma_lich=$ma_lich_chung';
-                          </script>";
-                    exit();
-                } else {
-                    echo "<script>alert('Lỗi khi lưu đơn hàng! Vui lòng thử lại.'); window.history.back();</script>";
-                }
-            } else {
-                echo "<script>alert('Giỏ hàng trống!'); window.history.back();</script>";
+        // 2. XỬ LÝ LƯU ĐƠN HÀNG (Logic cũ)
+        if (isset($_SESSION['booking_cart']['services'])) {
+            $ma_code = null;
+            foreach ($_SESSION['booking_cart']['services'] as $sv) {
+                // Giả sử ma_code là mã của dịch vụ đầu tiên được lưu, hoặc được truyền vào
+                $ma_code = $this->lichDatModel->insertBooking($khachhang_id, $sv['id'], $khunggio_id, $note, $ma_code);
             }
+            
+            if ($ma_code) {
+                unset($_SESSION['booking_cart']);
+                header("Location: index.php?act=cam_on&ma_lich=$ma_code");
+                exit();
+            } else {
+                // 🛑 PHẦN CẦN THAY THẾ
+                $_SESSION['error_sa'] = 'Lỗi: Không thể lưu lịch đặt. Vui lòng thử lại.';
+                header("Location: index.php?act=datlich");
+                exit();
+            }
+        } else {
+            // 🛑 PHẦN CẦN THAY THẾ
+            $_SESSION['error_sa'] = 'Giỏ hàng trống!';
+            header("Location: index.php?act=datlich");
+            exit();
         }
     }
+}
     //chuyển sang trang đặt lịch thành công
     public function camOn()
     {
