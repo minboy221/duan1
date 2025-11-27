@@ -47,5 +47,36 @@ class Khachhang
             return false;
         }
     }
+    public function checkUserReset($email, $phone)
+    {
+        try {
+            $sql = "SELECT * FROM khachhang WHERE email = :email AND phone = :phone";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([
+                ':email' => $email,
+                ':phone' => $phone
+            ]);
+            return $stmt->fetch(PDO::FETCH_ASSOC); // Trả về thông tin user nếu đúng, false nếu sai
+        } catch (Exception $e) {
+            echo 'Lỗi: ' . $e->getMessage();
+            return false;
+        }
+    }
+
+    // THÊM HÀM NÀY: Cập nhật mật khẩu mới
+    public function updatePassword($email, $newPassword)
+    {
+        try {
+            $sql = "UPDATE khachhang SET password = :password WHERE email = :email";
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute([
+                ':password' => $newPassword, // Lưu ý: password này phải đã được mã hóa md5 ở Controller
+                ':email' => $email
+            ]);
+        } catch (Exception $e) {
+            echo 'Lỗi update: ' . $e->getMessage();
+            return false;
+        }
+    }
 }
 ?>

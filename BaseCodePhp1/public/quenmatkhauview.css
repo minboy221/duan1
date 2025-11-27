@@ -107,17 +107,8 @@ main {
   text-decoration: none;
   transition: 0.3s;
 }
-.footer .quen {
-  color: #2da8b8;
-  text-decoration: none;
-  transition: 0.3s;
-}
 
 .footer .link:hover {
-  color: #fff;
-  text-decoration: underline;
-}
-.footer .quen:hover {
   color: #fff;
   text-decoration: underline;
 }
