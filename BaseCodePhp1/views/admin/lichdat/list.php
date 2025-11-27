@@ -68,6 +68,26 @@
     .btn-action:hover {
         opacity: 0.8;
     }
+    .pagination button {
+            margin: 3px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .pagination button:hover {
+            background: #e0e0e0;
+        }
+
+        .pagination .active {
+            background: #0d6efd !important;
+            /* màu xanh nổi bật */
+            color: white !important;
+            border-color: #0a58ca !important;
+        }
 </style>
 
 <body>
@@ -148,7 +168,7 @@
                         <i class='bx bx-calendar-event'></i>
                         <h3>Danh Sách Lịch Hẹn</h3>
                     </div>
-                    <table id="lichTable">
+                    <table id="userTable">
                         <thead>
                             <tr>
                                 <th>Mã</th>
@@ -240,43 +260,58 @@
 
         <script>
             // Phân trang
-            const rowsPerPage = 5;
-            const table = document.getElementById('lichTable');
-            const tbody = table.querySelector('tbody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
-            const totalPages = Math.ceil(rows.length / rowsPerPage);
-            const pagination = document.getElementById('pagination');
-            let currentPage = 1;
+const usersPerPage = 5;
 
-            function showPage(page) {
-                currentPage = page;
-                rows.forEach((row, i) => row.style.display = (i >= (page - 1) * rowsPerPage && i < page * rowsPerPage ? '' : 'none'));
-                Array.from(pagination.querySelectorAll('button')).forEach(btn => btn.classList.remove('active'));
-                pagination.querySelector('#page-' + page)?.classList.add('active');
-                document.getElementById('prevBtn').disabled = (page === 1);
-                document.getElementById('nextBtn').disabled = (page === totalPages);
+        // Lấy bảng
+        const table = document.getElementById("userTable");
+        const rows = table.querySelectorAll("tbody tr");
+        const totalRows = rows.length;
+
+        // Tính số trang
+        const totalPages = Math.ceil(totalRows / usersPerPage);
+
+        // Tạo thanh phân trang
+        const pagination = document.createElement("div");
+        pagination.classList.add("pagination");
+        pagination.style.margin = "20px";
+        pagination.style.textAlign = "center";
+        document.querySelector(".orders").appendChild(pagination);
+
+        function showPage(page) {
+            // Ẩn toàn bộ
+            rows.forEach(r => r.style.display = "none");
+
+            // Vị trí bắt đầu – kết thúc
+            const start = (page - 1) * usersPerPage;
+            const end = start + usersPerPage;
+
+            // Hiển thị đúng 5 user
+            for (let i = start; i < end && i < totalRows; i++) {
+                rows[i].style.display = "";
             }
 
-            const prevBtn = document.createElement('button');
-            prevBtn.textContent = '« Trước';
-            prevBtn.id = 'prevBtn';
-            prevBtn.addEventListener('click', () => showPage(currentPage - 1));
-            pagination.appendChild(prevBtn);
+            // Active nút
+            document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
+            document.getElementById("page-" + page).classList.add("active");
+        }
 
-            for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement('button');
-                btn.textContent = i;
-                btn.id = 'page-' + i;
-                btn.addEventListener('click', () => showPage(i));
-                pagination.appendChild(btn);
-            }
+        // Render nút phân trang
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.innerText = i;
+            btn.id = "page-" + i;
+            btn.classList.add("page-btn");
+            btn.style.margin = "3px";
+            btn.style.padding = "8px 14px";
+            btn.style.borderRadius = "5px";
+            btn.style.border = "1px solid #ccc";
+            btn.style.cursor = "pointer";
+            btn.onclick = () => showPage(i);
+            pagination.appendChild(btn);
+        }
 
-            const nextBtn = document.createElement('button');
-            nextBtn.textContent = 'Sau »';
-            nextBtn.id = 'nextBtn';
-            nextBtn.addEventListener('click', () => showPage(currentPage + 1));
-            pagination.appendChild(nextBtn);
-            if (totalPages > 0) showPage(1);
+        // Hiển thị trang đầu tiên
+        showPage(1);
 
 
             // SweetAlert2: popup nhập lý do hủy

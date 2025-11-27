@@ -91,22 +91,27 @@ class LichDatController
     }
 
     // Cập nhật trạng thái dành riêng cho Nhân viên (Quay về Dashboard)
-    public function updateStatusNhanVien()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'] ?? null;
-            $status = $_POST['status'] ?? null;
+// Trong LichDatController.php
 
-            if ($id && $status) {
-                $this->model->updateStatus($id, $status);
-            }
+public function updateStatusNhanVien()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = $_POST['id'] ?? null;
+        $status = $_POST['status'] ?? null;
+        // 💡 LẤY THÊM TRƯỜNG LÝ DO HỦY
+        $reason = $_POST['cancel_reason'] ?? null; 
 
-            header("Location: index.php?act=nv-dashboard");
-            exit();
-        } else {
-            header("Location: index.php?act=nv-dashboard");
-            exit();
+        if ($id && $status) {
+            // 💡 TRUYỀN THÊM BIẾN $reason CHO MODEL
+            $this->model->updateStatus($id, $status, $reason); 
         }
+
+        header("Location: index.php?act=nv-dashboard");
+        exit();
+    } else {
+        header("Location: index.php?act=nv-dashboard");
+        exit();
     }
+}
 }
 ?>

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>public/datlich.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -342,6 +343,19 @@
         }
         return true;
     }
+    document.addEventListener('DOMContentLoaded', function() {
+        <?php if (isset($_SESSION['error_sa'])): ?>
+            // Hiển thị thông báo lỗi bằng SweetAlert2
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi Đặt Lịch!',
+                text: '<?= htmlspecialchars($_SESSION['error_sa']) ?>',
+                confirmButtonText: 'Đóng'
+            });
+            // Xóa biến session ngay sau khi hiển thị
+            <?php unset($_SESSION['error_sa']); ?>
+        <?php endif; ?>
+    });
 </script>
 
 </html>
