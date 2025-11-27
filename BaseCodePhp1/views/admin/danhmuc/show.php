@@ -85,5 +85,6 @@
     </div>
 
 </body>
+<script src="<?= BASE_URL ?>public/admin.js"></script>
 
 </html>

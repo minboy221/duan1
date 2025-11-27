@@ -363,6 +363,145 @@ button,
     background-color: #fff;
 }
 
+/* phần hiển thị thời gian khi đặt lịch */
+/* Container bao quanh thông báo */
+.baothongbao {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 2000 !important;
+    width: 380px;
+    max-width: 90%;
+    animation: slideInUp 0.5s ease-out;
+}
+
+.thongbaocon {
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Card hiển thị thông báo */
+.hienthithongbao {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* Đổ bóng nhẹ */
+    border-left: 5px solid #D6A354;
+    /* Viền trái màu vàng thương hiệu */
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    transition: transform 0.3s ease;
+}
+
+.hienthithongbao:hover {
+    transform: translateY(-2px);
+    /* Hiệu ứng nổi lên khi di chuột */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Header: Dòng đếm ngược */
+.reminder-header {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+#countdown-timer {
+    color: #e74c3c;
+    /* Màu đỏ cho thời gian đếm ngược */
+    font-weight: bold;
+    font-size: 17px;
+}
+
+/* Nội dung chi tiết (Ngày, Địa chỉ, Thợ) */
+.noidungthongbao {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 15px;
+    color: #555;
+    line-height: 1.4;
+}
+
+.info-item i {
+    color: #D6A354;
+    /* Icon màu vàng */
+    font-size: 16px;
+    margin-top: 3px;
+    width: 20px;
+    /* Cố định chiều rộng để icon thẳng hàng */
+    text-align: center;
+}
+
+/* Footer: Các nút bấm */
+.reminder-footer {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: flex-start;
+    /* Căn trái các nút */
+}
+
+.reminder-footer .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+/* Nút Hủy/Đổi (Màu xám nhạt) */
+.reminder-footer .btn-light {
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.reminder-footer .btn-light:hover {
+    background-color: #e0e0e0;
+    border-color: #ccc;
+}
+
+/* Nút Chỉ đường (Màu xanh đậm) */
+.reminder-footer .btn-primary {
+    background-color: #1d3557;
+    /* Xanh đậm sang trọng */
+    color: #fff;
+}
+
+.reminder-footer .btn-primary:hover {
+    background-color: #162a45;
+    box-shadow: 0 2px 8px rgba(29, 53, 87, 0.4);
+}
+
+/* Responsive cho mobile */
+@media (max-width: 480px) {
+    .reminder-footer {
+        flex-direction: column;
+        /* Xếp dọc nút trên điện thoại */
+        gap: 10px;
+    }
+
+    .reminder-footer .btn {
+        width: 100%;
+        /* Nút full chiều rộng */
+        justify-content: center;
+    }
+}
+
 /* phần nội dung */
 main {
     max-width: 1300px;

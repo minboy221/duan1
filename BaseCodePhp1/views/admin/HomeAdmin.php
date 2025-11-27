@@ -2,11 +2,11 @@
 // Các biến từ AdminHomeController:
 // $totalStaff, $totalBookings, $dailyRevenue, $totalRevenue, $latestBookings
 
-$totalStaff      = (int)($totalStaff ?? 0);
-$totalBookings   = (int)($totalBookings ?? 0);
-$dailyRevenue    = (float)($dailyRevenue ?? 0);
-$totalRevenue    = (float)($totalRevenue ?? 0);
-$latestBookings  = $latestBookings ?? [];
+$totalStaff = (int) ($totalStaff ?? 0);
+$totalBookings = (int) ($totalBookings ?? 0);
+$dailyRevenue = (float) ($dailyRevenue ?? 0);
+$totalRevenue = (float) ($totalRevenue ?? 0);
+$latestBookings = $latestBookings ?? [];
 ?>
 
 <!DOCTYPE html>
@@ -24,14 +24,13 @@ $latestBookings  = $latestBookings ?? [];
 </head>
 <style>
     .status.cancelled {
-    background-color: #ff0000;
-    color: #fff;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-weight: 600;
-    
-}
+        background-color: #ff0000;
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-weight: 600;
 
+    }
 </style>
 
 <body>
@@ -131,12 +130,11 @@ $latestBookings  = $latestBookings ?? [];
 
             </ul>
 
-            <!-- TABLE: LỊCH ĐẶT MỚI NHẤT -->
             <div class="bottom-data">
                 <div class="orders">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
-                        <h3>3 Lịch Đặt Mới Nhất</h3>
+                        <h3>Lịch Đặt Mới Nhất</h3>
                     </div>
 
                     <table>
@@ -156,27 +154,27 @@ $latestBookings  = $latestBookings ?? [];
                                         <td><?= htmlspecialchars($booking['ten_khach'] ?? '') ?></td>
 
                                         <td>
-                                            <?= isset($booking['created_at']) 
-                                                ? date('d-m-Y', strtotime($booking['created_at'])) 
+                                            <?= isset($booking['created_at'])
+                                                ? date('d-m-Y', strtotime($booking['created_at']))
                                                 : '' ?>
                                         </td>
 
-                                        <td><?= number_format((float)($booking['price'] ?? 0)) ?> VNĐ</td>
+                                        <td><?= number_format((float) ($booking['price'] ?? 0)) ?> VNĐ</td>
 
                                         <td>
                                             <?php
-$statusMap = [
-    'pending'   => ['Chờ duyệt', 'status pending'],
-    'confirmed' => ['Đã duyệt', 'status process'],
-    'done'      => ['Hoàn thành', 'status completed'],
-    'cancelled' => ['Đã hủy', 'status cancelled danger'] // thêm màu đỏ
-];
+                                            $statusMap = [
+                                                'pending' => ['Chờ duyệt', 'status pending'],
+                                                'confirmed' => ['Đã duyệt', 'status process'],
+                                                'done' => ['Hoàn thành', 'status completed'],
+                                                'cancelled' => ['Đã hủy', 'status cancelled danger'] // thêm màu đỏ
+                                            ];
 
-$status = $booking['status'] ?? 'pending';
-$statusLabel = $statusMap[$status][0] ?? $status;
-$statusClass = $statusMap[$status][1] ?? 'status';
-?>
-<span class="<?= $statusClass ?>"><?= $statusLabel ?></span>
+                                            $status = $booking['status'] ?? 'pending';
+                                            $statusLabel = $statusMap[$status][0] ?? $status;
+                                            $statusClass = $statusMap[$status][1] ?? 'status';
+                                            ?>
+                                            <span class="<?= $statusClass ?>"><?= $statusLabel ?></span>
 
                                         </td>
                                     </tr>
@@ -195,8 +193,7 @@ $statusClass = $statusMap[$status][1] ?? 'status';
         </main>
 
     </div>
-    <!-- END CONTENT -->
-
+    <script src="<?= BASE_URL ?>public/admin.js"></script>
 </body>
 
 </html>

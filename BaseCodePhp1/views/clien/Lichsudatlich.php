@@ -10,28 +10,6 @@
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
 </head>
 <style>
-    .bang-lichsu {
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    th,
-    td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    th {
-        background-color: #f8f9fa;
-        font-weight: bold;
-    }
-
     /* Badge trạng thái */
     .badge {
         padding: 5px 10px;
@@ -240,6 +218,15 @@
                                             <a href="<?= BASE_URL ?>?act=lichsudatchitiet&ma_lich=<?= $item['ma_lich'] ?>">
                                                 <button class="btn-view">Chi Tiết</button>
                                             </a>
+                                            <?php if ($item['status'] === 'pending' || $item['status'] === 'confirmed'): ?>
+                                                <a href="<?= BASE_URL ?>?act=huylich&id=<?= $item['id'] ?>"
+                                                    onclick="return confirm('Bạn có chắc chắn muốn hủy lịch hẹn #<?= $item['ma_lich'] ?> không?');">
+                                                    <button class="btn-view"
+                                                        style="background: #dc3545; margin-left: 5px; color: white;">
+                                                        <i class="fa-solid fa-xmark"></i> Hủy
+                                                    </button>
+                                                </a>
+                                            <?php endif; ?>
                                             <?php if ($item['status'] === 'done'): ?>
                                                 <?php if (!empty($item['rating'])): ?>
                                                     <button class="btn-view" style="background:#6c757d; margin-left:5px;"
@@ -267,6 +254,20 @@
                     </table>
                 </div>
             </div>
+            <?php if (isset($_SESSION['popup_notify'])): ?>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        Swal.fire({
+                            icon: '<?= $_SESSION['popup_notify']['type'] ?>', // success hoặc error
+                            title: 'Thông báo',
+                            text: '<?= $_SESSION['popup_notify']['message'] ?>',
+                            confirmButtonColor: '#D6A354',
+                            confirmButtonText: 'Đồng ý'
+                        });
+                    });
+                </script>
+                <?php unset($_SESSION['popup_notify']); // Xóa thông báo sau khi đã hiện ?>
+            <?php endif; ?>
         </main>
     </div>
     <footer class="footer">
@@ -306,6 +307,7 @@
         </div>
     </footer>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= BASE_URL ?>public/main.js"></script>
 <script>
     // Số dòng mỗi trang

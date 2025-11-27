@@ -83,6 +83,15 @@ class CattocContronler
     public function hienthidanhmuc()
     {
         $categoriesWithServices = $this->getCategorizedServices(2);
+        $listTho = $this->thoModel->all();
+        //lấy lịch hẹn sắp tới(đã đăng nhập)
+        $upcomingBooking = null;
+        if (isset($_SESSION['user_id'])) {
+            if (!isset($this->lichDatModel)) {
+                $this->lichDatModel = new LichDatModel();
+            }
+            $upcomingBooking = $this->lichDatModel->getUpcomingBooking($_SESSION['user_id']);
+        }
         require_once './views/clien/HomeView.php';
     }
 
@@ -286,49 +295,47 @@ class CattocContronler
     //xử lý lưu lịch đặt
 // Trong CattocContronler.php
 
-// Trong CattocContronler.php, hàm luuDatLich()
+    // Trong CattocContronler.php, hàm luuDatLich()
 
-public function luuDatLich() {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $khachhang_id = $_SESSION['user_id'] ?? 1;
-        $khunggio_id = $_POST['khunggio_id'];
-        $note = $_POST['note'] ?? '';
+    public function luuDatLich()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $khachhang_id = $_SESSION['user_id'] ?? 1;
+            $khunggio_id = $_POST['khunggio_id'];
+            $note = $_POST['note'] ?? '';
 
-        // 💡 1. KIỂM TRA GIỚI HẠN ĐẶT LỊCH (1 lịch/ngày)
-        if ($this->lichDatModel->hasBookingOnSameDay($khachhang_id, $khunggio_id)) {
-            
-            // 🛑 PHẦN CẦN THAY THẾ (Thay thế toàn bộ khối if này) 🛑
-            $_SESSION['error_sa'] = 'Lỗi: Bạn chỉ được đặt tối đa một lịch hẹn mỗi ngày!';
-            header("Location: index.php?act=datlich"); // Chuyển hướng trở lại trang đặt lịch
-            exit();
-        }
+            // 💡 1. KIỂM TRA GIỚI HẠN ĐẶT LỊCH (1 lịch/ngày)
+            if ($this->lichDatModel->hasBookingOnSameDay($khachhang_id, $khunggio_id)) {
 
-        // 2. XỬ LÝ LƯU ĐƠN HÀNG (Logic cũ)
-        if (isset($_SESSION['booking_cart']['services'])) {
-            $ma_code = null;
-            foreach ($_SESSION['booking_cart']['services'] as $sv) {
-                // Giả sử ma_code là mã của dịch vụ đầu tiên được lưu, hoặc được truyền vào
-                $ma_code = $this->lichDatModel->insertBooking($khachhang_id, $sv['id'], $khunggio_id, $note, $ma_code);
-            }
-            
-            if ($ma_code) {
-                unset($_SESSION['booking_cart']);
-                header("Location: index.php?act=cam_on&ma_lich=$ma_code");
+                $_SESSION['error_sa'] = 'Lỗi: Bạn chỉ được đặt tối đa một lịch hẹn mỗi ngày!';
+                header("Location: index.php?act=datlich"); // Chuyển hướng trở lại trang đặt lịch
                 exit();
+            }
+
+            // 2. XỬ LÝ LƯU ĐƠN HÀNG (Logic cũ)
+            if (isset($_SESSION['booking_cart']['services'])) {
+                $ma_code = null;
+                foreach ($_SESSION['booking_cart']['services'] as $sv) {
+                    // Giả sử ma_code là mã của dịch vụ đầu tiên được lưu, hoặc được truyền vào
+                    $ma_code = $this->lichDatModel->insertBooking($khachhang_id, $sv['id'], $khunggio_id, $note, $ma_code);
+                }
+
+                if ($ma_code) {
+                    unset($_SESSION['booking_cart']);
+                    header("Location: index.php?act=cam_on&ma_lich=$ma_code");
+                    exit();
+                } else {
+                    $_SESSION['error_sa'] = 'Lỗi: Không thể lưu lịch đặt. Vui lòng thử lại.';
+                    header("Location: index.php?act=datlich");
+                    exit();
+                }
             } else {
-                // 🛑 PHẦN CẦN THAY THẾ
-                $_SESSION['error_sa'] = 'Lỗi: Không thể lưu lịch đặt. Vui lòng thử lại.';
+                $_SESSION['error_sa'] = 'Giỏ hàng trống!';
                 header("Location: index.php?act=datlich");
                 exit();
             }
-        } else {
-            // 🛑 PHẦN CẦN THAY THẾ
-            $_SESSION['error_sa'] = 'Giỏ hàng trống!';
-            header("Location: index.php?act=datlich");
-            exit();
         }
     }
-}
     //chuyển sang trang đặt lịch thành công
     public function camOn()
     {
@@ -512,29 +519,39 @@ public function luuDatLich() {
     //PHẦN HUỶ LỊCH CỦA CLIEN
     public function huyLich()
     {
+        // 1. Kiểm tra đăng nhập
         if (!isset($_SESSION['user_id'])) {
-            echo "<script>alert('Vui lòng đăng nhập lại!'); window.location.href='index.php?act=dangnhap_khachhang';</script>";
+            // Lưu thông báo lỗi vào session để hiện ở trang đăng nhập (nếu muốn)
+            header("Location: index.php?act=dangnhap_khachhang");
             exit;
         }
 
-        // Lấy ID của bản ghi trong bảng lichdat
-        // Lưu ý: Nếu 1 mã lịch có nhiều dòng (nhiều dịch vụ), bạn cần hủy theo ma_lich hoặc hủy từng id
-        // Ở đây giả sử bạn hủy theo id dòng (hoặc bạn nên sửa model để hủy theo ma_lich sẽ tốt hơn)
         $id = $_GET['id'] ?? 0;
         $user_id = $_SESSION['user_id'];
 
+        // Gọi Model (đảm bảo đã khởi tạo trong __construct)
+        if (!isset($this->lichDatModel)) {
+            $this->lichDatModel = new LichDatModel();
+        }
+
+        // 2. Thực hiện hủy
         $result = $this->lichDatModel->cancelBooking($id, $user_id);
 
+        // 3. Lưu thông báo vào Session & Chuyển trang
         if ($result) {
-            echo "<script>
-                    alert('Đã hủy lịch thành công!');
-                    window.location.href = 'index.php?act=lichsu_datlich'; 
-                  </script>";
+            $_SESSION['popup_notify'] = [
+                'type' => 'success',
+                'message' => 'Đã hủy lịch thành công!'
+            ];
         } else {
-            echo "<script>
-                    alert('Hủy thất bại! Có thể lịch đã hoàn thành hoặc không tồn tại.');
-                    window.history.back();
-                  </script>";
+            $_SESSION['popup_notify'] = [
+                'type' => 'error',
+                'message' => 'Hủy thất bại! Có thể lịch đã hoàn thành hoặc không tồn tại.'
+            ];
         }
+
+        // Chuyển hướng về lại trang danh sách lịch sử
+        header("Location: index.php?act=lichsudat");
+        exit;
     }
 }

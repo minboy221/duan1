@@ -108,8 +108,8 @@
         <main>
             <div class="header">
                 <h1>Xếp Giờ Làm Việc</h1>
-                <a href="index.php?act=detail_ngay&id=<?= $info['ngay_lv_id'] ?? '' ?>"
-                    class="btnthem btn-back" style="background:#ccc;color:#000">
+                <a href="index.php?act=detail_ngay&id=<?= $info['ngay_lv_id'] ?? '' ?>" class="btnthem btn-back"
+                    style="background:#ccc;color:#000">
                     ← Quay lại
                 </a>
             </div>
@@ -124,9 +124,7 @@
                         $dateShow = date('d/m/Y', strtotime($info['date']));
                         $textShow = $info['name'] . " - Ngày " . $dateShow;
                         ?>
-                        <input type="text"
-                            value="<?= htmlspecialchars($textShow) ?>"
-                            disabled
+                        <input type="text" value="<?= htmlspecialchars($textShow) ?>" disabled
                             style="background:#e9ecef; font-weight:bold;">
                     </div>
 
@@ -139,11 +137,12 @@
                                 <?php
                                 for ($h = 8; $h <= 21; $h++):
                                     foreach (['00', '30'] as $min):
-                                        if ($h == 21 && $min == '30') continue;
+                                        if ($h == 21 && $min == '30')
+                                            continue;
 
                                         $time = str_pad($h, 2, "0", STR_PAD_LEFT) . ":" . $min;
                                         $checked = in_array($time, $currentTimes) ? 'checked' : '';
-                                ?>
+                                        ?>
 
                                         <div class="col-xl-3 col-md-4 col-6 mb-3 time-item">
                                             <label class="staff-checkbox-item">
@@ -154,19 +153,33 @@
                                             </label>
                                         </div>
 
-                                <?php endforeach;
+                                    <?php endforeach;
                                 endfor; ?>
                             </div>
                             <div id="pagination"></div>
                         </div>
                     </div>
 
-                    <button type="submit" class="btnthem"
-                        style="padding:12px 30px; width:100%; margin-top:20px;">
+                    <button type="submit" class="btnthem" style="padding:12px 30px; width:100%; margin-top:20px;">
                         <i class='bx bx-save'></i> Lưu Thay Đổi
                     </button>
                 </form>
             </div>
+            <!-- phần popup thông báo -->
+            <?php if (isset($_SESSION['success_msg'])): ?>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công!',
+                            text: '<?= $_SESSION['success_msg'] ?>',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    });
+                </script>
+                <?php unset($_SESSION['success_msg']); // Xóa thông báo sau khi hiện xong ?>
+            <?php endif; ?>
         </main>
     </div>
     <script>
@@ -205,6 +218,8 @@
 
         showPage(1);
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="<?= BASE_URL ?>public/admin.js"></script>
 
 </body>
 

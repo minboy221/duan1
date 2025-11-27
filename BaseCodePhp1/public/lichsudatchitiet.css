@@ -174,7 +174,7 @@ body {
     position: absolute;
     right: 35px;
     top: 40px;
-background: #fff;
+    background: #fff;
     border-radius: 20px;
     display: flex;
     align-items: center;
@@ -355,13 +355,13 @@ main {
 /* Khung chứa hóa đơn */
 .baohoadon {
     background: rgba(35, 86, 128, 0.1);
-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
     padding: 40px;
     border-radius: 20px;
     width: 800px;
     color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-    margin-top: 480px;
+    margin-top: 550px;
 }
 
 .baohoadon h2 {
@@ -534,7 +534,7 @@ tfoot td {
 }
 
 .comment-box textarea:focus {
-border-color: #ffd700;
+    border-color: #ffd700;
 }
 
 .btn.submit-review {
@@ -594,7 +594,7 @@ border-color: #ffd700;
 
 /* phần footer */
 .footer {
-    margin-top: 330px;
+    margin-top: 410px;
     background-color: #111;
     /* nền đen */
     color: #f5c542;

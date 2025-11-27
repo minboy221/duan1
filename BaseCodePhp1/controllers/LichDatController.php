@@ -98,11 +98,9 @@ public function updateStatusNhanVien()
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_POST['id'] ?? null;
         $status = $_POST['status'] ?? null;
-        // 💡 LẤY THÊM TRƯỜNG LÝ DO HỦY
         $reason = $_POST['cancel_reason'] ?? null; 
 
         if ($id && $status) {
-            // 💡 TRUYỀN THÊM BIẾN $reason CHO MODEL
             $this->model->updateStatus($id, $status, $reason); 
         }
 

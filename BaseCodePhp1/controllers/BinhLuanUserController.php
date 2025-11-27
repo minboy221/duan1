@@ -24,7 +24,7 @@ class BinhLuanUserController
         }
 
         $user = $this->userModel->find($id);
-        // 💡 $comments sẽ chứa danh sách đánh giá lấy từ bảng lichdat
+        //$comments sẽ chứa danh sách đánh giá lấy từ bảng lichdat
         $comments = $this->commentModel->getByUser($id);
 
         // Truyền $user và $comments sang view
@@ -50,9 +50,6 @@ class BinhLuanUserController
 
         require_once './views/clien/FormDanhGia.php';
     }
-    // Trong BinhLuanUserController.php
-
-    // Trong BinhLuanUserController.php
 
     public function submitDanhGia()
     {
@@ -79,30 +76,22 @@ class BinhLuanUserController
         $lichModel = new LichDatModel();
         $bookingInfo = $lichModel->getBookingByCode($ma_lich);
 
-        // --- 🛑 BẮT ĐẦU ĐOẠN SỬA LỖI 🛑 ---
-
         // Kiểm tra nếu không có dữ liệu
         if (!$bookingInfo) {
             echo "<script>alert('Không tìm thấy đơn đặt lịch!'); window.history.back();</script>";
             return;
         }
 
-        // XỬ LÝ LỖI FETCH/FETCHALL:
         // Nếu model trả về mảng nhiều dòng (có số 0 ở đầu), ta lấy dòng đầu tiên
         if (isset($bookingInfo[0]) && is_array($bookingInfo[0])) {
             $bookingInfo = $bookingInfo[0];
         }
-
-        // Debug: Nếu vẫn lỗi, hãy bỏ comment dòng dưới để xem nó in ra gì
-        // echo "<pre>"; print_r($bookingInfo); die();
 
         // Kiểm tra xem key 'khachhang_id' có tồn tại không
         if (!isset($bookingInfo['khachhang_id'])) {
             echo "Lỗi dữ liệu: Không tìm thấy thông tin khách hàng trong đơn hàng.";
             return;
         }
-
-        // --- KẾT THÚC ĐOẠN SỬA LỖI ---
 
         // 3. Kiểm tra quyền sở hữu (ID trong đơn phải trùng ID người đang đăng nhập)
         if ($bookingInfo['khachhang_id'] != $khachhang_id) {
@@ -122,7 +111,6 @@ class BinhLuanUserController
             return;
         }
 
-        // 6. Lưu đánh giá
         // Gọi hàm cập nhật rating và review vào bảng lichdat
         $updateSuccess = $lichModel->updateRatingAndReview($ma_lich, $rating, $comment);
 

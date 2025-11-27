@@ -235,9 +235,6 @@
         // Hiển thị trang đầu tiên
         showPage(1);
     </script>
-
-
-
 </body>
 
 </html>

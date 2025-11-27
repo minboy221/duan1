@@ -67,18 +67,18 @@ class LichLamViecController
     public function updateTimes()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // 1. Nhận dữ liệu từ Form
+            // 1. Nhận dữ liệu
             $phan_cong_id = $_POST['phan_cong_id'];
-            $times = $_POST['times'] ?? []; // Mảng các giờ đã chọn
+            $times = $_POST['times'] ?? [];
 
-            // 2. Gọi Model để lưu vào Database
+            // 2. Lưu vào DB
             $this->model->saveKhungGio($phan_cong_id, $times);
 
-            // 3. Thông báo và Chuyển hướng ngay lập tức
-            echo "<script>
-                    alert('Đã cập nhật khung giờ thành công!'); 
-                    window.location.href = 'index.php?act=qlylichlamviec';
-                  </script>";
+            // 3. Gán thông báo thành công vào Session
+            $_SESSION['success_msg'] = "Cập nhật khung giờ thành công!";
+
+            // 4. Quay lại chính trang SỬA GIỜ (thay vì về danh sách)
+            header("Location: index.php?act=edit_times&id=" . $phan_cong_id);
             exit();
         } else {
             header("Location: index.php?act=qlylichlamviec");

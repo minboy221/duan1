@@ -98,24 +98,31 @@
                         <h3>Thông tin đơn hàng của bạn</h3>
                         <div class="infor-row">
                             <p><strong>Mã Hoá Đơn:</strong> #<?= htmlspecialchars($booking['ma_lich']) ?></p>
-                            <p><strong>Ngày Đặt:</strong> <?= date('d/m/Y H:i', strtotime($booking['created_at'])) ?></p>
+                            <p><strong>Ngày Đặt:</strong> <?= date('d/m/Y H:i', strtotime($booking['created_at'])) ?>
+                            </p>
                             <p><strong>Trạng Thái:</strong>
                                 <?php
+                                // Định nghĩa màu sắc và chữ hiển thị
                                 $statusText = [
                                     'pending' => 'Chờ xác nhận',
-                                    'confirmed' => 'Đã xác nhận',
+                                    'confirmed' => 'Đã duyệt',
                                     'done' => 'Hoàn thành',
                                     'cancelled' => 'Đã hủy'
                                 ];
+
                                 $statusClass = [
-                                    'pending' => 'text-warning',
-                                    'confirmed' => 'text-primary',
-                                    'done' => 'text-success',
-                                    'cancelled' => 'text-danger'
+                                    'pending' => 'text-warning', // Màu vàng
+                                    'confirmed' => 'text-primary', // Màu xanh dương
+                                    'done' => 'text-success', // Màu xanh lá
+                                    'cancelled' => 'text-danger'   // Màu đỏ
                                 ];
+
+                                // Lấy trạng thái hiện tại của đơn hàng
+                                $currentStatus = $booking['status'];
                                 ?>
-                                <span class="<?= $statusClass[$booking['status']] ?? '' ?> fw-bold">
-                                    <?= $statusText[$booking['status']] ?? 'Không xác định' ?>
+
+                                <span class="<?= $statusClass[$currentStatus] ?? '' ?>" style="font-weight: bold;">
+                                    <?= $statusText[$currentStatus] ?? 'Không xác định' ?>
                                 </span>
                             </p>
                         </div>
@@ -166,13 +173,13 @@
                         </table>
                     </div>
                     <div class="thongtin-donhang mb-4">
-    <h2>Lý do hủy (nếu có)</h2>
-    <div class="infor-row">
-        <p>
-            <?= !empty($booking['cancel_reason']) ? nl2br(htmlspecialchars($booking['cancel_reason'])) : 'Không có' ?>
-        </p>
-    </div>
-</div>
+                        <h2>Lý do hủy (nếu có)</h2>
+                        <div class="infor-row">
+                            <p>
+                                <?= !empty($booking['cancel_reason']) ? nl2br(htmlspecialchars($booking['cancel_reason'])) : 'Không có' ?>
+                            </p>
+                        </div>
+                    </div>
 
                     <div class="action">
                         <a href="<?= BASE_URL ?>?act=lichsudat">

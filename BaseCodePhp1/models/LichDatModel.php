@@ -197,10 +197,10 @@ class LichDatModel
         return (int) $row['total'];
     }
 
-    // --- 7. LẤY LỊCH SỬ THEO KHÁCH HÀNG (Không phân trang - Dùng cho code cũ) ---
+    // --- 7. LẤY LỊCH SỬ THEO KHÁCH HÀNG
     public function getHistoryByCustomer($khachhang_id)
     {
-        // Gọi lại hàm phân trang nhưng limit lớn để lấy hết (hoặc viết query riêng nếu cần tối ưu)
+        // Gọi lại hàm phân trang nhưng limit lớn để lấy hết
         return $this->getHistoryByCustomerPaginate($khachhang_id, 100, 0);
     }
 
@@ -257,34 +257,34 @@ class LichDatModel
     }
     // Trong LichDatModel.php
 
-/**
- * Kiểm tra xem khách hàng đã có lịch đặt nào cho ngày đó chưa.
- * @param int $khachhang_id ID của khách hàng
- * @param int $khunggio_id ID khung giờ (để xác định ngày)
- * @return bool True nếu đã có lịch đặt, False nếu chưa.
- */
-public function hasBookingOnSameDay($khachhang_id, $khunggio_id)
-{
-    // 1. Tìm ngày làm việc (date) dựa trên khunggio_id
-    $sql_get_date = "SELECT n.date
+    /**
+     * Kiểm tra xem khách hàng đã có lịch đặt nào cho ngày đó chưa.
+     * @param int $khachhang_id ID của khách hàng
+     * @param int $khunggio_id ID khung giờ (để xác định ngày)
+     * @return bool True nếu đã có lịch đặt, False nếu chưa.
+     */
+    public function hasBookingOnSameDay($khachhang_id, $khunggio_id)
+    {
+        // 1. Tìm ngày làm việc (date) dựa trên khunggio_id
+        $sql_get_date = "SELECT n.date
                      FROM khunggio kg
                      JOIN phan_cong pc ON kg.phan_cong_id = pc.id
                      JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
                      WHERE kg.id = ? LIMIT 1";
 
-    $stmt_date = $this->conn->prepare($sql_get_date);
-    $stmt_date->execute([$khunggio_id]);
-    $result = $stmt_date->fetch(PDO::FETCH_ASSOC);
+        $stmt_date = $this->conn->prepare($sql_get_date);
+        $stmt_date->execute([$khunggio_id]);
+        $result = $stmt_date->fetch(PDO::FETCH_ASSOC);
 
-    if (!$result) {
-        // Không tìm thấy ngày, coi như lỗi và cho phép đặt (hoặc bạn có thể chọn fail)
-        return false;
-    }
-    
-    $booking_date = $result['date'];
+        if (!$result) {
+            // Không tìm thấy ngày, coi như lỗi và cho phép đặt (hoặc bạn có thể chọn fail)
+            return false;
+        }
 
-    // 2. Kiểm tra xem khách hàng đã có lịch đặt cho ngày đó chưa (trạng thái khác 'cancelled')
-    $sql_check = "SELECT COUNT(ld.id) 
+        $booking_date = $result['date'];
+
+        // 2. Kiểm tra xem khách hàng đã có lịch đặt cho ngày đó chưa (trạng thái khác 'cancelled')
+        $sql_check = "SELECT COUNT(ld.id) 
                   FROM lichdat ld
                   JOIN khunggio kg_check ON ld.khunggio_id = kg_check.id
                   JOIN phan_cong pc_check ON kg_check.phan_cong_id = pc_check.id
@@ -294,10 +294,35 @@ public function hasBookingOnSameDay($khachhang_id, $khunggio_id)
                   AND ld.status != 'cancelled'
                   LIMIT 1";
 
-    $stmt_check = $this->conn->prepare($sql_check);
-    $stmt_check->execute([$khachhang_id, $booking_date]);
-    
-    return $stmt_check->fetchColumn() > 0;
-}
+        $stmt_check = $this->conn->prepare($sql_check);
+        $stmt_check->execute([$khachhang_id, $booking_date]);
+
+        return $stmt_check->fetchColumn() > 0;
+    }
+    //phần hiển thị lịch hẹn ở clien
+    public function getUpcomingBooking($khachhang_id)
+    {
+        //lấy đơn khi có trạng thái đã xác nhận
+        $sql = "SELECT 
+                    ld.id, ld.ma_lich, ld.status,
+                    kg.time as gio_lam,
+                    n.date as ngay_lam,
+                    t.name as ten_tho,
+                    kh.phone
+                FROM lichdat ld
+                JOIN khunggio kg ON ld.khunggio_id = kg.id
+                JOIN phan_cong pc ON kg.phan_cong_id = pc.id
+                JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
+                JOIN tho t ON pc.tho_id = t.id
+                JOIN khachhang kh ON ld.khachhang_id = kh.id
+                WHERE ld.khachhang_id = ? 
+                AND ld.status IN ('pending', 'confirmed')
+                AND CONCAT(n.date, ' ', kg.time) > NOW() 
+                ORDER BY n.date ASC, kg.time ASC
+                LIMIT 1"; // Chỉ lấy 1 đơn gần nhất
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$khachhang_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>

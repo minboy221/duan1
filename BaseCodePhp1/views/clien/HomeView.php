@@ -95,6 +95,86 @@
                     </a>
                 </div>
             </div>
+            <?php if (!empty($upcomingBooking)):
+                // Xử lý ngày giờ để JS đếm ngược
+                $fullDateTime = $upcomingBooking['ngay_lam'] . ' ' . $upcomingBooking['gio_lam'] . ':00';
+                ?>
+                <div class="baothongbao">
+                    <div class="thongbaocon">
+                        <div class="hienthithongbao">
+
+                            <div class="reminder-header">
+                                Chỉ còn <strong class="text-danger" id="countdown-timer">Đang tính...</strong> là đến lịch
+                                hẹn <?= substr($_SESSION['username'], -4) ?>
+                            </div>
+
+                            <div class="noidungthongbao">
+                                <div class="info-item">
+                                    <i class="fa-regular fa-calendar-days text-primary"></i>
+                                    <span>
+                                        <?php
+                                        $date = strtotime($upcomingBooking['ngay_lam']);
+                                        $days = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+                                        echo $days[date('w', $date)] . ', ngày ' . date('d.m', $date) . ', ' . $upcomingBooking['gio_lam'];
+                                        ?>
+                                    </span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fa-solid fa-location-dot text-primary"></i>
+                                    <span>113 Trần Hưng Đạo, P. Mỹ Bình, Long Xuyên (Salon mẫu)</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fa-solid fa-user text-primary"></i>
+                                    <span>Stylist:
+                                        <strong><?= htmlspecialchars($upcomingBooking['ten_tho']) ?></strong></span>
+                                </div>
+                            </div>
+
+                            <div class="reminder-footer">
+                                <a href="index.php?act=lichsudatchitiet&ma_lich=<?= $upcomingBooking['ma_lich'] ?>"
+                                    class="btn btn-light btn-sm border">
+                                    <i class="fa-solid fa-xmark"></i> Hủy lịch
+                                </a>
+
+                                <a href="https://maps.google.com" target="_blank" class="btn btn-primary btn-sm"
+                                    style="background-color: #1d3557;">
+                                    <i class="fa-solid fa-diamond-turn-right"></i> Chỉ đường Salon
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    (function () {
+                        // Thời gian đích (Lấy từ PHP)
+                        const targetDate = new Date("<?= $fullDateTime ?>").getTime();
+
+                        const timer = setInterval(function () {
+                            const now = new Date().getTime();
+                            const distance = targetDate - now;
+
+                            if (distance < 0) {
+                                clearInterval(timer);
+                                document.getElementById("countdown-timer").innerHTML = "Đã đến giờ hẹn!";
+                                return;
+                            }
+
+                            // Tính toán
+                            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+                            // Hiển thị chuỗi
+                            let text = "";
+                            if (days > 0) text += days + " ngày ";
+                            text += hours + " giờ " + minutes + " phút";
+
+                            document.getElementById("countdown-timer").innerHTML = text;
+                        }, 1000);
+                    })();
+                </script>
+            <?php endif; ?>
         </header>
     </div>
     <div class="content">
