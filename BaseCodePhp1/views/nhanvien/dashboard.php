@@ -19,6 +19,9 @@
         </a>
         <ul class="side-menu">
             <li class="active"><a href="index.php?act=nv-dashboard">Quản Lý Lịch Đặt</a></li>
+            <li class="<?= ($_GET['act'] ?? '') == 'doimatkhau_nhanvien' ? 'active' : '' ?>">
+                <a href="index.php?act=doimatkhau_nhanvien">Đổi Mật Khẩu</a>
+            </li>
             <li>
                 <a href="?act=logout" class="logout">
                     <i class='bx bx-log-out-circle'></i>

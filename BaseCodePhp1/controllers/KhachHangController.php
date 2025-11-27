@@ -111,6 +111,8 @@ class KhachHangController
         header('Location: index.php?act=home');
         exit();
     }
+
+    //phần quên mk cho nhân viên
     public function forgotPassword()
     {
         $error = '';
@@ -122,41 +124,123 @@ class KhachHangController
             $new_pass = $_POST['new_password'] ?? '';
             $confirm_pass = $_POST['confirm_password'] ?? '';
 
-            // 1. Validate dữ liệu trống
             if (empty($email) || empty($phone) || empty($new_pass) || empty($confirm_pass)) {
                 $error = "Vui lòng nhập đầy đủ thông tin!";
-            } 
-            // 2. Validate mật khẩu nhập lại
-            elseif ($new_pass !== $confirm_pass) {
+            } elseif ($new_pass !== $confirm_pass) {
                 $error = "Mật khẩu xác nhận không khớp!";
             } else {
-                // 3. Kiểm tra xem Email và SĐT có đúng của user đó không
-                $user = $this->khachhang->checkUserReset($email, $phone);
 
-                if ($user) {
-                    // 4. Nếu đúng, tiến hành đổi mật khẩu
-                    // Lưu ý: Code cũ của bạn dùng md5, nên ở đây cũng phải dùng md5
-                    $new_pass_md5 = md5($new_pass);
-                    
-                    $result = $this->khachhang->updatePassword($email, $new_pass_md5);
+                $new_pass_md5 = md5($new_pass);
 
-                    if ($result) {
-                        echo "<script>
-                                alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại.'); 
-                                window.location.href='index.php?act=dangnhap_khachhang';
-                              </script>";
-                        exit();
+                // 1. Check Khách hàng (Khách hàng không bị giới hạn ngày - tùy bạn)
+                $khachhang = $this->khachhang->checkUserReset($email, $phone);
+
+                if ($khachhang) {
+                    $this->khachhang->updatePassword($email, $new_pass_md5);
+                    echo "<script>alert('Đổi mật khẩu Khách hàng thành công!'); window.location.href='index.php?act=dangnhap_khachhang';</script>";
+                    exit();
+                }
+
+                // 2. Check Nhân viên
+                else {
+                    $staff = $this->nhanvien->checkStaffReset($email, $phone);
+
+                    if ($staff) {
+                        // --- LOGIC KIỂM TRA 14 NGÀY ---
+                        $allow_reset = true;
+
+                        // Nếu đã từng đổi pass trước đây (cột last_reset_pass không null)
+                        if (!empty($staff['last_reset_pass'])) {
+                            $last_reset = strtotime($staff['last_reset_pass']); // Thời gian lần đổi cuối
+                            $now = time(); // Thời gian hiện tại
+
+                            // Tính khoảng cách ngày
+                            $days_diff = ($now - $last_reset) / (60 * 60 * 24);
+
+                            if ($days_diff < 14) {
+                                $allow_reset = false;
+                                // Tính số ngày còn lại phải đợi
+                                $wait_days = ceil(14 - $days_diff);
+                                $error = "Bạn vừa đổi mật khẩu gần đây. Vui lòng đợi thêm $wait_days ngày nữa để thực hiện lại.";
+                            }
+                        }
+
+                        // Nếu đủ điều kiện thì cho đổi
+                        if ($allow_reset) {
+                            $this->nhanvien->updatePassword($email, $new_pass_md5);
+                            echo "<script>
+                                    alert('Đổi mật khẩu Nhân viên thành công!'); 
+                                    window.location.href='index.php?act=dangnhap_khachhang';
+                                  </script>";
+                            exit();
+                        }
+
                     } else {
-                        $error = "Lỗi hệ thống, vui lòng thử lại sau.";
+                        $error = "Email hoặc số điện thoại không chính xác!";
                     }
-                } else {
-                    $error = "Email hoặc số điện thoại không chính xác!";
                 }
             }
         }
 
-        // Gọi view hiển thị form quên mật khẩu
         require_once './views/clien/QuenmatkhauView.php';
     }
-    
+    //phần đổi mk cho nhân viên
+    public function changePasswordStaff()
+    {
+        // 1. Kiểm tra đăng nhập
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+
+        // Nếu chưa đăng nhập hoặc không phải admin/nhân viên -> đuổi về login
+        if (!isset($_SESSION['is_logged_in']) || !isset($_SESSION['user_id'])) {
+            header('Location: index.php?act=dangnhap_khachhang');
+            exit();
+        }
+
+        $error = '';
+        $success = '';
+
+        // Lấy thông tin user đang đăng nhập
+        $user_id = $_SESSION['user_id'];
+        $current_user = $this->nhanvien->findById($user_id);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $old_pass = $_POST['old_password'] ?? '';
+            $new_pass = $_POST['new_password'] ?? '';
+            $confirm_pass = $_POST['confirm_password'] ?? '';
+
+            // Validate
+            if (empty($old_pass) || empty($new_pass) || empty($confirm_pass)) {
+                $error = "Vui lòng nhập đầy đủ thông tin!";
+            } elseif ($new_pass !== $confirm_pass) {
+                $error = "Mật khẩu xác nhận không khớp!";
+            } elseif (strlen($new_pass) < 6) {
+                $error = "Mật khẩu mới phải trên 6 ký tự!";
+            } else {
+                // --- THAY ĐỔI TẠI ĐÂY ---
+
+                // 1. Kiểm tra mật khẩu cũ bằng password_verify
+                // Hàm này sẽ tự động kiểm tra xem $old_pass (nhập vào) có khớp với hash trong DB không
+                if (!password_verify($old_pass, $current_user['password'])) {
+                    $error = "Mật khẩu cũ không chính xác!";
+                } else {
+                    // 2. Mã hóa mật khẩu mới bằng password_hash (BCRYPT)
+                    // Thay vì dùng md5($new_pass)
+                    $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT);
+
+                    // Cập nhật vào DB
+                    $this->nhanvien->changePasswordById($user_id, $new_pass_hash);
+
+                    echo "<script>
+                            alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại.');
+                            window.location.href='index.php?act=logout'; 
+                          </script>";
+                    exit();
+                }
+            }
+        }
+
+        // Gọi View
+        require_once './views/nhanvien/DoiMatKhauView.php';
+    }
 }

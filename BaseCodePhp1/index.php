@@ -129,6 +129,7 @@ match ($act) {
     'logout' => (new KhachHangController())->logout(),
     'huylich' => $clientController->huyLich(),
     'quenmatkhau'=>(new KhachHangController())->forgotPassword(),//quên mật khẩu
+    'doimatkhau_nhanvien' =>(new khachHangController)->changePasswordStaff(), //đổi mật khẩu cho nhân viên
     //phần hiển thị dữ liệu ra clien
     //phần hiển thị giao diện admin
     'homeadmin' => (new AdminHomeController())->index(),
@@ -175,7 +176,6 @@ match ($act) {
 
     // NHÂN VIÊN (Dashboard) 
     'nv-dashboard' => (new NhanVienController())->dashboard(),
-    'nv-chitiet' => (new NhanVienController())->chitiet(),
     'nv-xacnhan' => (new NhanVienController())->xacnhan(),
     'nv-huy' => (new NhanVienController())->huy(),
     // tìm kiếm nhan viên
