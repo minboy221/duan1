@@ -117,9 +117,9 @@
                             <select name="price_range">
                                 <option value="">Chọn Giá</option>
                                 <option value="0-50000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '0-50000') ? 'selected' : '' ?>>0 - 50.000VNĐ</option>
-                                <option value="50001-100000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '50001-100000') ? 'selected' : '' ?>>50.001 - 100.000VNĐ
+                                <option value="50000-100000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '50001-100000') ? 'selected' : '' ?>>50.000 - 100.000VNĐ
                                 </option>
-                                <option value="100001-200000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '100001-200000') ? 'selected' : '' ?>>100.001 - 200.000VNĐ
+                                <option value="100000-200000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '100001-200000') ? 'selected' : '' ?>>100.000 - 200.000VNĐ
                                 </option>
                             </select>
                         </div>

@@ -303,18 +303,11 @@ class CattocContronler
             $khachhang_id = $_SESSION['user_id'] ?? 1;
             $khunggio_id = $_POST['khunggio_id'];
             $note = $_POST['note'] ?? '';
-
-            // 💡 1. KIỂM TRA GIỚI HẠN ĐẶT LỊCH (1 lịch/ngày)
-            if ($this->lichDatModel->hasBookingOnSameDay($khachhang_id, $khunggio_id)) {
-
-                $_SESSION['error_sa'] = 'Lỗi: Bạn chỉ được đặt tối đa một lịch hẹn mỗi ngày!';
-                header("Location: index.php?act=datlich"); // Chuyển hướng trở lại trang đặt lịch
-                exit();
-            }
-
-            // 2. XỬ LÝ LƯU ĐƠN HÀNG (Logic cũ)
+            // 2. XỬ LÝ LƯU ĐƠN HÀNG (Logic giữ nguyên)
             if (isset($_SESSION['booking_cart']['services'])) {
                 $ma_code = null;
+
+                // Logic này sẽ cho phép lưu nhiều dịch vụ dưới nhiều mã lịch khác nhau
                 foreach ($_SESSION['booking_cart']['services'] as $sv) {
                     // Giả sử ma_code là mã của dịch vụ đầu tiên được lưu, hoặc được truyền vào
                     $ma_code = $this->lichDatModel->insertBooking($khachhang_id, $sv['id'], $khunggio_id, $note, $ma_code);
@@ -322,16 +315,14 @@ class CattocContronler
 
                 if ($ma_code) {
                     unset($_SESSION['booking_cart']);
-                    header("Location: index.php?act=cam_on&ma_lich=$ma_code");
+                    echo "<script>window.location.href = 'index.php?act=cam_on&ma_lich=$ma_code';</script>";
                     exit();
                 } else {
-                    $_SESSION['error_sa'] = 'Lỗi: Không thể lưu lịch đặt. Vui lòng thử lại.';
-                    header("Location: index.php?act=datlich");
+                    echo "<script>alert('Lỗi: Không thể lưu lịch đặt. Vui lòng thử lại.'); window.history.back();</script>";
                     exit();
                 }
             } else {
-                $_SESSION['error_sa'] = 'Giỏ hàng trống!';
-                header("Location: index.php?act=datlich");
+                echo "<script>alert('Giỏ hàng trống!'); window.history.back();</script>";
                 exit();
             }
         }
