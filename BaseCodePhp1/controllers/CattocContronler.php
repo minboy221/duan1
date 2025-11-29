@@ -42,7 +42,7 @@ function homeAdmin()
 {
     require_once './views/admin/HomeAdmin.php';
 }
-function qlyDanhmuc()
+function adminanhmuc()
 {
     require_once './views/admin/Qlydanhmuc.php';
 }
@@ -92,8 +92,18 @@ class CattocContronler
             }
             $upcomingBooking = $this->lichDatModel->getUpcomingBooking($_SESSION['user_id']);
         }
+        //phần thông báo huỷ lịch (nếu có)
+        $unreadCancel = null;
+        if (isset($_SESSION['user_id'])) {
+            if (!isset($this->lichDatModel))
+                $this->lichDatModel = new LichDatModel();
+            //lấy đơn bị huỷ chưa đọc
+            $unreadCancel = $this->lichDatModel->getUnreadCancelledBooking($_SESSION['user_id']);
+            //lấy lịch sắp tới
+            $upcomingBooking = $this->lichDatModel->getUpcomingBooking($_SESSION['user_id']);
+        }
         require_once './views/clien/HomeView.php';
-    }
+    }    
 
     //phần hiển thị dịch vụ cho home
     public function hienthidichvu()
@@ -293,10 +303,6 @@ class CattocContronler
         echo json_encode($slots);
     }
     //xử lý lưu lịch đặt
-// Trong CattocContronler.php
-
-    // Trong CattocContronler.php, hàm luuDatLich()
-
     public function luuDatLich()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -355,7 +361,7 @@ class CattocContronler
 
         // Lấy dòng đầu tiên để lấy thông tin chung (Tên khách, thợ, giờ...)
         // Vì tất cả các dòng đều chung mã lịch nên thông tin này giống nhau
-        $finalBooking = $bookingList[0]; // Dòng này sẽ KHÔNG lỗi nữa nếu dùng fetchAll
+        $finalBooking = $bookingList[0];
 
         $totalPrice = 0;
         $serviceNames = [];
@@ -545,4 +551,14 @@ class CattocContronler
         header("Location: index.php?act=lichsudat");
         exit;
     }
-}
+
+    //phần API đánh dấu là đã đọc cho clien khi bị huỷ lịch có lý do
+    public function apiReadNotify()
+    {
+        if (isset($_POST['id'])) {
+             if (!isset($this->lichDatModel)) $this->lichDatModel = new LichDatModel();
+             $this->lichDatModel->markAsRead($_POST['id']);
+        }
+        exit;
+        }
+    }

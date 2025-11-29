@@ -111,10 +111,10 @@
                                 ];
 
                                 $statusClass = [
-                                    'pending' => 'text-warning', // Màu vàng
-                                    'confirmed' => 'text-primary', // Màu xanh dương
-                                    'done' => 'text-success', // Màu xanh lá
-                                    'cancelled' => 'text-danger'   // Màu đỏ
+                                    'pending' => 'text-warning', 
+                                    'confirmed' => 'text-primary',
+                                    'done' => 'text-success',
+                                    'cancelled' => 'text-danger'
                                 ];
 
                                 // Lấy trạng thái hiện tại của đơn hàng

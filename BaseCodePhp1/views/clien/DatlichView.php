@@ -318,8 +318,28 @@
                 container.innerHTML = '';
                 if (data.length > 0) {
                     data.forEach(slot => {
-                        let disabled = slot.is_booked ? 'disabled style="background:#ccc; cursor:not-allowed"' : 'onclick="selectTime(' + slot.id + ', this)" style="cursor:pointer; background:#fff; border:1px solid #333"';
-                        let btn = `<button type="button" ${disabled} class="time-btn" style="padding: 5px 10px; margin: 5px;">${slot.time}</button>`;
+                        let btnClass = '';
+                        let disabled = '';
+                        let onclick = '';
+                        let title = '';
+                        let displayText = slot.time;
+                        if (slot.is_booked) {
+                            btnClass = 'background:#f8d7da; color:#721c24;border:1px solid #f5c6cb; cursor:not-allowed;';
+                            disabled = 'disabled';
+                            //nếu có lý do huỷ (tạm ngưng) -> hiện lí do vào title
+                            title = slot.status_text;
+                        } else {
+                            //giờ trống
+                            btnClass = 'background:#fff; color:#333; cursor:pointer; border:1px solid #D6A354;';
+                            onClick = `selectTime(${slot.id}, this)`;
+                            title = "Còn trống";
+                        }
+                        let btn = `<button type="button" ${disabled} title="${title}"
+                            class="time-btn" 
+                            onclick="${onClick}"
+                            style="${btnClass} padding: 8px 15px; border-radius: 5px; min-width: 80px; font-weight:500;">
+                            ${displayText}
+                           </button>`;
                         container.insertAdjacentHTML('beforeend', btn);
                     });
                 } else {

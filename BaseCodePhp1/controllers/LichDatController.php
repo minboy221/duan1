@@ -41,14 +41,12 @@ class LichDatController
         // 2. Xử lý hiển thị trang thường (Load lần đầu)
         $rawList = $this->model->getAllLichDat(); // Lấy hết hoặc lấy trang 1 tùy bạn
 
-        // QUAN TRỌNG: Gộp các dịch vụ cùng mã lịch lại
+        // Gộp các dịch vụ cùng mã lịch lại
         $listLich = $this->processMergeBooking($rawList);
 
         // Gửi sang View
         require_once './views/admin/lichdat/list.php';
     }
-
-    // --- HÀM HỖ TRỢ: Gộp các dịch vụ cùng mã lịch ---
     // Hàm này giúp code gọn hơn, không phải viết lặp lại logic gộp
     private function processMergeBooking($rawList)
     {

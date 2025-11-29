@@ -12,7 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
-    /* CSS riêng cho trang quản lý lịch để hiển thị đẹp hơn */
     .status-badge {
         padding: 6px 12px;
         border-radius: 20px;

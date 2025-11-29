@@ -108,7 +108,8 @@
                                 <option value="">Chọn Dịch Vụ</option>
                                 <?php foreach ($categoriesWithServices as $cat): ?>
                                     <option value="<?= $cat['id'] ?>" <?= (isset($_GET['category_id']) && $_GET['category_id'] == $cat['id']) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($cat['name']) ?></option>
+                                        <?= htmlspecialchars($cat['name']) ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -154,7 +155,7 @@
                                                         Giá Chỉ Từ <span><?= number_format($p['price'] ?? 0) ?></span>
                                                     </p>
                                                     <a href="index.php?act=chitietdichvu&id=<?= $p['id'] ?>">Tìm Hiểu Thêm </a>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -204,6 +205,125 @@
             <p>© 2025 31Shine. Tất cả quyền được bảo lưu.</p>
         </div>
     </footer>
+    <!-- phần hiển thị thông báo -->
+    <?php if (!empty($upcomingBooking)):
+        // Xử lý ngày giờ để JS đếm ngược
+        $fullDateTime = $upcomingBooking['ngay_lam'] . ' ' . $upcomingBooking['gio_lam'] . ':00';
+        ?>
+        <div class="baothongbao">
+            <div class="thongbaocon">
+                <div class="hienthithongbao">
+
+                    <div class="reminder-header">
+                        Chỉ còn <strong class="text-danger" id="countdown-timer">Đang tính...</strong> là đến lịch
+                        hẹn <?= substr($_SESSION['username'], -4) ?>
+                    </div>
+
+                    <div class="noidungthongbao">
+                        <div class="info-item">
+                            <i class="fa-regular fa-calendar-days text-primary"></i>
+                            <span>
+                                <?php
+                                $date = strtotime($upcomingBooking['ngay_lam']);
+                                $days = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+                                echo $days[date('w', $date)] . ', ngày ' . date('d.m', $date) . ', ' . $upcomingBooking['gio_lam'];
+                                ?>
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-location-dot text-primary"></i>
+                            <span>113 Trần Hưng Đạo, P. Mỹ Bình, Long Xuyên (Salon mẫu)</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-user text-primary"></i>
+                            <span>Stylist:
+                                <strong><?= htmlspecialchars($upcomingBooking['ten_tho']) ?></strong></span>
+                        </div>
+                    </div>
+
+                    <div class="reminder-footer">
+                        <a href="index.php?act=lichsudatchitiet&ma_lich=<?= $upcomingBooking['ma_lich'] ?>"
+                            class="btn btn-light btn-sm border">
+                            <i class="fa-solid fa-xmark"></i> Hủy lịch
+                        </a>
+
+                        <a href="https://maps.google.com" target="_blank" class="btn btn-primary btn-sm"
+                            style="background-color: #1d3557;">
+                            <i class="fa-solid fa-diamond-turn-right"></i> Chỉ đường Salon
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script>
+            (function () {
+                // Thời gian đích (Lấy từ PHP)
+                const targetDate = new Date("<?= $fullDateTime ?>").getTime();
+
+                const timer = setInterval(function () {
+                    const now = new Date().getTime();
+                    const distance = targetDate - now;
+
+                    if (distance < 0) {
+                        clearInterval(timer);
+                        document.getElementById("countdown-timer").innerHTML = "Đã đến giờ hẹn!";
+                        return;
+                    }
+
+                    // Tính toán
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+                    // Hiển thị chuỗi
+                    let text = "";
+                    if (days > 0) text += days + " ngày ";
+                    text += hours + " giờ " + minutes + " phút";
+
+                    document.getElementById("countdown-timer").innerHTML = text;
+                }, 1000);
+            })();
+        </script>
+    <?php endif; ?>
+    <!-- phần thông báo lý do mà lịch bị huỷ -->
+    <?php if (!empty($unreadCancel)): ?>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'error', // Icon dấu X đỏ
+                    title: 'LỊCH HẸN ĐÃ BỊ HỦY',
+                    html: `
+                    <div style="text-align: left;">
+                        <p>Rất tiếc, lịch hẹn mã <strong>#<?= $unreadCancel['ma_lich'] ?></strong> của anh đã bị hủy.</p>
+                        
+                        <div style="background: #fff5f5; border-left: 5px solid #dc3545; padding: 15px; margin: 15px 0; border-radius: 5px;">
+                            <strong style="color: #dc3545;">Lý do hủy:</strong> <br>
+                            <span style="color: #333; font-style: italic;">"<?= htmlspecialchars($unreadCancel['cancel_reason']) ?>"</span>
+                        </div>
+
+                        <p style="font-size: 14px; color: #666;">Vui lòng đặt lại lịch mới hoặc liên hệ Hotline để được hỗ trợ.</p>
+                    </div>
+                `,
+                    confirmButtonText: 'Đã hiểu',
+                    confirmButtonColor: '#d33',
+                    allowOutsideClick: false, // Bắt buộc bấm nút mới tắt
+                    width: '500px'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Gọi AJAX báo cho server biết khách đã đọc
+                        fetch('index.php?act=api_read_notify', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: 'id=<?= $unreadCancel['id'] ?>'
+                        });
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
 </body>
 <script src="<?= BASE_URL ?>public/main.js"></script>
 

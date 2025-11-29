@@ -188,43 +188,50 @@ class LichLamViecModel
         $allSlots = $stmtKG->fetchAll(PDO::FETCH_ASSOC);
 
         //Lấy các giờ ĐÃ BỊ ĐẶT
-        $sqlBooked = "SELECT khunggio_id FROM lichdat WHERE status != 'cancelled'";
+        $sqlBooked = "SELECT khunggio_id, status, cancel_reason 
+                      FROM lichdat 
+                      WHERE status IN ('pending', 'confirmed', 'done', 'cancelled')";
         $stmtBooked = $this->conn->prepare($sqlBooked);
         $stmtBooked->execute();
-        $bookedIds = $stmtBooked->fetchAll(PDO::FETCH_COLUMN);
+        $bookedRows = $stmtBooked->fetchAll(PDO::FETCH_ASSOC);
 
+        $bookedMap = [];
+        foreach ($bookedRows as $row) {
+            $bookedMap[$row['khunggio_id']] = [
+                'status' => ['status'],
+                'reason' => ['cancel_reason']
+            ];
+        }
         //XỬ LÝ LOGIC: Đã đặt OR Đã qua giờ
         foreach ($allSlots as &$slot) {
             // Mặc định là chưa bị đặt
             $slot['is_booked'] = false;
             $slot['status_text'] = ''; // Thêm text để giải thích (nếu cần)
 
-            // CHECK 1: Đã có người đặt chưa?
-            if (in_array($slot['id'], $bookedIds)) {
+            // kiểm tra trong danh sách đã đặt
+            if (isset($bookedMap[$slot['id']])) {
+                $bookingInfor = $bookedMap[$slot['id']];
+                //đánh dấu là bận
                 $slot['is_booked'] = true;
-                $slot['status_text'] = 'Đã có khách';
+                //xử lý thông báo hiển thị
+                if ($bookingInfor['status'] === 'cancelled') {
+                    //nếu bị huỷ -> sẽ hiện lý do
+                    $slot['status_text'] = 'Tạm Ngưng:' . ($bookingInfor['reason'] ?? 'Bảo trì');
+                } else {
+                    $slot['status_text'] = 'Đã có khách';
+                }
             }
-
-            //Đã qua giờ chưa? (Chỉ check nếu chưa bị đặt)
             if (!$slot['is_booked']) {
-                // Nếu ngày làm việc < ngày hiện tại (Ngày quá khứ)
                 if ($workDate < $currentDate) {
                     $slot['is_booked'] = true;
                     $slot['status_text'] = 'Đã qua';
-                }
-                // Nếu là ngày HÔM NAY -> Check giờ
-                elseif ($workDate == $currentDate) {
-                    // So sánh chuỗi giờ (VD: "08:00" < "09:30")
-                    if ($slot['time'] < $currentTime) {
-                        $slot['is_booked'] = true;
-                        $slot['status_text'] = 'Đã qua';
-                    }
+                } elseif ($workDate == $currentDate && $slot['time'] < $currentTime) {
+                    $slot['is_booked'] = true;
+                    $slot['status_text'] = 'Đã qua';
                 }
             }
         }
-
         return $allSlots;
     }
 }
-
 ?>

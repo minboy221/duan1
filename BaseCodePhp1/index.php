@@ -128,13 +128,13 @@ match ($act) {
     'dangnhap_khachhang' => (new KhachHangController())->login(),
     'logout' => (new KhachHangController())->logout(),
     'huylich' => $clientController->huyLich(),
-    'quenmatkhau'=>(new KhachHangController())->forgotPassword(),//quên mật khẩu
-    'doimatkhau_nhanvien' =>(new khachHangController)->changePasswordStaff(), //đổi mật khẩu cho nhân viên
+    //phần thông báo huỷ lịch có lý do
+    'api_read_notify' => $clientController->apiReadNotify(),
+    'quenmatkhau' => (new KhachHangController())->forgotPassword(),//quên mật khẩu
+    'doimatkhau_nhanvien' => (new khachHangController)->changePasswordStaff(), //đổi mật khẩu cho nhân viên
     //phần hiển thị dữ liệu ra clien
     //phần hiển thị giao diện admin
     'homeadmin' => (new AdminHomeController())->index(),
-
-
     'qlydanhmuc' => (new CategoryController())->quanlydanhmuc(),
     'create_danhmuc' => (new CategoryController())->createdanhmuc(),
     'store_danhmuc' => (new CategoryController())->store(),
@@ -142,8 +142,6 @@ match ($act) {
     'edit_danhmuc' => (new CategoryController())->edit(),
     'update_danhmuc' => (new CategoryController())->update(),
     'delete_danhmuc' => (new CategoryController())->delete(),
-
-    'homeadmin' => (new AdminHomeController())->index(),
     // dich vụ
     'qlydichvu' => (new DichVuController())->quanlydichvu(),
     'createdichvu' => (new DichVuController())->createdichvu(),
@@ -222,4 +220,4 @@ match ($act) {
     default => notFound(),
 }
 
-?>
+    ?>
