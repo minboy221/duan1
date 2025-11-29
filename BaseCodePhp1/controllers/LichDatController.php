@@ -89,8 +89,6 @@ class LichDatController
     }
 
     // Cập nhật trạng thái dành riêng cho Nhân viên (Quay về Dashboard)
-// Trong LichDatController.php
-
 public function updateStatusNhanVien()
 {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

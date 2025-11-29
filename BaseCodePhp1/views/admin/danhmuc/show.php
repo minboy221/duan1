@@ -24,6 +24,8 @@
             <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li><a href="?act=qlylichdat">Quản Lý Đặt Lịch</a></li>
             <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
+            <li><a href="?act=qlybot">Quản Lý AI</a></li>
+            <li><a href="?act=qlychat">Quản Lý Chat</a></li>
             <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
             <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
@@ -40,17 +42,34 @@
         </ul>
     </div>
 
+
     <div class="content">
 
         <nav>
             <i class='bx bx-menu'></i>
-            <a href="#" class="notif"><i class='bx bx-bell'></i><span class="count">12</span></a>
-            <a href="#" class="profile"><img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png"></a>
+
+            <form method="GET" action="">
+                <div class="form-input">
+                    <input type="hidden" name="act" value="qlydanhmuc">
+                    <input type="text" name="keyword" placeholder="Tìm danh mục..."
+                        value="<?= $_GET['keyword'] ?? '' ?>">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+
+            <input type="checkbox" id="theme-toggle" hidden>
+            <label for="theme-toggle" class="theme-toggle"></label>
+
+            <a href="<?= BASE_URL ?>?act=logout" class="profile">
+                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+            </a>
         </nav>
 
         <main>
             <div class="header">
-                <h1>Chi Tiết Danh Mục</h1>
+                <div class="left">
+                    <h1>Chi Tiết Danh Mục</h1>
+                </div>
                 <a href="?act=qlydanhmuc" class="btnthem" style="background:#ccc;color:#000">← Quay lại</a>
             </div>
 
@@ -83,7 +102,6 @@
             </div>
         </main>
     </div>
-
 </body>
 <script src="<?= BASE_URL ?>public/admin.js"></script>
 

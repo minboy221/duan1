@@ -328,6 +328,149 @@
             </a>
         </div>
     </div>
+    <!-- PHẦN CHAT AI -->
+    <div class="chat-launcher" onclick="toggleChat()">
+        <div class="launcher-icon">
+            <i class="fa-solid fa-comment-dots"></i>
+        </div>
+        <span class="chat-tooltip">Hỗ trợ trực tuyến</span>
+    </div>
+
+    <div class="chat-window" id="chatBox">
+
+        <div class="chat-header">
+            <div class="header-info">
+                <div class="avatar-bot">
+                    <img src="./anhmau/thonu2.493Z.png" alt="Bot"
+                        onerror="this.src='https://cdn-icons-png.flaticon.com/512/4712/4712027.png'">
+                    <span class="status-dot"></span>
+                </div>
+                <div class="header-text">
+                    <h3>Trợ lý 31Shine</h3>
+                    <p>Luôn sẵn sàng hỗ trợ</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <i class="fa-solid fa-xmark close-btn" onclick="toggleChat()"></i>
+            </div>
+        </div>
+
+        <div class="chat-content" id="chatContent">
+            <div class="msg-row bot-row">
+                <img class="msg-avatar" src="./anhmau/thonu2.493Z.png"
+                    onerror="this.src='https://cdn-icons-png.flaticon.com/512/4712/4712027.png'">
+                <div class="msg-bubble bot">
+                    Xin chào anh! Em là trợ lý ảo. Em có thể giúp anh đặt lịch, tra cứu giá hoặc tìm địa chỉ salon ạ?
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-footer">
+            <div class="input-group">
+                <input type="text" id="msgInput" placeholder="Nhập tin nhắn..." onkeypress="handleEnter(event)">
+                <button onclick="sendMsg()" id="sendBtn">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="footer-note">Được phát triển bởi 31Shine AI</div>
+        </div>
+    </div>
+    <script>
+        // 1. Bật tắt Chat
+        function toggleChat() {
+            const box = document.getElementById('chatBox');
+
+            if (box.classList.contains('active')) {
+                box.classList.remove('active');
+                setTimeout(() => { box.style.display = 'none'; }, 300); // Đợi animation xong mới ẩn
+            } else {
+                box.style.display = 'flex';
+                // Dùng setTimeout nhỏ để animation chạy mượt
+                setTimeout(() => { box.classList.add('active'); }, 10);
+                loadHistory();
+            }
+        }
+
+        // 2. Hiển thị tin nhắn
+        function renderMessage(msg, type) {
+            const container = document.getElementById('chatContent');
+
+            // Chọn avatar tương ứng
+            let avatar = type === 'bot' ? './anhmau/logotron.png' : 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png';
+
+            // Nếu là client thì không cần hiện avatar (hoặc hiện bên phải)
+            let html = '';
+            if (type === 'bot') {
+                html = `
+                <div class="msg-row bot-row">
+                    <img class="msg-avatar" src="${avatar}" onerror="this.src='./anhmau/default-avatar.png'">
+                    <div class="msg-bubble bot">${msg}</div>
+                </div>`;
+            } else {
+                html = `
+                <div class="msg-row client-row">
+                    <div class="msg-bubble client">${msg}</div>
+                </div>`;
+            }
+
+            container.insertAdjacentHTML('beforeend', html);
+            scrollToBottom();
+        }
+
+        // 3. Load lịch sử
+        function loadHistory() {
+            fetch('index.php?act=api_load_chat')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('chatContent');
+                    // Giữ lại câu chào mặc định, xóa các tin cũ để tránh duplicate
+                    container.innerHTML = `
+                    <div class="msg-row bot-row">
+                        <img class="msg-avatar" src="./anhmau/logotron.png">
+                        <div class="msg-bubble bot">Xin chào! Em có thể giúp gì cho anh ạ?</div>
+                    </div>`;
+
+                    data.forEach(item => {
+                        // Chuyển đổi 'admin' hoặc 'bot' thành 'bot' để hiển thị giống nhau
+                        let type = (item.sender === 'client') ? 'client' : 'bot';
+                        renderMessage(item.message, type);
+                    });
+                });
+        }
+
+        // 4. Gửi tin nhắn
+        function sendMsg() {
+            let input = document.getElementById('msgInput');
+            let msg = input.value.trim();
+            if (!msg) return;
+
+            // Hiện tin nhắn client ngay
+            renderMessage(msg, 'client');
+            input.value = '';
+
+            let formData = new FormData();
+            formData.append('message', msg);
+
+            fetch('index.php?act=api_send_chat', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success' && data.reply) {
+                        setTimeout(() => {
+                            renderMessage(data.reply, 'bot');
+                        }, 600); // Delay 600ms cho tự nhiên
+                    }
+                });
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') sendMsg();
+        }
+
+        function scrollToBottom() {
+            let div = document.getElementById('chatContent');
+            div.scrollTop = div.scrollHeight;
+        }
+    </script>
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-column">

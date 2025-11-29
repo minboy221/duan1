@@ -48,6 +48,8 @@
                 <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
                 <li><a href="?act=qlylichdat">Quản Lý Đặt Lịch</a></li>
                 <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
+                <li><a href="?act=qlybot">Quản Lý AI</a></li>
+                <li><a href="?act=qlychat">Quản Lý Chat</a></li>
                 <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
                 <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
                 <li class="active"><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
@@ -88,10 +90,6 @@
 
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>
-            <a href="#" class="notif">
-                <i class='bx bx-bell'></i>
-                <span class="count">12</span>
-            </a>
             <a href="#" class="profile">
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
             </a>
@@ -157,7 +155,7 @@
                                         <td><?= htmlspecialchars($p['created_at']) ?></td>
                                         <td>
                                             <a class="btnxem" href="?act=admin-user-comment&id=<?= $p['id'] ?>"
-                                                class="btn btn-info">Xem bình luận</a>
+                                                class="btn btn-info">Xem đánh giá</a>
 
                                             <?php if ($p['status'] == 1): ?>
                                                 <a class="btnxoa" href="?act=lock_user&id=<?= $p['id'] ?>">Khóa</a>

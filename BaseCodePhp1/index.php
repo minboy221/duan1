@@ -18,9 +18,11 @@ require_once("./controllers/NhanVienAdminController.php");
 require_once("./controllers/ThoController.php");
 require_once("./controllers/BinhLuanUserController.php");
 require_once("./controllers/LichLamViecController.php");
-require_once "./controllers/LichDatController.php";
-
+require_once("./controllers/LichDatController.php");
 require_once("./controllers/AdminHomeController.php");
+require_once("./controllers/ChatController.php");
+require_once("./controllers/BotController.php");
+require_once("./controllers/AdminChatController.php");
 
 require_once("./models/StatsModel.php");
 require_once("./models/DanhGiaModel.php");
@@ -33,7 +35,8 @@ require_once("./models/ThoModel.php");
 require_once("./models/Taikhoanuser.php");
 require_once("./models/LichLamViecModel.php");
 require_once("./models/LichDatModel.php");
-
+require_once("./models/ChatModel.php");
+require_once("./models/BotModel.php");
 
 
 // --- KHỞI TẠO CONTROLLER ---
@@ -46,6 +49,9 @@ $adminNhanVienAdminController = new NhanVienAdminController();
 $lich = new LichLamViecController();
 $clientController = new CattocContronler();
 $lichDatController = new LichDatController();
+$chatController = new ChatController();
+$botController = new BotController();
+$adminChat = new AdminChatController();
 
 //route
 
@@ -132,6 +138,9 @@ match ($act) {
     'api_read_notify' => $clientController->apiReadNotify(),
     'quenmatkhau' => (new KhachHangController())->forgotPassword(),//quên mật khẩu
     'doimatkhau_nhanvien' => (new khachHangController)->changePasswordStaff(), //đổi mật khẩu cho nhân viên
+    //PHẦN AI CHAT VỚI CLIEN
+    'api_load_chat' => $chatController->loadChat(),
+    'api_send_chat' => $chatController->sendChat(),
     //phần hiển thị dữ liệu ra clien
     //phần hiển thị giao diện admin
     'homeadmin' => (new AdminHomeController())->index(),
@@ -216,6 +225,18 @@ match ($act) {
     // xóa dịch vụ trong đặt lịch
     'remove_service' => (new CattocContronler())->removeService(),
 
+    //PHẦN QUẢN LÝ BOT
+    'qlybot' => $botController->index(),
+    'createbot' => $botController->create(),
+    'storebot' => $botController->store(),
+    'editbot' => $botController->edit(),
+    'updatebot' => $botController->update(),
+    'deletebot' => $botController->delete(),
+
+    //giao diện quản lý chat cho admin
+    'qlychat' => $adminChat->index(),
+    //API cho admin
+    'admin_api_get_chat' => $adminChat->getConversation(),
     // trang không tồn tại
     default => notFound(),
 }
