@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
+    /* CSS riêng cho trang quản lý lịch để hiển thị đẹp hơn */
     .status-badge {
         padding: 6px 12px;
         border-radius: 20px;
@@ -104,8 +105,6 @@
             <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li class="active"><a href="?act=qlylichdat">Quản Lý Đặt Lịch</a></li>
             <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
-            <li><a href="?act=qlybot">Quản Lý AI</a></li>
-            <li><a href="?act=qlychat">Quản Lý Chat</a></li>
             <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
             <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
@@ -113,7 +112,7 @@
 
         <ul class="side-menu">
             <li>
-                <a href="<?= BASE_URL ?>?act=logout" class="logout">
+                <a href="#" class="logout">
                     <i class='bx bx-log-out-circle'></i> Đăng Xuất
                 </a>
             </li>
@@ -142,6 +141,11 @@
 
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>
+
+            <a href="#" class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">12</span>
+            </a>
 
             <a href="<?= BASE_URL ?>?act=logout" class="profile">
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
@@ -254,7 +258,6 @@
 
                     <div class="pagination" id="pagination"></div>
         </main>
-        <script src="<?= BASE_URL ?>public/admin.js"></script>
 
         <script>
             // Phân trang
@@ -353,6 +356,8 @@
                 });
             });
         </script>
+        <script src="<?= BASE_URL ?>public/admin.js"></script>
+    </div>
 </body>
 
 </html>
