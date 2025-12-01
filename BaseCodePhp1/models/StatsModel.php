@@ -1,5 +1,4 @@
 <?php
-// models/StatsModel.php
 require_once './commons/function.php';
 
 class StatsModel
@@ -11,74 +10,71 @@ class StatsModel
         $this->conn = connectDB();
     }
 
-    // 1. Tổng số Nhân viên (int)
+    // 1) Tổng nhân viên
     public function getTotalStaff(): int
     {
-        $sql = "SELECT COUNT(id) AS total_staff FROM nhanvien";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
-        $val = $stmt->fetchColumn();
-        return (int) ($val ?? 0);
+        return (int)$this->conn->query("SELECT COUNT(*) FROM nhanvien")->fetchColumn();
     }
 
-    // 2. Tổng số đơn đặt (Total Bookings) (int)
+    // 2) Tổng đơn đặt
     public function getTotalBookings(): int
     {
-        $sql = "SELECT COUNT(id) AS total_bookings FROM lichdat";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
-        $val = $stmt->fetchColumn();
-        return (int) ($val ?? 0);
+        return (int)$this->conn->query("SELECT COUNT(DISTINCT ma_lich) FROM lichdat")->fetchColumn();
     }
 
-    // 3. Tổng Doanh Thu (float)
+    // 3) Tổng doanh thu (sum all done)
     public function getTotalRevenue(): float
     {
-        $sql = "SELECT SUM(dv.price) AS total_revenue
-                FROM lichdat ld
-                JOIN dichvu dv ON ld.dichvu_id = dv.id
-                WHERE ld.status = 'done'";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
-        $val = $stmt->fetchColumn();
-        return (float) ($val ?? 0);
+        $sql = "
+            SELECT SUM(dv.price) 
+            FROM lichdat ld
+            JOIN dichvu dv ON ld.dichvu_id = dv.id
+            WHERE ld.status = 'done'
+        ";
+        return (float)($this->conn->query($sql)->fetchColumn() ?? 0);
     }
 
-    // 4. Doanh Thu Trong Ngày (float)
-   public function getDailyRevenue()
+    // 4) Doanh thu trong ngày (multi service)
+    public function getDailyRevenue()
 {
-    $sql = "SELECT SUM(dv.price) AS daily_revenue
+    $sql = "SELECT SUM(dv.price) 
             FROM lichdat ld
             JOIN dichvu dv ON ld.dichvu_id = dv.id
-            JOIN khunggio kg ON ld.khunggio_id = kg.id
-            JOIN phan_cong pc ON kg.phan_cong_id = pc.id
-            JOIN ngay_lam_viec nl ON pc.ngay_lv_id = nl.id
             WHERE ld.status = 'done'
-            AND nl.date = CURDATE()";
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetchColumn() ?? 0;
+            AND DATE(ld.created_at) = CURDATE()";
+
+    return (float) ($this->conn->query($sql)->fetchColumn() ?? 0);
 }
 
-
-    // 5. Latest bookings (array)
-    public function getLatestBookings($limit = 3)
+    // 5) Lịch đặt mới nhất (gộp theo ma_lich)
+  public function getLatestBookings($limit = 3)
 {
-    $sql = "SELECT 
-                ld.ma_lich, ld.status, ld.created_at,
-                kh.name AS ten_khach,
-                dv.price,
-                nl.date AS ngay_lam
-            FROM lichdat ld
-            JOIN khachhang kh ON ld.khachhang_id = kh.id
-            JOIN dichvu dv ON ld.dichvu_id = dv.id
-            JOIN khunggio kg ON ld.khunggio_id = kg.id
-            JOIN phan_cong pc ON kg.phan_cong_id = pc.id
-            JOIN ngay_lam_viec nl ON pc.ngay_lv_id = nl.id
-            ORDER BY nl.date DESC, kg.time DESC
-            LIMIT ?";
+    $sql = "
+        SELECT 
+            ld.ma_lich,
+            kh.name AS ten_khach,
+            SUM(dv.price) AS total_price,
+            MIN(ld.created_at) AS created_at,
+
+            -- LẤY TRẠNG THÁI ƯU TIÊN CAO NHẤT TRONG ĐƠN
+            (
+                SELECT status 
+                FROM lichdat 
+                WHERE ma_lich = ld.ma_lich
+                ORDER BY FIELD(status, 'done','confirmed','pending','cancelled')
+                LIMIT 1
+            ) AS status
+
+        FROM lichdat ld
+        JOIN khachhang kh ON ld.khachhang_id = kh.id
+        JOIN dichvu dv ON ld.dichvu_id = dv.id
+        GROUP BY ld.ma_lich, kh.name
+        ORDER BY created_at DESC
+        LIMIT :limit
+    ";
+
     $stmt = $this->conn->prepare($sql);
-    $stmt->bindParam(1, $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

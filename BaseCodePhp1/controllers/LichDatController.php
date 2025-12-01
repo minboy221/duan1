@@ -79,7 +79,7 @@ class LichDatController
 
             if ($id && $status) {
                 // Gọi model update
-                $this->model->updateStatus($id, $status, $reason);
+                $this->model->updateStatusByMaLich($id, $status, $reason);
             }
 
             // Quay lại trang quản lý
