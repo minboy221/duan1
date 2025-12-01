@@ -104,18 +104,32 @@ class DichVuController
     }
 
     // xóa dịch vụ
-    public function delete()
-    {
-        $id = $_GET['id'] ?? null;
+// Trong DichVuController.php, sửa hàm delete:
 
-        if ($id) {
-            $this->model->delete($id);
-            $_SESSION['success'] = "Xóa dịch vụ thành công!";
-        }
-
+// public function delete() (Sửa lại tên hàm)
+public function delete()
+{
+    $id = $_GET['id'] ?? null;
+    if (!$id) {
         header("Location: index.php?act=qlydichvu");
-        exit();
+        exit;
     }
+
+    // 💡 SỬA LỖI: Gọi đúng Model DichVu
+    $result = $this->model->delete($id); 
+
+    if ($result === "foreign_key_violation") {
+        // Lỗi Khóa ngoại (dịch vụ có liên kết)
+        $_SESSION['error_sa'] = "Không thể xóa dịch vụ này vì đã có lịch đặt hoặc dữ liệu liên quan sử dụng nó.";
+    } elseif ($result) {
+        $_SESSION['success_sa'] = "Đã xóa dịch vụ thành công!";
+    } else {
+        $_SESSION['error_sa'] = "Xóa dịch vụ thất bại do lỗi hệ thống!";
+    }
+
+    header("Location: index.php?act=qlydichvu");
+    exit();
+}
 
     // xem chi tiết 1 dịch vụ + danh mục
     public function show()

@@ -9,6 +9,8 @@
     <title>Quản Lý Dịch Vụ | 31Shine</title>
     <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="<?= BASE_URL ?>public/admin.js"></script>
     <style>
         .pagination button {
             margin: 3px;
@@ -165,61 +167,99 @@
         </main>
     </div>
 
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+
     <script>
-        // Số user mỗi trang
-        const usersPerPage = 5;
+        document.addEventListener('DOMContentLoaded', function() {
 
-        // Lấy bảng
-        const table = document.getElementById("userTable");
-        const rows = table.querySelectorAll("tbody tr");
-        const totalRows = rows.length;
+            // ----------------------------------------------------
+            // LOGIC HIỂN THỊ THÔNG BÁO SWEETALERT2 (SAU KHI REDIRECT)
+            // ----------------------------------------------------
 
-        // Tính số trang
-        const totalPages = Math.ceil(totalRows / usersPerPage);
+            <?php if (isset($_SESSION['error_sa'])): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi Xóa Dịch Vụ!',
+                    text: '<?= htmlspecialchars($_SESSION['error_sa']) ?>',
+                    confirmButtonText: 'Đóng',
+                    confirmButtonColor: '#DB504A'
+                });
+                <?php unset($_SESSION['error_sa']); ?>
+            <?php endif; ?>
 
-        // Tạo thanh phân trang
-        const pagination = document.createElement("div");
-        pagination.classList.add("pagination");
-        pagination.style.margin = "20px";
-        pagination.style.textAlign = "center";
-        document.querySelector(".orders").appendChild(pagination);
+            <?php if (isset($_SESSION['success_sa'])): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành Công!',
+                    text: '<?= htmlspecialchars($_SESSION['success_sa']) ?>',
+                    confirmButtonText: 'Đóng',
+                    confirmButtonColor: '#388E3C'
+                });
+                <?php unset($_SESSION['success_sa']); ?>
+            <?php endif; ?>
 
-        function showPage(page) {
-            // Ẩn toàn bộ
-            rows.forEach(r => r.style.display = "none");
+            // ----------------------------------------------------
+            // LOGIC PHÂN TRANG (PAGINATION)
+            // Giữ nguyên logic phân trang client-side của bạn
+            // ----------------------------------------------------
 
-            // Vị trí bắt đầu – kết thúc
-            const start = (page - 1) * usersPerPage;
-            const end = start + usersPerPage;
+            const usersPerPage = 5;
+            const table = document.getElementById("userTable");
 
-            // Hiển thị đúng 5 user
-            for (let i = start; i < end && i < totalRows; i++) {
-                rows[i].style.display = "";
+            // Kiểm tra xem có dữ liệu hay không để tránh lỗi JS
+            if (!table || table.querySelector("tbody tr") === null) {
+                return;
             }
 
-            // Active nút
-            document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
-            document.getElementById("page-" + page).classList.add("active");
-        }
+            const rows = table.querySelectorAll("tbody tr");
+            const totalRows = rows.length;
+            const totalPages = Math.ceil(totalRows / usersPerPage);
 
-        // Render nút phân trang
-        for (let i = 1; i <= totalPages; i++) {
-            const btn = document.createElement("button");
-            btn.innerText = i;
-            btn.id = "page-" + i;
-            btn.classList.add("page-btn");
-            btn.style.margin = "3px";
-            btn.style.padding = "8px 14px";
-            btn.style.borderRadius = "5px";
-            btn.style.border = "1px solid #ccc";
-            btn.style.cursor = "pointer";
-            btn.onclick = () => showPage(i);
-            pagination.appendChild(btn);
-        }
+            let pagination = document.querySelector(".orders .pagination");
+            if (!pagination) {
+                pagination = document.createElement("div");
+                pagination.classList.add("pagination");
+                pagination.style.margin = "20px";
+                pagination.style.textAlign = "center";
+                document.querySelector(".orders").appendChild(pagination);
+            }
 
-        // Hiển thị trang đầu tiên
-        showPage(1);
+            let currentPage = 1;
+
+            function showPage(page) {
+                currentPage = page;
+                rows.forEach(r => r.style.display = "none");
+                const start = (page - 1) * usersPerPage;
+                const end = start + usersPerPage;
+
+                for (let i = start; i < end && i < totalRows; i++) {
+                    rows[i].style.display = "";
+                }
+
+                document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
+                document.getElementById("page-" + page)?.classList.add("active");
+            }
+
+            // Render nút phân trang
+            pagination.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement("button");
+                btn.innerText = i;
+                btn.id = "page-" + i;
+                btn.classList.add("page-btn");
+                btn.style.margin = "3px";
+                btn.style.padding = "8px 14px";
+                btn.style.borderRadius = "5px";
+                btn.style.border = "1px solid #ccc";
+                btn.style.cursor = "pointer";
+                btn.onclick = () => showPage(i);
+                pagination.appendChild(btn);
+            }
+
+            // Hiển thị trang đầu tiên
+            if (totalRows > 0) {
+                showPage(1);
+            }
+        });
     </script>
 
 </body>

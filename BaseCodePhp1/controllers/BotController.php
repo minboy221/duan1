@@ -8,9 +8,19 @@ class BotController{
     }
     //phần hiển thị danh sách trang
     public function index(){
+    $keyword = $_GET['keyword'] ?? null;
+    
+    if ($keyword) {
+        $listBot = $this->model->search($keyword);
+    } else {
         $listBot = $this->model->all();
-        require_once './views/admin/bot/list.php';
     }
+    
+    // 💡 Lưu keyword hiện tại vào session để có thể sử dụng lại trong form nếu cần
+    // $_SESSION['last_search_bot'] = $keyword; // Không cần thiết nếu dùng $_GET trực tiếp
+    
+    require_once './views/admin/bot/list.php'; // Gửi $listBot sang View
+}
     //phần thêm
     public function create(){
         require_once './views/admin/bot/create.php';
