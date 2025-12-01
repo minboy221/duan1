@@ -8,75 +8,226 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>public/lichsudatlich.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+
+    <style>
+        /* --- CSS GỐC CỦA BẠN (GIỮ NGUYÊN) --- */
+        .badge {
+            padding: 6px 12px;
+            /* Tăng khoảng cách đệm lên một chút cho thoáng */
+            border-radius: 15px;
+            font-size: 12px;
+            color: white;
+            font-weight: 500;
+
+            /* --- CÁC DÒNG MỚI ĐỂ FIX LỖI --- */
+            white-space: nowrap;
+            /* Quan trọng: Cấm chữ bị xuống dòng */
+            display: inline-block;
+            /* Giúp khung bao ôm trọn chữ */
+            min-width: 100px;
+            /* Đặt độ rộng tối thiểu để các nút đều nhau */
+            text-align: center;
+            /* Căn giữa chữ trong khung */
+        }
+
+        .status-pending {
+            background-color: #f6c23e;
+            color: #fff;
+        }
+
+        .status-confirmed {
+            background-color: #36b9cc;
+        }
+
+        .status-done {
+            background-color: #1cc88a;
+        }
+
+        .status-cancelled {
+            background-color: #e74a3b;
+        }
+
+        .btn-view {
+            padding: 5px 10px;
+            background: #222;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+            /* Fix lỗi nút bị trắng */
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-view:hover {
+            background: #D6A354;
+            color: white;
+        }
+
+        .pagination button {
+            margin: 3px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .pagination button:hover {
+            background: #e0e0e0;
+        }
+
+        .pagination .active {
+            background: #f6c23e !important;
+            color: white !important;
+            border-color: #0a58ca !important;
+        }
+
+        /* --- CSS CHO MODAL TỰ CODE (KHÔNG CẦN BOOTSTRAP) --- */
+        .custom-modal {
+            display: none;
+            /* Mặc định ẩn */
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Màu nền mờ */
+            animation: fadeIn 0.3s;
+        }
+
+        .custom-modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            /* Cách trên 10% và giữa màn hình */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: slideIn 0.3s;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 18px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* CSS CHO NÚT LÝ DO */
+        .btn-reason {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            text-align: left;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #333;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .btn-reason:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn-reason.active {
+            background-color: #fff3cd;
+            border-color: #D6A354;
+            color: #856404;
+            font-weight: bold;
+        }
+
+        .btn-reason i {
+            margin-right: 10px;
+            color: #D6A354;
+            width: 20px;
+            text-align: center;
+        }
+
+        .txt-reason-other {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: none;
+            /* Ẩn mặc định */
+            resize: vertical;
+        }
+
+        .btn-confirm-cancel {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            font-size: 16px;
+            opacity: 0.6;
+            pointer-events: none;
+            /* Khóa nút khi chưa chọn */
+        }
+
+        .btn-confirm-cancel.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .btn-confirm-cancel:hover {
+            background-color: #c82333;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
-<style>
-    /* Badge trạng thái */
-    .badge {
-        padding: 5px 10px;
-        border-radius: 15px;
-        font-size: 12px;
-        color: white;
-        font-weight: 500;
-    }
-
-    .status-pending {
-        background-color: #f6c23e;
-        color: #fff;
-    }
-
-    /* Vàng */
-    .status-confirmed {
-        background-color: #36b9cc;
-    }
-
-    /* Xanh dương */
-    .status-done {
-        background-color: #1cc88a;
-    }
-
-    /* Xanh lá */
-    .status-cancelled {
-        background-color: #e74a3b;
-    }
-
-    /* Đỏ */
-
-    /* Nút chi tiết */
-    .btn-view {
-        padding: 5px 10px;
-        background: #222;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
-    .btn-view:hover {
-        background: #D6A354;
-    }
-
-    .pagination button {
-        margin: 3px;
-        padding: 8px 14px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        background: #f5f5f5;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-
-    .pagination button:hover {
-        background: #e0e0e0;
-    }
-
-    .pagination .active {
-        background: #f6c23e !important;
-        /* màu xanh nổi bật */
-        color: white !important;
-        border-color: #0a58ca !important;
-    }
-</style>
 
 <body>
     <div class="container">
@@ -103,18 +254,10 @@
                 </div>
                 <div class="menu">
                     <ul>
-                        <li>
-                            <a href="<?= BASE_URL ?>?act=home">Trang Chủ</a>
-                        </li>
-                        <li>
-                            <a href="<?= BASE_URL ?>?act=about">Về 31Shine</a>
-                        </li>
-                        <li>
-                            <a href="<?= BASE_URL ?>?act=dichvu">Dịch Vụ</a>
-                        </li>
-                        <li>
-                            <a href="<?= BASE_URL ?>?act=nhanvien">Nhân Viên</a>
-                        </li>
+                        <li><a href="<?= BASE_URL ?>?act=home">Trang Chủ</a></li>
+                        <li><a href="<?= BASE_URL ?>?act=about">Về 31Shine</a></li>
+                        <li><a href="<?= BASE_URL ?>?act=dichvu">Dịch Vụ</a></li>
+                        <li><a href="<?= BASE_URL ?>?act=nhanvien">Nhân Viên</a></li>
                     </ul>
                     <div class="icon">
                         <i class="fa fa-search" id="timkiem"></i>
@@ -127,12 +270,11 @@
                             </form>
                         </div>
                     </div>
-                    <!-- phần hiển thị các nút cho người dùng khi đã đăng nhập tài khoản -->
                     <div class="dangky">
                         <div class="dropdown">
                             <?php if (isset($_SESSION['username']) && !empty($_SESSION['username'])): ?>
                                 <button class="dropdown-btn">
-                                    Xin Chào,<?= htmlspecialchars($_SESSION['username']) ?><i
+                                    Xin Chào, <?= htmlspecialchars($_SESSION['username']) ?> <i
                                         class="fa-solid fa-chevron-down"></i>
                                 </button>
                                 <div class="dropdown-content">
@@ -141,9 +283,7 @@
                                 </div>
                             <?php else: ?>
                                 <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
-                                    <button>
-                                        Đăng Nhập / Đăng Ký
-                                    </button>
+                                    <button>Đăng Nhập / Đăng Ký</button>
                                 </a>
                             <?php endif; ?>
                         </div>
@@ -152,6 +292,7 @@
             </aside>
         </header>
     </div>
+
     <div class="content">
         <div class="background">
             <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
@@ -172,7 +313,7 @@
                                 <th>Thợ cắt</th>
                                 <th>Giá</th>
                                 <th>Trạng thái</th>
-                                <th>Lý Do</th>
+                                <th>Lý Do Hủy</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -214,30 +355,30 @@
                                         <td><span class="badge <?= $statusClass ?>"><?= $statusText ?></span></td>
                                         <td><?= !empty($item['cancel_reason']) ? nl2br(htmlspecialchars($item['cancel_reason'])) : '-' ?>
                                         </td>
-                                        <td class="chitiet">
+
+                                        <td class="chitiet" style="white-space: nowrap;">
                                             <a href="<?= BASE_URL ?>?act=lichsudatchitiet&ma_lich=<?= $item['ma_lich'] ?>">
                                                 <button class="btn-view">Chi Tiết</button>
                                             </a>
+
                                             <?php if ($item['status'] === 'pending' || $item['status'] === 'confirmed'): ?>
-                                                <a href="<?= BASE_URL ?>?act=huylich&id=<?= $item['id'] ?>"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn hủy lịch hẹn #<?= $item['ma_lich'] ?> không?');">
-                                                    <button class="btn-view"
-                                                        style="background: #dc3545; margin-left: 5px; color: white;">
-                                                        <i class="fa-solid fa-xmark"></i> Hủy
-                                                    </button>
-                                                </a>
+                                                <button type="button" class="btn-view"
+                                                    style="background: #dc3545; margin-left: 5px; color: white;"
+                                                    onclick="openModal('<?= $item['id'] ?>', '<?= $item['ma_lich'] ?>')">
+                                                    <i class="fa-solid fa-xmark"></i> Hủy
+                                                </button>
                                             <?php endif; ?>
+
                                             <?php if ($item['status'] === 'done'): ?>
                                                 <?php if (!empty($item['rating'])): ?>
                                                     <button class="btn-view" style="background:#6c757d; margin-left:5px;"
-                                                        onclick="alert('Đơn hàng #<?= htmlspecialchars($item['ma_lich']) ?> đã được đánh giá rồi!');">
+                                                        onclick="alert('Đơn hàng đã được đánh giá!');">
                                                         Đã Đánh Giá
                                                     </button>
                                                 <?php else: ?>
                                                     <a href="<?= BASE_URL ?>?act=danhgia&ma_lich=<?= $item['ma_lich'] ?>">
-                                                        <button class="btn-view" style="background:#28a745; margin-left:5px;">
-                                                            Đánh Giá
-                                                        </button>
+                                                        <button class="btn-view" style="background:#28a745; margin-left:5px;">Đánh
+                                                            Giá</button>
                                                     </a>
                                                 <?php endif; ?>
                                             <?php endif; ?>
@@ -254,11 +395,12 @@
                     </table>
                 </div>
             </div>
+
             <?php if (isset($_SESSION['popup_notify'])): ?>
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
                         Swal.fire({
-                            icon: '<?= $_SESSION['popup_notify']['type'] ?>', // success hoặc error
+                            icon: '<?= $_SESSION['popup_notify']['type'] ?>',
                             title: 'Thông báo',
                             text: '<?= $_SESSION['popup_notify']['message'] ?>',
                             confirmButtonColor: '#D6A354',
@@ -266,62 +408,152 @@
                         });
                     });
                 </script>
-                <?php unset($_SESSION['popup_notify']); // Xóa thông báo sau khi đã hiện ?>
+                <?php unset($_SESSION['popup_notify']); ?>
             <?php endif; ?>
         </main>
+    </div>
+    <!-- hủy lịch -->
+    <div id="myHuyLichModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="modal-header">
+                <h3>Xác nhận hủy lịch hẹn</h3>
+            </div>
+
+            <form action="index.php?act=huylich" method="POST" onsubmit="return validateForm()">
+                <p style="margin: 15px 0; color: #555;">Bạn đang hủy lịch: <strong id="displayMaLich"
+                        style="color:#000;"></strong></p>
+
+                <input type="hidden" name="id" id="inputLichId" value="">
+                <input type="hidden" name="ly_do_chon" id="inputLyDoChon" value="">
+
+                <div class="reason-list">
+                    <div class="btn-reason" onclick="selectReason(this, 'Bận việc đột xuất')">
+                        <i class="fa-regular fa-clock"></i> Bận việc đột xuất
+                    </div>
+                    <div class="btn-reason" onclick="selectReason(this, 'Muốn đổi ngày/giờ khác')">
+                        <i class="fa-solid fa-calendar-days"></i> Muốn đổi ngày/giờ khác
+                    </div>
+                    <div class="btn-reason" onclick="selectReason(this, 'Tìm được chỗ khác')">
+                        <i class="fa-solid fa-location-dot"></i> Tìm được chỗ khác
+                    </div>
+                    <div class="btn-reason" onclick="selectReason(this, 'Khác')">
+                        <i class="fa-solid fa-pen"></i> Lý do khác...
+                    </div>
+                </div>
+
+                <textarea name="ly_do_khac" id="txtLyDoKhac" class="txt-reason-other" rows="3"
+                    placeholder="Nhập lý do cụ thể..."></textarea>
+
+                <button type="submit" name="huy_lich_submit" id="btnSubmitHuy" class="btn-confirm-cancel">XÁC NHẬN
+                    HỦY</button>
+            </form>
+        </div>
     </div>
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-column">
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
                     class="footer-logo">
-                <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam. Chúng tôi giúp bạn luôn tự tin và phong độ
-                    mỗi ngày.</p>
+                <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam.</p>
             </div>
             <div class="footer-column">
                 <h3>Liên kết nhanh</h3>
                 <ul>
                     <li><a href="#">Trang chủ</a></li>
                     <li><a href="#">Dịch vụ</a></li>
-                    <li><a href="#">Thợ cắt tóc</a></li>
-                    <li><a href="#">Đặt lịch</a></li>
-                    <li><a href="#">Liên hệ</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h3>Liên hệ</h3>
                 <p><i class="fa-solid fa-location-dot"></i> 123 Nguyễn Trãi, Hà Nội</p>
                 <p><i class="fa-solid fa-phone"></i> 0909 123 456</p>
-                <p><i class="fa-solid fa-envelope"></i> support@31shine.vn</p>
-
                 <div class="social-icons">
                     <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
                     <a href="#"><i class="fa-brands fa-tiktok"></i></a>
                 </div>
             </div>
         </div>
-
         <div class="footer-bottom">
             <p>© 2025 31Shine. Tất cả quyền được bảo lưu.</p>
         </div>
     </footer>
 </body>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= BASE_URL ?>public/main.js"></script>
-<script>
-    // Số dòng mỗi trang
-    const rowsPerPage = 5;
 
-    // Lấy bảng đúng theo HTML
+<script>
+    // Mở Modal
+    function openModal(id, maLich) {
+        document.getElementById('myHuyLichModal').style.display = "block";
+        document.getElementById('inputLichId').value = id;
+        document.getElementById('displayMaLich').innerText = maLich;
+
+        // Reset form
+        document.getElementById('inputLyDoChon').value = '';
+        document.getElementById('txtLyDoKhac').value = '';
+        document.getElementById('txtLyDoKhac').style.display = 'none';
+
+        document.getElementById('btnSubmitHuy').classList.remove('enabled');
+
+        let reasons = document.querySelectorAll('.btn-reason');
+        reasons.forEach(r => r.classList.remove('active'));
+    }
+
+    // Đóng Modal
+    function closeModal() {
+        document.getElementById('myHuyLichModal').style.display = "none";
+    }
+
+    // Đóng khi click ra ngoài
+    window.onclick = function (event) {
+        let modal = document.getElementById('myHuyLichModal');
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Chọn lý do
+    function selectReason(div, value) {
+        let reasons = document.querySelectorAll('.btn-reason');
+        reasons.forEach(r => r.classList.remove('active'));
+
+        div.classList.add('active');
+        document.getElementById('inputLyDoChon').value = value;
+
+        // Bật nút submit
+        document.getElementById('btnSubmitHuy').classList.add('enabled');
+
+        let txtOther = document.getElementById('txtLyDoKhac');
+        if (value === 'Khác') {
+            txtOther.style.display = 'block';
+            txtOther.focus();
+        } else {
+            txtOther.style.display = 'none';
+        }
+    }
+
+    // Validate
+    function validateForm() {
+        let lyDoChon = document.getElementById('inputLyDoChon').value;
+        let lyDoKhac = document.getElementById('txtLyDoKhac').value.trim();
+
+        if (lyDoChon === 'Khác' && lyDoKhac === '') {
+            alert('Vui lòng nhập lý do cụ thể!');
+            document.getElementById('txtLyDoKhac').focus();
+            return false;
+        }
+        return true;
+    }
+
+    // PHÂN TRANG (GIỮ NGUYÊN)
+    const rowsPerPage = 5;
     const table = document.querySelector(".bang-lichsu table");
     const rows = table.querySelectorAll("tbody tr");
     const totalRows = rows.length;
-
-    // Tính số trang
     const totalPages = Math.ceil(totalRows / rowsPerPage);
 
-    // Tạo thanh phân trang — thêm vào dưới bảng
     const pagination = document.createElement("div");
     pagination.classList.add("pagination");
     pagination.style.margin = "20px 0";
@@ -329,40 +561,25 @@
     document.querySelector(".bang-lichsu").appendChild(pagination);
 
     function showPage(page) {
-        // Ẩn toàn bộ
         rows.forEach(r => r.style.display = "none");
-
-        // Vị trí bắt đầu – kết thúc
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-
-        // Hiển thị đúng số dòng
         for (let i = start; i < end && i < totalRows; i++) {
             rows[i].style.display = "";
         }
-
-        // Active nút
         document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
         const activeBtn = document.getElementById("page-" + page);
         if (activeBtn) activeBtn.classList.add("active");
     }
 
-    // Render nút phân trang
     for (let i = 1; i <= totalPages; i++) {
         const btn = document.createElement("button");
         btn.innerText = i;
         btn.id = "page-" + i;
         btn.classList.add("page-btn");
-        btn.style.margin = "3px";
-        btn.style.padding = "8px 14px";
-        btn.style.borderRadius = "5px";
-        btn.style.border = "1px solid #ccc";
-        btn.style.cursor = "pointer";
         btn.onclick = () => showPage(i);
         pagination.appendChild(btn);
     }
-
-    // Hiển thị trang đầu tiên
     if (totalRows > 0) showPage(1);
 </script>
 
