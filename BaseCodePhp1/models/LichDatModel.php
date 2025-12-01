@@ -346,5 +346,39 @@ class LichDatModel
         $stmt->execute([$khachhang_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    // ------------------------------
+// FIX UPDATE TRẠNG THÁI THEO MA_LICH
+// ------------------------------
+public function updateStatusByMaLich($ma_lich, $status, $reason = null)
+{
+    if ($status === 'cancelled') {
+
+        $sql = "UPDATE lichdat
+                SET status = :status,
+                    cancel_reason = :reason,
+                    client_read = 0
+                WHERE ma_lich = :ma_lich";
+
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            ':status' => $status,
+            ':reason' => $reason,
+            ':ma_lich' => $ma_lich
+        ]);
+
+    } else {
+
+        $sql = "UPDATE lichdat
+                SET status = :status
+                WHERE ma_lich = :ma_lich";
+
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            ':status' => $status,
+            ':ma_lich' => $ma_lich
+        ]);
+    }
+}
+
 }
 ?>

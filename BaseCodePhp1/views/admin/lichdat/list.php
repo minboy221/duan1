@@ -226,7 +226,7 @@
                                         <td>
                                             <form action="index.php?act=update_status_lich" method="POST"
                                                 style="display:inline-block" class="status-form">
-                                                <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                                                <input type="hidden" name="id" value="<?= $item['ma_lich'] ?>">
                                                 <?php if ($st == 'pending'): ?>
                                                     <button name="status" value="confirmed" class="btn-action btn-approve"
                                                         title="Duyệt"><i class='bx bx-check'></i></button>
