@@ -12,7 +12,7 @@ class LichLamViecModel
         try {
             $count = 0;
             //tạo 7 ngày
-            for ($i = 0; $i < 7; $i++) {
+            for ($i = 0; $i < 30; $i++) {
                 $date = date('Y-m-d', strtotime("+$i day"));
                 //phần kiểm tra ngày
                 $check = $this->conn->prepare("SELECT id FROM ngay_lam_viec WHERE date = ?");
@@ -145,7 +145,8 @@ class LichLamViecModel
     {
         $sql = "SELECT * FROM ngay_lam_viec
         WHERE date >= CURDATE()
-        ORDER BY date ASC";
+        ORDER BY date ASC
+        LIMIT 7";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

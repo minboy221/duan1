@@ -160,9 +160,27 @@
                         <label class="fw-bold"><i class="fa-regular fa-calendar"></i> Chọn ngày:</label>
                         <select id="chonngay" name="ngay_id" onchange="loadStylists()" class="form-select" required>
                             <option value="">-- Chọn ngày bạn đến --</option>
-                            <?php foreach ($listDays as $day): ?>
+
+                            <?php
+                            // Mảng việt hóa thứ
+                            $daysVN = [
+                                'Mon' => 'Thứ Hai',
+                                'Tue' => 'Thứ Ba',
+                                'Wed' => 'Thứ Tư',
+                                'Thu' => 'Thứ Năm',
+                                'Fri' => 'Thứ Sáu',
+                                'Sat' => 'Thứ Bảy',
+                                'Sun' => 'Chủ Nhật'
+                            ];
+
+                            foreach ($listDays as $day):
+                                $timestamp = strtotime($day['date']);
+                                $dayNameEng = date('D', $timestamp);
+                                $dayNameVN = $daysVN[$dayNameEng] ?? $dayNameEng;
+                                $dateFormatted = date('d/m', $timestamp);
+                                ?>
                                 <option value="<?= $day['id'] ?>">
-                                    <?= date('d/m/Y', strtotime($day['date'])) ?>
+                                    <?= $dayNameVN ?>, ngày <?= $dateFormatted ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -320,7 +338,7 @@
                     data.forEach(slot => {
                         let btnClass = '';
                         let disabled = '';
-                        let onclick = '';
+                        let onClick = '';
                         let title = '';
                         let displayText = slot.time;
                         if (slot.is_booked) {

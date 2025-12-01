@@ -90,7 +90,7 @@
                         <form action="index.php?act=auto_create_days" method="POST">
                             <button type="submit" class="btnthem"
                                 onclick="return confirm('Hệ thống sẽ tạo ngày làm việc cho 7 ngày tới. Bạn chắc chắn chứ?')">
-                                <i class="fa fa-magic"></i> Tự động tạo 7 ngày tới
+                                <i class="fa fa-magic"></i> Tự động tạo 30 ngày tới
                             </button>
                         </form>
                     </div>
@@ -124,7 +124,7 @@
                                 $weekendClass = $isWeekend ? 'weekend' : '';
                                 ?>
 
-                                <div class="day-card">
+                                <div class="day-card day-item">
                                     <div class="day-header <?= $weekendClass ?>">
                                         <span class="day-date"><?= date('d/m/Y', $timestamp) ?></span>
                                         <span class="day-weekday"><?= $tenThu ?></span>
@@ -173,6 +173,7 @@
                                 <p style="color:#888;">Chưa có lịch làm việc nào. Hãy bấm nút tạo tự động!</p>
                             </div>
                         <?php endif; ?>
+                        <div id="pagination" class="d-flex justify-content-center mt-4 mb-5 gap-2"></div>
                     </div>
                 </div>
             </div>
@@ -201,59 +202,77 @@
 
             return false;
         }
-        // Số user mỗi trang
-        const usersPerPage = 5;
+        //phần phân Trang
+        document.addEventListener('DOMContentLoaded', function () {
+            const itemsPerPage = 9; // Số lượng ngày hiển thị trên 1 trang
+            const items = document.querySelectorAll('.day-item');
+            const paginationContainer = document.getElementById('pagination');
+            const totalPages = Math.ceil(items.length / itemsPerPage);
 
-        // Lấy bảng
-        const table = document.getElementById("userTable");
-        const rows = table.querySelectorAll("tbody tr");
-        const totalRows = rows.length;
+            // Hàm hiển thị trang
+            function showPage(page) {
+                const start = (page - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
 
-        // Tính số trang
-        const totalPages = Math.ceil(totalRows / usersPerPage);
+                items.forEach((item, index) => {
+                    if (index >= start && index < end) {
+                        item.style.display = 'block'; // Hiện
+                    } else {
+                        item.style.display = 'none';  // Ẩn
+                    }
+                });
 
-        // Tạo thanh phân trang
-        const pagination = document.createElement("div");
-        pagination.classList.add("pagination");
-        pagination.style.margin = "20px";
-        pagination.style.textAlign = "center";
-        document.querySelector(".orders").appendChild(pagination);
-
-        function showPage(page) {
-            // Ẩn toàn bộ
-            rows.forEach(r => r.style.display = "none");
-
-            // Vị trí bắt đầu – kết thúc
-            const start = (page - 1) * usersPerPage;
-            const end = start + usersPerPage;
-
-            // Hiển thị đúng 5 user
-            for (let i = start; i < end && i < totalRows; i++) {
-                rows[i].style.display = "";
+                // Cập nhật trạng thái nút active
+                updateButtons(page);
             }
 
-            // Active nút
-            document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
-            document.getElementById("page-" + page).classList.add("active");
-        }
+            // Hàm tạo nút phân trang
+            function createPagination() {
+                if (totalPages <= 1) return; // Nếu chỉ có 1 trang thì khỏi hiện nút
 
-        // Render nút phân trang
-        for (let i = 1; i <= totalPages; i++) {
-            const btn = document.createElement("button");
-            btn.innerText = i;
-            btn.id = "page-" + i;
-            btn.classList.add("page-btn");
-            btn.style.margin = "3px";
-            btn.style.padding = "8px 14px";
-            btn.style.borderRadius = "5px";
-            btn.style.border = "1px solid #ccc";
-            btn.style.cursor = "pointer";
-            btn.onclick = () => showPage(i);
-            pagination.appendChild(btn);
-        }
+                // Nút Trước
+                /*
+                const prevBtn = document.createElement('button');
+                prevBtn.innerText = '«';
+                prevBtn.className = 'pagination-btn';
+                paginationContainer.appendChild(prevBtn);
+                */
 
-        // Hiển thị trang đầu tiên
-        showPage(1);
+                // Các nút số trang
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.innerText = i;
+                    btn.className = 'pagination-btn';
+                    if (i === 1) btn.classList.add('active');
+
+                    btn.addEventListener('click', () => {
+                        showPage(i);
+                        // Scroll nhẹ lên đầu danh sách cho dễ nhìn
+                        document.getElementById('calendar-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+
+                    paginationContainer.appendChild(btn);
+                }
+            }
+
+            // Cập nhật màu nút
+            function updateButtons(activePage) {
+                const buttons = paginationContainer.querySelectorAll('.pagination-btn');
+                buttons.forEach(btn => {
+                    if (parseInt(btn.innerText) === activePage) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+
+            // Khởi chạy
+            if (items.length > 0) {
+                createPagination();
+                showPage(1); // Mặc định hiện trang 1
+            }
+        });
     </script>
 </body>
 
