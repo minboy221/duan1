@@ -105,6 +105,8 @@
             <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
             <li class="active"><a href="?act=qlylichdat">Quản Lý Đặt Lịch</a></li>
             <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
+            <li><a href="?act=qlybot">Quản Lý AI</a></li>
+            <li><a href="?act=qlychat">Quản Lý Chat</a></li>
             <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
             <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
