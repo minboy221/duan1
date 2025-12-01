@@ -590,42 +590,71 @@
     <?php endif; ?>
     <!-- phần thông báo lý do mà lịch bị huỷ -->
     <?php if (!empty($unreadCancel)): ?>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                Swal.fire({
-                    icon: 'error', // Icon dấu X đỏ
-                    title: 'LỊCH HẸN ĐÃ BỊ HỦY',
-                    html: `
-                    <div style="text-align: left;">
-                        <p>Rất tiếc, lịch hẹn mã <strong>#<?= $unreadCancel['ma_lich'] ?></strong> của anh đã bị hủy.</p>
-                        
-                        <div style="background: #fff5f5; border-left: 5px solid #dc3545; padding: 15px; margin: 15px 0; border-radius: 5px;">
-                            <strong style="color: #dc3545;">Lý do hủy:</strong> <br>
-                            <span style="color: #333; font-style: italic;">"<?= htmlspecialchars($unreadCancel['cancel_reason']) ?>"</span>
-                        </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error', 
+                title: 'LỊCH HẸN ĐÃ BỊ HỦY',
+                html: `
+                <div style="text-align: left;">
+                    <p>Rất tiếc, lịch hẹn mã <strong>#<?= $unreadCancel['ma_lich'] ?></strong> của anh đã bị hủy.</p>
+                    
+                    <div style="background: #fff5f5; border-left: 5px solid #dc3545; padding: 15px; margin: 15px 0; border-radius: 5px;">
+                        <strong style="color: #dc3545;">Lý do hủy:</strong> <br>
+                        <span style="color: #333; font-style: italic;">"<?= htmlspecialchars($unreadCancel['cancel_reason']) ?>"</span>
+                    </div>
 
-                        <p style="font-size: 14px; color: #666;">Vui lòng đặt lại lịch mới hoặc liên hệ Hotline để được hỗ trợ.</p>
-                    </div>
-                `,
-                    confirmButtonText: 'Đã hiểu',
-                    confirmButtonColor: '#d33',
-                    allowOutsideClick: false, // Bắt buộc bấm nút mới tắt
-                    width: '500px'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Gọi AJAX báo cho server biết khách đã đọc
-                        fetch('index.php?act=api_read_notify', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body: 'id=<?= $unreadCancel['id'] ?>'
-                        });
-                    }
-                });
+                    <p style="font-size: 14px; color: #666;">Vui lòng đặt lại lịch mới hoặc liên hệ Hotline để được hỗ trợ.</p>
+                </div>
+                `,
+                // 💡 THÊM showDenyButton VÀ customClass
+                showDenyButton: true,
+                confirmButtonText: 'Đặt Lịch Lại', // Nút chính (Confirm)
+                denyButtonText: 'Đã hiểu', // Nút phụ (Deny)
+                
+                // Đổi màu nút (để nút "Đặt Lịch Lại" nổi bật)
+                confirmButtonColor: '#3C91E6', // Màu xanh dương cho Đặt Lịch Lại
+                denyButtonColor: '#dc3545',   // Màu đỏ cho Đã Hiểu (và đánh dấu đã đọc)
+                
+                allowOutsideClick: false, 
+                width: '500px'
+            }).then((result) => {
+                
+                // 1. Hành động ĐẶT LỊCH LẠI (Nút Confirm)
+                if (result.isConfirmed) {
+                    // 💡 Đánh dấu đã đọc VÀ chuyển hướng
+                    markReadAndRedirect('<?= BASE_URL ?>?act=datlich');
+                } 
+                
+                // 2. Hành động ĐÃ HIỂU (Nút Deny)
+                else if (result.isDenied) {
+                    // Chỉ đánh dấu đã đọc VÀ ở lại trang (hoặc reload)
+                    markReadAndRedirect(null); 
+                }
+            });
+        });
+        
+        // 💡 HÀM HỖ TRỢ: Đánh dấu đã đọc và chuyển hướng
+        function markReadAndRedirect(redirectUrl) {
+            fetch('index.php?act=api_read_notify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'id=<?= $unreadCancel['id'] ?>'
+            })
+            .then(() => {
+                // Sau khi server báo đã đọc, chuyển hướng (nếu có URL)
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                } else {
+                    // Nếu không có URL, reload trang để thông báo biến mất
+                    window.location.reload();
+                }
             });
-        </script>
-    <?php endif; ?>
+        }
+    </script>
+<?php endif; ?>
 </body>
 <script src="<?= BASE_URL ?>public/main.js"></script>
 

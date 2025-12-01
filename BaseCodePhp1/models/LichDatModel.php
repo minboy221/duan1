@@ -9,32 +9,61 @@ class LichDatModel
     }
 
     // --- 1. DÀNH CHO ADMIN: LẤY DANH SÁCH (CÓ PHÂN TRANG) ---
-    public function getAllLichDatPaginate($limit = 10, $offset = 0)
-    {
-        $sql = "SELECT 
-                    ld.*, 
-                    kh.name as ten_khach, 
-                    kh.phone as sdt_khach,
-                    dv.name as ten_dichvu, dv.price,
-                    kg.time as gio_lam,
-                    n.date as ngay_lam,
-                    t.name as ten_tho
-                FROM lichdat ld
-                JOIN khachhang kh ON ld.khachhang_id = kh.id
-                JOIN dichvu dv ON ld.dichvu_id = dv.id
-                JOIN khunggio kg ON ld.khunggio_id = kg.id
-                JOIN phan_cong pc ON kg.phan_cong_id = pc.id
-                JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
-                JOIN tho t ON pc.tho_id = t.id
-                ORDER BY ld.created_at DESC
-                LIMIT :limit OFFSET :offset";
+public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null, $date = null, $time = null)
+{
+    // 1. Khởi tạo WHERE clause và mảng tham số
+    $where = " WHERE 1=1 ";
+    $params = [];
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // 2. Lọc theo Tên Khách hàng hoặc Mã lịch (Keyword)
+    if ($keyword) {
+        // Tìm kiếm không phân biệt chữ hoa/thường trên tên khách và mã lịch
+        $where .= " AND (kh.name LIKE :keyword OR ld.ma_lich LIKE :keyword) ";
+        $params[':keyword'] = '%' . $keyword . '%';
     }
+
+    // 3. Lọc theo Ngày làm việc (Ngày chính xác)
+    if ($date) {
+        $where .= " AND n.date = :date ";
+        $params[':date'] = $date;
+    }
+
+    // 4. Lọc theo Giờ làm việc (Giờ chính xác)
+    if ($time) {
+        $where .= " AND kg.time = :time ";
+        $params[':time'] = $time;
+    }
+    
+    // 5. Xây dựng truy vấn SQL hoàn chỉnh
+    $sql = "SELECT 
+                ld.*, kh.name as ten_khach, kh.phone as sdt_khach,
+                dv.name as ten_dichvu, dv.price, kg.time as gio_lam,
+                n.date as ngay_lam, t.name as ten_tho
+            FROM lichdat ld
+            JOIN khachhang kh ON ld.khachhang_id = kh.id
+            JOIN dichvu dv ON ld.dichvu_id = dv.id
+            JOIN khunggio kg ON ld.khunggio_id = kg.id
+            JOIN phan_cong pc ON kg.phan_cong_id = pc.id
+            JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
+            JOIN tho t ON pc.tho_id = t.id
+            " . $where . " /* ÁP DỤNG CÁC ĐIỀU KIỆN LỌC */
+            ORDER BY ld.created_at DESC
+            LIMIT :limit OFFSET :offset";
+
+    $stmt = $this->conn->prepare($sql);
+    
+    // 6. Bind các tham số Phân trang và Lọc
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    
+    // Bind các tham số lọc động (đã được định nghĩa trong $params)
+    foreach ($params as $key => &$val) {
+        $stmt->bindParam($key, $val, PDO::PARAM_STR);
+    }
+
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     // Đếm tổng số bản ghi (cho phân trang)
     public function countAllLichDat()
