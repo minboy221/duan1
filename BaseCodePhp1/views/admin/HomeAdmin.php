@@ -156,8 +156,7 @@ $latestBookings = $latestBookings ?? [];
                                                 : '' ?>
                                         </td>
 
-                                        <td><?= number_format((float) ($booking['price'] ?? 0)) ?> VNĐ</td>
-
+                                        <td><?= number_format((float) ($booking['total_price'] ?? 0)) ?> VNĐ</td>
                                         <td>
                                             <?php
                                             $statusMap = [

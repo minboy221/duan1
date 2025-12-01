@@ -40,6 +40,21 @@ class BotModel
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([$id]);
     }
+
+public function search($keyword)
+{
+    $sql = "SELECT * FROM bot_answers 
+            WHERE keywords LIKE :keyword OR answer LIKE :keyword
+            ORDER BY id DESC";
+    
+    $stmt = $this->conn->prepare($sql);
+    $searchParam = '%' . $keyword . '%';
+    
+    $stmt->bindParam(':keyword', $searchParam, PDO::PARAM_STR);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
 
 ?>
