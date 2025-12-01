@@ -80,7 +80,10 @@
 
                     <div class="chat-sidebar">
                         <div class="sidebar-header">
-                            <input type="text" placeholder="Tìm khách hàng..." class="form-control form-control-sm">
+                            <input type="text"
+                                placeholder="Tìm khách hàng..."
+                                class="form-control form-control-sm"
+                                onkeyup="filterCustomers(this.value)">
                         </div>
                         <div class="user-list">
                             <?php if (!empty($listCustomers)): ?>
@@ -124,6 +127,46 @@
 
             <script>
                 let pollingInterval = null;
+                let userItems = []; // Biến toàn cục để lưu trữ các user item DOM
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Khởi tạo danh sách userItems sau khi DOM đã sẵn sàng
+                    userItems = document.querySelectorAll('.user-list .user-item');
+                });
+
+                // 💡 HÀM TÌM KIẾM THEO TÊN KHÁCH HÀNG (Client-side)
+                function filterCustomers(keyword) {
+                    const lowerCaseKeyword = keyword.toLowerCase().trim();
+                    let found = 0;
+
+                    userItems.forEach(item => {
+                        const userName = item.querySelector('h6').textContent.toLowerCase();
+
+                        if (userName.includes(lowerCaseKeyword)) {
+                            item.style.display = '';
+                            found++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+
+                    // Cập nhật thông báo nếu không tìm thấy
+                    const userListContainer = document.querySelector('.user-list');
+                    let noResults = userListContainer.querySelector('#no-chat-results');
+
+                    if (found === 0 && lowerCaseKeyword.length > 0) {
+                        if (!noResults) {
+                            noResults = document.createElement('p');
+                            noResults.id = 'no-chat-results';
+                            noResults.classList.add('p-3', 'text-center', 'text-muted');
+                            userListContainer.appendChild(noResults);
+                        }
+                        noResults.textContent = 'Không tìm thấy khách hàng nào khớp.';
+                    } else if (noResults) {
+                        noResults.remove();
+                    }
+                }
+
 
                 // 1. Chọn khách -> Load tin nhắn
                 function loadChat(clientId, name, element) {
@@ -139,7 +182,9 @@
 
                     // Tự động cập nhật mỗi 3s (để xem tin mới nếu khách đang chat với Bot)
                     if (pollingInterval) clearInterval(pollingInterval);
-                    pollingInterval = setInterval(() => { fetchMessages(clientId); }, 3000);
+                    pollingInterval = setInterval(() => {
+                        fetchMessages(clientId);
+                    }, 3000);
                 }
 
                 // 2. Lấy tin nhắn từ API

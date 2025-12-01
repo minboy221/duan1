@@ -53,11 +53,11 @@
         <nav>
             <i class='bx bx-menu'></i>
 
-            <form method="GET" action="">
+            <form method="GET" action="index.php">
+                <input type="hidden" name="act" value="qlybot">
                 <div class="form-input">
-                    <input type="hidden" name="act" value="qlydanhmuc">
-                    <input type="text" name="keyword" placeholder="Tìm danh mục..."
-                        value="<?= $_GET['keyword'] ?? '' ?>">
+                    <input type="text" name="keyword" placeholder="Tìm kiếm từ khóa, câu trả lời..."
+                        value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
                     <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
                 </div>
             </form>
