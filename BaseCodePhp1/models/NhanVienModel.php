@@ -31,7 +31,7 @@ class NhanVienModel
         return $stmt->fetch();
     }
 
-    // --- CÁC HÀM CHO CHỨC NĂNG QUÊN MẬT KHẨU (FORGOT PASSWORD) ---
+    // --- CÁC HÀM CHO CHỨC NĂNG ĐỔi MẬT KHẨU (FORGOT PASSWORD) ---
 
     // 1. Kiểm tra Email + SĐT (để xác thực khi quên mật khẩu)
     public function checkStaffReset($email, $phone)

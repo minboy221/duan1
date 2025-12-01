@@ -89,6 +89,145 @@
         color: white !important;
         border-color: #0a58ca !important;
     }
+
+    /* css phần lọc */
+    /* Khung bao ngoài (Card) */
+    .filter-card {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        /* Đổ bóng nhẹ */
+        margin-bottom: 20px;
+        border: 1px solid #eaecf4;
+    }
+
+    /* Flexbox cho form */
+    .filter-form {
+        display: flex;
+        flex-wrap: wrap;
+        /* Tự xuống dòng trên màn hình nhỏ */
+        gap: 15px;
+        align-items: center;
+    }
+
+    /* Nhóm input */
+    .input-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Icon tìm kiếm nằm trong input */
+    .input-icon {
+        position: absolute;
+        left: 10px;
+        color: #888;
+        font-size: 18px;
+        pointer-events: none;
+    }
+
+    /* Style chung cho các ô input */
+    .form-control {
+        padding: 10px 15px;
+        border: 1px solid #d1d3e2;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #6e707e;
+        outline: none;
+        transition: all 0.3s ease;
+        height: 40px;
+        /* Chiều cao cố định */
+    }
+
+    /* Padding riêng cho ô tìm kiếm vì có icon */
+    .input-keyword {
+        padding-left: 35px;
+        width: 250px;
+    }
+
+    .input-date {
+        width: 160px;
+        color: #555;
+    }
+
+    .input-time {
+        width: 150px;
+    }
+
+    /* Hiệu ứng Focus (khi bấm vào) */
+    .form-control:focus {
+        border-color: #4e73df;
+        /* Màu xanh admin */
+        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+    }
+
+    /* Nhóm nút bấm */
+    .btn-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Style chung cho nút */
+    .btn-filter {
+        padding: 0 20px;
+        height: 40px;
+        border: none;
+        border-radius: 5px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    /* Nút Lọc (Xanh) */
+    .btn-primary {
+        background-color: #4e73df;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #2e59d9;
+    }
+
+    /* Nút Reset (Xám) */
+    .btn-secondary {
+        background-color: #f8f9fc;
+        color: #5a5c69;
+        border: 1px solid #d1d3e2;
+    }
+
+    .btn-secondary:hover {
+        background-color: #eaecf4;
+        color: #333;
+    }
+
+    /* Responsive: Trên điện thoại thì full chiều rộng */
+    @media (max-width: 768px) {
+        .filter-form {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .input-keyword,
+        .input-date,
+        .input-time {
+            width: 100%;
+        }
+
+        .btn-group {
+            justify-content: space-between;
+        }
+
+        .btn-filter {
+            flex: 1;
+        }
+    }
 </style>
 
 <body>
@@ -114,7 +253,7 @@
 
         <ul class="side-menu">
             <li>
-                <a href="#" class="logout">
+                <a href="<?= BASE_URL ?>?act=logout" class="logout">
                     <i class='bx bx-log-out-circle'></i> Đăng Xuất
                 </a>
             </li>
@@ -132,36 +271,17 @@
         <nav>
             <i class='bx bx-menu'></i>
 
-            <form method="GET" action="index.php" style="display: flex; gap: 10px; align-items: center;">
-        <input type="hidden" name="act" value="qlylichdat"> 
-        
-        <input type="search" name="keyword" placeholder="Mã lịch, Tên khách hàng..." 
-               value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>"
-               style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 250px;">
-        
-        <input type="date" name="date" 
-               value="<?= htmlspecialchars($_GET['date'] ?? '') ?>"
-               style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-
-        <input type="text" name="time" placeholder="Giờ hẹn (VD: 08:00)"
-               value="<?= htmlspecialchars($_GET['time'] ?? '') ?>"
-               style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 150px;">
-        
-        <button type="submit" class="btn-approve" style="padding: 8px 15px;">
-            <i class='bx bx-search'></i> Lọc
-        </button>
-        <a href="index.php?act=qlylichdat" class="btn-cancel" style="padding: 8px 15px; text-decoration: none; line-height: 1; border-radius: 5px;">
-            <i class='bx bx-reset'></i> Reset
-        </a>
-    </form>
+            <form method="GET" action="">
+                <div class="form-input">
+                    <input type="hidden" name="act" value="qlydanhmuc">
+                    <input type="text" name="keyword" placeholder="Tìm danh mục..."
+                        value="<?= $_GET['keyword'] ?? '' ?>">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
 
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>
-
-            <a href="#" class="notif">
-                <i class='bx bx-bell'></i>
-                <span class="count">12</span>
-            </a>
 
             <a href="<?= BASE_URL ?>?act=logout" class="profile">
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
@@ -176,6 +296,40 @@
                         /
                         <li><a href="#" class="active">Lịch hẹn</a></li>
                     </ul>
+                </div>
+                <div class="bottom-data">
+                    <div class="filter-card">
+                        <form method="GET" action="index.php" class="filter-form">
+                            <input type="hidden" name="act" value="qlylichdat">
+
+                            <div class="input-group">
+                                <span class="input-icon"><i class='bx bx-search'></i></span>
+                                <input type="search" name="keyword" class="form-control input-keyword"
+                                    placeholder="Mã lịch, Tên khách..."
+                                    value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
+                            </div>
+
+                            <div class="input-group">
+                                <input type="date" name="date" class="form-control input-date"
+                                    value="<?= htmlspecialchars($_GET['date'] ?? '') ?>" title="Lọc theo ngày">
+                            </div>
+
+                            <div class="input-group">
+                                <input type="text" name="time" class="form-control input-time"
+                                    placeholder="Giờ (VD: 08:00)" value="<?= htmlspecialchars($_GET['time'] ?? '') ?>">
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="submit" class="btn-filter btn-primary">
+                                    Lọc Dữ Liệu
+                                </button>
+
+                                <a href="index.php?act=qlylichdat" class="btn-filter btn-secondary">
+                                    <i class='bx bx-refresh'></i> Reset
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div class="bottom-data">
@@ -274,7 +428,7 @@
 
                     <div class="pagination" id="pagination"></div>
         </main>
-
+        <script src="<?= BASE_URL ?>public/admin.js"></script>
         <script>
             // Phân trang
             const usersPerPage = 5;
@@ -330,7 +484,6 @@
             // Hiển thị trang đầu tiên
             showPage(1);
 
-
             // SweetAlert2: popup nhập lý do hủy
             document.querySelectorAll('.btn-cancel-popup').forEach(button => {
                 button.addEventListener('click', function () {
@@ -372,7 +525,6 @@
                 });
             });
         </script>
-        <script src="<?= BASE_URL ?>public/admin.js"></script>
     </div>
 </body>
 

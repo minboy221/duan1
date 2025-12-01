@@ -106,16 +106,154 @@
             /* Thêm lại các style đã bị ghi đè trong JS */
         }
 
-        /* 💡 SỬA LỖI MÀU HOVER */
         .pagination button:hover {
             background: #e0e0e0;
         }
 
-        /* 💡 MÀU ACTIVE (Đã đúng) */
         .pagination .active {
             background: #3C91E6 !important;
             color: white !important;
             border-color: #3C91E6 !important;
+        }
+
+
+        /* css phần lọc */
+        /* Khung bao ngoài (Card) */
+        .filter-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            /* Đổ bóng nhẹ */
+            margin-bottom: 20px;
+            border: 1px solid #eaecf4;
+        }
+
+        /* Flexbox cho form */
+        .filter-form {
+            display: flex;
+            flex-wrap: wrap;
+            /* Tự xuống dòng trên màn hình nhỏ */
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* Nhóm input */
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Icon tìm kiếm nằm trong input */
+        .input-icon {
+            position: absolute;
+            left: 10px;
+            color: #888;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        /* Style chung cho các ô input */
+        .form-control {
+            padding: 10px 15px;
+            border: 1px solid #d1d3e2;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #6e707e;
+            outline: none;
+            transition: all 0.3s ease;
+            height: 40px;
+            /* Chiều cao cố định */
+        }
+
+        /* Padding riêng cho ô tìm kiếm vì có icon */
+        .input-keyword {
+            padding-left: 35px;
+            width: 250px;
+        }
+
+        .input-date {
+            width: 160px;
+            color: #555;
+        }
+
+        .input-time {
+            width: 150px;
+        }
+
+        /* Hiệu ứng Focus (khi bấm vào) */
+        .form-control:focus {
+            border-color: #4e73df;
+            /* Màu xanh admin */
+            box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+        }
+
+        /* Nhóm nút bấm */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Style chung cho nút */
+        .btn-filter {
+            padding: 0 20px;
+            height: 40px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        /* Nút Lọc (Xanh) */
+        .btn-primary {
+            background-color: #4e73df;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2e59d9;
+        }
+
+        /* Nút Reset (Xám) */
+        .btn-secondary {
+            background-color: #f8f9fc;
+            color: #5a5c69;
+            border: 1px solid #d1d3e2;
+        }
+
+        .btn-secondary:hover {
+            background-color: #eaecf4;
+            color: #333;
+        }
+
+        /* Responsive: Trên điện thoại thì full chiều rộng */
+        @media (max-width: 768px) {
+            .filter-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .input-keyword,
+            .input-date,
+            .input-time {
+                width: 100%;
+            }
+
+            .btn-group {
+                justify-content: space-between;
+            }
+
+            .btn-filter {
+                flex: 1;
+            }
         }
     </style>
 </head>
@@ -141,7 +279,6 @@
         </ul>
     </div>
 
-    <!-- Main Content -->
     <!-- Main Content -->
     <div class="content">
         <!-- Navbar -->
@@ -173,8 +310,41 @@
                         <li><a href="#" class="active">Lịch Đặt</a></li>
                     </ul>
                 </div>
-            </div>
+                <div class="bottom-data">
+                    <div class="filter-card">
+                        <form method="GET" action="index.php" class="filter-form">
+                            <input type="hidden" name="act" value="nv-dashboard">
 
+                            <div class="input-group">
+                                <span class="input-icon"><i class='bx bx-search'></i></span>
+                                <input type="search" name="keyword" class="form-control input-keyword"
+                                    placeholder="Mã lịch, Tên khách..."
+                                    value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
+                            </div>
+
+                            <div class="input-group">
+                                <input type="date" name="date" class="form-control input-date"
+                                    value="<?= htmlspecialchars($_GET['date'] ?? '') ?>" title="Lọc theo ngày">
+                            </div>
+
+                            <div class="input-group">
+                                <input type="text" name="time" class="form-control input-time"
+                                    placeholder="Giờ (VD: 08:00)" value="<?= htmlspecialchars($_GET['time'] ?? '') ?>">
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="submit" class="btn-filter btn-primary">
+                                    Lọc Dữ Liệu
+                                </button>
+
+                                <a href="index.php?act=nv-dashboard" class="btn-filter btn-secondary">
+                                    <i class='bx bx-refresh'></i> Reset
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class="bottom-data">
                 <div class="orders">
                     <div class="header">
@@ -195,8 +365,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($lich)): ?>
-                                <?php foreach ($lich as $item): ?>
+                            <?php if (!empty($listLich)): ?>
+                                <?php foreach ($listLich as $item): ?>
                                     <tr>
                                         <td>
                                             <span style="font-weight: bold; color: #555;">
@@ -310,55 +480,55 @@
     <script>
         // public/admin.js
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
 
-    /* ---------------- PHÂN TRANG ---------------- */
-    const rowsPerPage = 6; 
-    const table = document.getElementById("table");
-    const tbody = table.querySelector("tbody");
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-    const pagination = document.getElementById("pagination");
+            /* ---------------- PHÂN TRANG ---------------- */
+            const rowsPerPage = 6;
+            const table = document.getElementById("table");
+            const tbody = table.querySelector("tbody");
+            const rows = Array.from(tbody.querySelectorAll("tr"));
+            const pagination = document.getElementById("pagination");
 
-    let currentPage = 1;
-    const pageCount = Math.ceil(rows.length / rowsPerPage);
+            let currentPage = 1;
+            const pageCount = Math.ceil(rows.length / rowsPerPage);
 
-    function showPage(page) {
-        currentPage = page;
+            function showPage(page) {
+                currentPage = page;
 
-        rows.forEach((row, i) => {
-            row.style.display =
-                i >= (page - 1) * rowsPerPage && i < page * rowsPerPage
-                    ? ""
-                    : "none";
-        });
+                rows.forEach((row, i) => {
+                    row.style.display =
+                        i >= (page - 1) * rowsPerPage && i < page * rowsPerPage
+                            ? ""
+                            : "none";
+                });
 
-        pagination.querySelectorAll(".page-btn").forEach(btn =>
-            btn.classList.remove("active")
-        );
+                pagination.querySelectorAll(".page-btn").forEach(btn =>
+                    btn.classList.remove("active")
+                );
 
-        const activeBtn = document.getElementById("page-" + page);
-        if (activeBtn) activeBtn.classList.add("active");
-    }
+                const activeBtn = document.getElementById("page-" + page);
+                if (activeBtn) activeBtn.classList.add("active");
+            }
 
-    function setupPagination() {
-        pagination.innerHTML = "";
+            function setupPagination() {
+                pagination.innerHTML = "";
 
-        for (let i = 1; i <= pageCount; i++) {
-            const btn = document.createElement("button");
-            btn.innerText = i;
-            btn.className = "page-btn";
-            btn.id = "page-" + i;
+                for (let i = 1; i <= pageCount; i++) {
+                    const btn = document.createElement("button");
+                    btn.innerText = i;
+                    btn.className = "page-btn";
+                    btn.id = "page-" + i;
 
-            btn.addEventListener("click", function () {
-                showPage(i);
-            });
+                    btn.addEventListener("click", function () {
+                        showPage(i);
+                    });
 
-            pagination.appendChild(btn);
-        }
-    }
+                    pagination.appendChild(btn);
+                }
+            }
 
-    setupPagination();
-    showPage(1);
+            setupPagination();
+            showPage(1);
 
 
 
@@ -369,7 +539,7 @@
 
             // Dùng Event Delegation để lắng nghe sự kiện trên toàn bộ khu vực nội dung chính
             // Điều này đảm bảo các nút vẫn hoạt động ngay cả khi được phân trang ẩn/hiện
-            document.querySelector('.content main').addEventListener('click', function(event) {
+            document.querySelector('.content main').addEventListener('click', function (event) {
 
                 // Kiểm tra xem phần tử được click có phải là nút hủy không
                 const button = event.target.closest('.btn-cancel-popup');
