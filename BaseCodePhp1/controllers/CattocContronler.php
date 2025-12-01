@@ -103,7 +103,7 @@ class CattocContronler
             $upcomingBooking = $this->lichDatModel->getUpcomingBooking($_SESSION['user_id']);
         }
         require_once './views/clien/HomeView.php';
-    }    
+    }
 
     //phần hiển thị dịch vụ cho home
     public function hienthidichvu()
@@ -518,36 +518,55 @@ class CattocContronler
     {
         // 1. Kiểm tra đăng nhập
         if (!isset($_SESSION['user_id'])) {
-            // Lưu thông báo lỗi vào session để hiện ở trang đăng nhập (nếu muốn)
             header("Location: index.php?act=dangnhap_khachhang");
             exit;
         }
 
-        $id = $_GET['id'] ?? 0;
         $user_id = $_SESSION['user_id'];
 
-        // Gọi Model (đảm bảo đã khởi tạo trong __construct)
         if (!isset($this->lichDatModel)) {
             $this->lichDatModel = new LichDatModel();
         }
 
-        // 2. Thực hiện hủy
-        $result = $this->lichDatModel->cancelBooking($id, $user_id);
+        // 2. Xử lý khi Submit Form (POST)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['huy_lich_submit'])) {
 
-        // 3. Lưu thông báo vào Session & Chuyển trang
-        if ($result) {
-            $_SESSION['popup_notify'] = [
-                'type' => 'success',
-                'message' => 'Đã hủy lịch thành công!'
-            ];
-        } else {
-            $_SESSION['popup_notify'] = [
-                'type' => 'error',
-                'message' => 'Hủy thất bại! Có thể lịch đã hoàn thành hoặc không tồn tại.'
-            ];
+            $id = $_POST['id'] ?? 0;
+
+            // Lấy lý do:
+            // Biến 'ly_do_chon' là giá trị từ các nút bấm
+            // Biến 'ly_do_khac' là text từ ô textarea (nếu chọn khác)
+            $ly_do_chon = $_POST['ly_do_chon'] ?? '';
+            $ly_do_khac = trim($_POST['ly_do_khac'] ?? '');
+
+            // Logic gộp lý do
+            if ($ly_do_chon === 'Khác') {
+                $final_reason = $ly_do_khac; // Nếu chọn Khác -> lấy text người dùng nhập
+            } else {
+                $final_reason = $ly_do_chon; // Nếu chọn lý do có sẵn
+            }
+
+            // Validate
+            if (empty($final_reason)) {
+                $_SESSION['popup_notify'] = ['type' => 'error', 'message' => 'Vui lòng chọn hoặc nhập lý do hủy!'];
+                header("Location: index.php?act=lichsudat");
+                exit;
+            }
+
+            // Gọi Model update
+            $result = $this->lichDatModel->cancelBooking($id, $user_id, $final_reason);
+
+            if ($result) {
+                $_SESSION['popup_notify'] = ['type' => 'success', 'message' => 'Đã hủy lịch thành công!'];
+            } else {
+                $_SESSION['popup_notify'] = ['type' => 'error', 'message' => 'Hủy thất bại! Lỗi hệ thống hoặc trạng thái không hợp lệ.'];
+            }
+
+            header("Location: index.php?act=lichsudat");
+            exit;
         }
 
-        // Chuyển hướng về lại trang danh sách lịch sử
+        // Nếu vào bằng GET thì đá về danh sách
         header("Location: index.php?act=lichsudat");
         exit;
     }
@@ -556,9 +575,10 @@ class CattocContronler
     public function apiReadNotify()
     {
         if (isset($_POST['id'])) {
-             if (!isset($this->lichDatModel)) $this->lichDatModel = new LichDatModel();
-             $this->lichDatModel->markAsRead($_POST['id']);
+            if (!isset($this->lichDatModel))
+                $this->lichDatModel = new LichDatModel();
+            $this->lichDatModel->markAsRead($_POST['id']);
         }
         exit;
-        }
     }
+}
