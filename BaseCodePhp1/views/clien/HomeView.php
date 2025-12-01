@@ -233,7 +233,7 @@
             <div class="tieude">
                 <h2>BẠN ĐÃ SẴN SÀNG NHẬN DỊCH VỤ CỦA CHÚNG TÔI ?</h2>
             </div>
-            <a href="">
+            <a href="<?= BASE_URL ?>?act=dichvu">
                 <button>Đặt Lịch</button>
             </a>
         </div>
@@ -545,8 +545,7 @@
                     </div>
 
                     <div class="reminder-footer">
-                        <a href="index.php?act=lichsudatchitiet&ma_lich=<?= $upcomingBooking['ma_lich'] ?>"
-                            class="btn btn-light btn-sm border">
+                        <a href="index.php?act=lichsudat" class="btn btn-light btn-sm border">
                             <i class="fa-solid fa-xmark"></i> Hủy lịch
                         </a>
 
