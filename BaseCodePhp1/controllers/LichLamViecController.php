@@ -64,27 +64,42 @@ class LichLamViecController
         require_once './views/admin/lichlamviec/edit_times.php';
     }
     //PHẦN XỬ LÝ LƯU GIỜ
-    public function updateTimes()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // 1. Nhận dữ liệu
-            $phan_cong_id = $_POST['phan_cong_id'];
-            $times = $_POST['times'] ?? [];
+// Trong LichLamViecController.php
 
-            // 2. Lưu vào DB
-            $this->model->saveKhungGio($phan_cong_id, $times);
+public function updateTimes()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $phan_cong_id = $_POST['phan_cong_id'];
+        $times = $_POST['times'] ?? []; // Danh sách giờ làm MỚI
 
-            // 3. Gán thông báo thành công vào Session
-            $_SESSION['success_msg'] = "Cập nhật khung giờ thành công!";
-
-            // 4. Quay lại chính trang SỬA GIỜ (thay vì về danh sách)
+        // 1. KIỂM TRA XUNG ĐỘT TRƯỚC KHI LƯU
+        $conflicts = $this->model->checkTimeConflicts($phan_cong_id, $times);
+        
+        if (!empty($conflicts)) {
+            // Xảy ra xung đột với lịch đặt hiện tại
+            $conflict_times = implode(', ', $conflicts);
+            
+            // 💡 Lưu thông báo lỗi SweetAlert2
+            $_SESSION['error_sa'] = "Không thể xóa hoặc thay đổi khung giờ sau: <b>{$conflict_times}</b>. Khung giờ này đã có lịch đặt của khách hàng!";
+            
+            // Quay lại trang SỬA GIỜ, giữ nguyên ID
             header("Location: index.php?act=edit_times&id=" . $phan_cong_id);
             exit();
-        } else {
-            header("Location: index.php?act=qlylichlamviec");
-            exit();
         }
+
+        // 2. Nếu không có xung đột, TIẾN HÀNH LƯU VÀ CẬP NHẬT
+        $this->model->saveKhungGio($phan_cong_id, $times);
+
+        // Lưu thông báo thành công (Đã được đổi tên thành 'success_sa' ở các bước trước)
+        $_SESSION['success_sa'] = "Cập nhật khung giờ thành công!";
+
+        header("Location: index.php?act=edit_times&id=" . $phan_cong_id);
+        exit();
+    } else {
+        header("Location: index.php?act=qlylichlamviec");
+        exit();
     }
+}
     //CHỨC NĂNG XEM CHI TIẾT NGÀY ĐÃ TẠO CHO ADMIN
     public function detail()
     {

@@ -234,5 +234,41 @@ class LichLamViecModel
         }
         return $allSlots;
     }
+    // kiem tra xung dot lịch đặt
+    public function checkTimeConflicts($phan_cong_id, $newTimes)
+{
+    // 1. Lấy tất cả khung giờ HIỆN TẠI của phân công này (trước khi xóa)
+    $stmt_old_kg = $this->conn->prepare("SELECT id, time FROM khunggio WHERE phan_cong_id = ?");
+    $stmt_old_kg->execute([$phan_cong_id]);
+    $oldKhungGio = $stmt_old_kg->fetchAll(PDO::FETCH_ASSOC);
+
+    $oldTimes = array_column($oldKhungGio, 'time');
+    
+    // 2. Xác định các giờ bị XÓA khỏi danh sách MỚI
+    $timesToDelete = array_diff($oldTimes, $newTimes);
+    
+    if (empty($timesToDelete)) {
+        return []; // Không có giờ nào bị xóa, không có xung đột
+    }
+    
+    // 3. Kiểm tra xem các khung giờ bị xóa đó có đang có lịch đặt active (pending/confirmed) không
+    // Cần tìm khunggio_id từ thời gian (time) và phan_cong_id
+    
+    $placeholders = implode(',', array_fill(0, count($timesToDelete), '?'));
+    
+    $sql_conflict = "SELECT DISTINCT kg.time
+                     FROM lichdat ld
+                     JOIN khunggio kg ON ld.khunggio_id = kg.id
+                     WHERE ld.status IN ('pending', 'confirmed') 
+                       AND kg.phan_cong_id = ?
+                       AND kg.time IN ($placeholders)";
+    
+    $params = array_merge([$phan_cong_id], $timesToDelete);
+
+    $stmt = $this->conn->prepare($sql_conflict);
+    $stmt->execute($params);
+    
+    return $stmt->fetchAll(PDO::FETCH_COLUMN); // Trả về mảng các giờ bị xung đột
+}
 }
 ?>

@@ -139,7 +139,7 @@
 
                                         $time = str_pad($h, 2, "0", STR_PAD_LEFT) . ":" . $min;
                                         $checked = in_array($time, $currentTimes) ? 'checked' : '';
-                                        ?>
+                                ?>
 
                                         <div class="col-xl-3 col-md-4 col-6 mb-3 time-item">
                                             <label class="staff-checkbox-item">
@@ -150,7 +150,7 @@
                                             </label>
                                         </div>
 
-                                    <?php endforeach;
+                                <?php endforeach;
                                 endfor; ?>
                             </div>
                             <div id="pagination"></div>
@@ -163,19 +163,36 @@
                 </form>
             </div>
             <!-- phần popup thông báo -->
-            <?php if (isset($_SESSION['success_msg'])): ?>
+            <?php if (isset($_SESSION['error_sa'])): ?>
                 <script>
-                    document.addEventListener('DOMContentLoaded', function () {
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi Xung Đột Lịch!',
+                            // Sử dụng 'html' để cho phép thẻ <b> (in đậm) hiển thị trong thông báo
+                            html: '<?= $_SESSION['error_sa'] ?>',
+                            confirmButtonText: 'Đóng',
+                            confirmButtonColor: '#DB504A'
+                        });
+                    });
+                </script>
+                <?php unset($_SESSION['error_sa']); // Xóa thông báo sau khi hiện xong 
+                ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['success_sa'])): ?>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
                         Swal.fire({
                             icon: 'success',
                             title: 'Thành công!',
-                            text: '<?= $_SESSION['success_msg'] ?>',
+                            text: '<?= htmlspecialchars($_SESSION['success_sa']) ?>',
                             showConfirmButton: false,
                             timer: 1500
                         });
                     });
                 </script>
-                <?php unset($_SESSION['success_msg']); // Xóa thông báo sau khi hiện xong ?>
+                <?php unset($_SESSION['success_sa']); ?>
             <?php endif; ?>
         </main>
     </div>

@@ -132,14 +132,28 @@
         <nav>
             <i class='bx bx-menu'></i>
 
-            <form method="GET" action="">
-                <div class="form-input">
-                    <input type="hidden" name="act" value="qlydanhmuc">
-                    <input type="text" name="keyword" placeholder="Tìm danh mục..."
-                        value="<?= $_GET['keyword'] ?? '' ?>">
-                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
-                </div>
-            </form>
+            <form method="GET" action="index.php" style="display: flex; gap: 10px; align-items: center;">
+        <input type="hidden" name="act" value="qlylichdat"> 
+        
+        <input type="search" name="keyword" placeholder="Mã lịch, Tên khách hàng..." 
+               value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>"
+               style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 250px;">
+        
+        <input type="date" name="date" 
+               value="<?= htmlspecialchars($_GET['date'] ?? '') ?>"
+               style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+
+        <input type="text" name="time" placeholder="Giờ hẹn (VD: 08:00)"
+               value="<?= htmlspecialchars($_GET['time'] ?? '') ?>"
+               style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 150px;">
+        
+        <button type="submit" class="btn-approve" style="padding: 8px 15px;">
+            <i class='bx bx-search'></i> Lọc
+        </button>
+        <a href="index.php?act=qlylichdat" class="btn-cancel" style="padding: 8px 15px; text-decoration: none; line-height: 1; border-radius: 5px;">
+            <i class='bx bx-reset'></i> Reset
+        </a>
+    </form>
 
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>
