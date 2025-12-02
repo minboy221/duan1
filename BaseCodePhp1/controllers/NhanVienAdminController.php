@@ -44,6 +44,16 @@ class NhanVienAdminController
         header("Location: index.php?act=admin-nhanvien");
         exit;
     }
+    public function detail()
+{
+    $id = $_GET['id'] ?? null;
+    if (!$id) die("ID không hợp lệ");
+
+    $nv = $this->model->find($id);
+    if (!$nv) die("Không tìm thấy nhân viên");
+
+    require './views/admin/nhanvien/detail.php';
+}
 
     public function editForm()
     {
