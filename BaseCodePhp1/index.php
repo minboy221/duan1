@@ -83,6 +83,7 @@ $adminRoutes = [
     'qlytho',
     'qlytho_create',
     'qlytho_edit',
+    'admin-nhanvien-detail',
     //phần quản lý làm việc cho thợ
     'qlylichlamviec',
     'auto_create_days',
@@ -93,6 +94,7 @@ $adminRoutes = [
     'detail_ngay',
     //phần trang quản lý lịch đặt
     'qlylichdat',
+    'admin-lichdat-detail',
     'update_status_lich', // <--- THÊM DÒNG NÀY ĐỂ BẢO VỆ HÀNH ĐỘNG CẬP NHẬT TRẠNG THÁI
 
     //phần trang cho nhân viên
@@ -178,6 +180,7 @@ match ($act) {
 
     //PHẦN QUẢN LÝ LỊCH ĐẶT
     'qlylichdat' => (new LichDatController())->index(),
+    'admin-lichdat-detail' => (new LichDatController())->detail(),
     'update_status_lich' => (new LichDatController())->updateStatus(),
     'update_status_nv' => (new LichDatController())->updateStatusNhanVien(), // Hoặc (new NhanVienController())->updateStatusNhanVien(), tùy nơi bạn đặt hàm
 
@@ -185,6 +188,7 @@ match ($act) {
     'nv-dashboard' => (new NhanVienController())->dashboard(),
     'nv-xacnhan' => (new NhanVienController())->xacnhan(),
     'nv-huy' => (new NhanVienController())->huy(),
+    'admin-nhanvien-detail' => (new NhanVienAdminController())->detail(),
     // tìm kiếm nhan viên
     'admin-nhanvien-search' => (new NhanVienAdminController())->search(),
 

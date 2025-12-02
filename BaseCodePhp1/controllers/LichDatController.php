@@ -124,5 +124,36 @@ class LichDatController
             exit();
         }
     }
+    public function detail()
+{
+    if (!isset($_GET['ma_lich'])) {
+        echo "Không tìm thấy mã lịch!";
+        exit();
+    }
+
+    $ma_lich = $_GET['ma_lich'];
+
+    // Lấy đầy đủ thông tin đơn
+    $bookingList = $this->model->getBookingByCode($ma_lich);
+
+    if (empty($bookingList)) {
+        echo "Không tìm thấy đơn đặt lịch!";
+        exit();
+    }
+
+    // Vì 1 mã lịch có thể có N dịch vụ → tách ra phần chung + phần dịch vụ
+    $info = $bookingList[0]; // thông tin chung
+    $services = [];
+
+    foreach ($bookingList as $item) {
+        $services[] = [
+            'ten_dichvu' => $item['ten_dichvu'],
+            'price'      => $item['price']
+        ];
+    }
+
+    require_once "./views/admin/lichdat/detail.php";
+}
+
 }
 ?>

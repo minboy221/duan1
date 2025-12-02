@@ -408,8 +408,13 @@
                                                     <button type="button" class="btn-action btn-cancel btn-cancel-popup"
                                                         title="Hủy"><i class='bx bx-x'></i></button>
                                                 <?php else: ?>
-                                                    <span style="color:#ccc; font-size:20px;"><i class='bx bx-lock-alt'></i></span>
-                                                <?php endif; ?>
+    <a href="index.php?act=admin-lichdat-detail&ma_lich=<?= $item['ma_lich'] ?>" 
+       class="btn-action" 
+       style="background:#6c757d; color:white;" 
+       title="Xem chi tiết">
+        <i class='bx bx-show'></i>
+    </a>
+<?php endif; ?>
                                             </form>
                                         </td>
                                     </tr>
