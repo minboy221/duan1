@@ -139,7 +139,7 @@
 
                                         $time = str_pad($h, 2, "0", STR_PAD_LEFT) . ":" . $min;
                                         $checked = in_array($time, $currentTimes) ? 'checked' : '';
-                                ?>
+                                        ?>
 
                                         <div class="col-xl-3 col-md-4 col-6 mb-3 time-item">
                                             <label class="staff-checkbox-item">
@@ -150,7 +150,7 @@
                                             </label>
                                         </div>
 
-                                <?php endforeach;
+                                    <?php endforeach;
                                 endfor; ?>
                             </div>
                             <div id="pagination"></div>
@@ -165,7 +165,7 @@
             <!-- phần popup thông báo -->
             <?php if (isset($_SESSION['error_sa'])): ?>
                 <script>
-                    document.addEventListener('DOMContentLoaded', function() {
+                    document.addEventListener('DOMContentLoaded', function () {
                         Swal.fire({
                             icon: 'error',
                             title: 'Lỗi Xung Đột Lịch!',
@@ -177,12 +177,12 @@
                     });
                 </script>
                 <?php unset($_SESSION['error_sa']); // Xóa thông báo sau khi hiện xong 
-                ?>
+                    ?>
             <?php endif; ?>
 
             <?php if (isset($_SESSION['success_sa'])): ?>
                 <script>
-                    document.addEventListener('DOMContentLoaded', function() {
+                    document.addEventListener('DOMContentLoaded', function () {
                         Swal.fire({
                             icon: 'success',
                             title: 'Thành công!',
@@ -234,7 +234,6 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?= BASE_URL ?>public/admin.js"></script>
-
 </body>
 
 </html>

@@ -306,25 +306,46 @@ class CattocContronler
     public function luuDatLich()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $khachhang_id = $_SESSION['user_id'] ?? 1;
+            // ... (Các phần kiểm tra đăng nhập giữ nguyên)
+            $khachhang_id = $_SESSION['user_id'];
             $khunggio_id = $_POST['khunggio_id'];
             $note = $_POST['note'] ?? '';
-            // 2. XỬ LÝ LƯU ĐƠN HÀNG (Logic giữ nguyên)
-            if (isset($_SESSION['booking_cart']['services'])) {
-                $ma_code = null;
 
-                // Logic này sẽ cho phép lưu nhiều dịch vụ dưới nhiều mã lịch khác nhau
-                foreach ($_SESSION['booking_cart']['services'] as $sv) {
-                    // Giả sử ma_code là mã của dịch vụ đầu tiên được lưu, hoặc được truyền vào
-                    $ma_code = $this->lichDatModel->insertBooking($khachhang_id, $sv['id'], $khunggio_id, $note, $ma_code);
+            if (isset($_SESSION['booking_cart']['services']) && !empty($_SESSION['booking_cart']['services'])) {
+
+                // Khởi tạo model (nếu chưa có)
+                if (!isset($this->lichDatModel)) {
+                    require_once './models/LichDatModel.php';
+                    $this->lichDatModel = new LichDatModel();
                 }
 
-                if ($ma_code) {
+                // Tạo mã lịch chung
+                $ma_lich_chung = "ML-" . strtoupper(substr(uniqid(), -6));
+                $checkSuccess = true;
+
+                foreach ($_SESSION['booking_cart']['services'] as $sv) {
+
+                    // 1. LẤY GIÁ TỪ SESSION (Giá tại thời điểm khách chọn)
+                    $currentPrice = $sv['price'];
+
+                    // TRUYỀN GIÁ VÀO HÀM INSERT
+                    $result = $this->lichDatModel->insertBooking(
+                        $khachhang_id,
+                        $sv['id'],
+                        $khunggio_id,
+                        $note,
+                        $ma_lich_chung,
+                        $currentPrice
+                    );
+
+                    if (!$result)
+                        $checkSuccess = false;
+                }
+
+                if ($checkSuccess) {
                     unset($_SESSION['booking_cart']);
-                    echo "<script>window.location.href = 'index.php?act=cam_on&ma_lich=$ma_code';</script>";
-                    exit();
-                } else {
-                    echo "<script>alert('Lỗi: Không thể lưu lịch đặt. Vui lòng thử lại.'); window.history.back();</script>";
+                    // Chuyển sang trang cảm ơn
+                    echo "<script>window.location.href = 'index.php?act=cam_on&ma_lich=$ma_lich_chung';</script>";
                     exit();
                 }
             } else {

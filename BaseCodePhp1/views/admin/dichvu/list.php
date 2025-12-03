@@ -166,8 +166,7 @@
 
         </main>
     </div>
-
-
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -261,7 +260,6 @@
             }
         });
     </script>
-
 </body>
 
 </html>

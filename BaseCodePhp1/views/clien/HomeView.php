@@ -590,71 +590,104 @@
     <?php endif; ?>
     <!-- phần thông báo lý do mà lịch bị huỷ -->
     <?php if (!empty($unreadCancel)): ?>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'error', 
-                title: 'LỊCH HẸN ĐÃ BỊ HỦY',
-                html: `
-                <div style="text-align: left;">
-                    <p>Rất tiếc, lịch hẹn mã <strong>#<?= $unreadCancel['ma_lich'] ?></strong> của anh đã bị hủy.</p>
-                    
-                    <div style="background: #fff5f5; border-left: 5px solid #dc3545; padding: 15px; margin: 15px 0; border-radius: 5px;">
-                        <strong style="color: #dc3545;">Lý do hủy:</strong> <br>
-                        <span style="color: #333; font-style: italic;">"<?= htmlspecialchars($unreadCancel['cancel_reason']) ?>"</span>
-                    </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-                    <p style="font-size: 14px; color: #666;">Vui lòng đặt lại lịch mới hoặc liên hệ Hotline để được hỗ trợ.</p>
-                </div>
-                `,
-                // 💡 THÊM showDenyButton VÀ customClass
-                showDenyButton: true,
-                confirmButtonText: 'Đặt Lịch Lại', // Nút chính (Confirm)
-                denyButtonText: 'Đã hiểu', // Nút phụ (Deny)
-                
-                // Đổi màu nút (để nút "Đặt Lịch Lại" nổi bật)
-                confirmButtonColor: '#3C91E6', // Màu xanh dương cho Đặt Lịch Lại
-                denyButtonColor: '#dc3545',   // Màu đỏ cho Đã Hiểu (và đánh dấu đã đọc)
-                
-                allowOutsideClick: false, 
-                width: '500px'
-            }).then((result) => {
-                
-                // 1. Hành động ĐẶT LỊCH LẠI (Nút Confirm)
-                if (result.isConfirmed) {
-                    // 💡 Đánh dấu đã đọc VÀ chuyển hướng
-                    markReadAndRedirect('<?= BASE_URL ?>?act=datlich');
-                } 
-                
-                // 2. Hành động ĐÃ HIỂU (Nút Deny)
-                else if (result.isDenied) {
-                    // Chỉ đánh dấu đã đọc VÀ ở lại trang (hoặc reload)
-                    markReadAndRedirect(null); 
-                }
-            });
-        });
-        
-        // 💡 HÀM HỖ TRỢ: Đánh dấu đã đọc và chuyển hướng
-        function markReadAndRedirect(redirectUrl) {
-            fetch('index.php?act=api_read_notify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'id=<?= $unreadCancel['id'] ?>'
-            })
-            .then(() => {
-                // Sau khi server báo đã đọc, chuyển hướng (nếu có URL)
-                if (redirectUrl) {
-                    window.location.href = redirectUrl;
-                } else {
-                    // Nếu không có URL, reload trang để thông báo biến mất
-                    window.location.reload();
-                }
+        <!-- phần thông báo lý do huỷ của admin & nhân viên -->
+        <script>
+            // Hàm xử lý gửi AJAX đánh dấu đã đọc và chuyển hướng
+            function markReadAndRedirect(redirectUrl) {
+                // Gọi API đánh dấu đã đọc
+                fetch('index.php?act=api_read_notify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'id=<?= $unreadCancel['id'] ?>'
+                }).then(() => {
+                    // Nếu có link chuyển hướng thì chạy, không thì reload hoặc ở lại
+                    if (redirectUrl) {
+                        window.location.href = redirectUrl;
+                    } else {
+                        // Tắt popup nếu chọn "Đã hiểu"
+                        // (SweetAlert tự đóng, không cần làm gì thêm)
+                    }
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    // Không dùng title mặc định, ta tự design trong html
+                    title: '',
+                    html: `
+                <div class="cancel-popup-content">
+                    <div class="cancel-icon-box">
+                        <i class="fa-regular fa-calendar-xmark"></i>
+                    </div>
+                    
+                    <h3 style="margin-bottom: 10px; color: #dc3545;">LỊCH HẸN ĐÃ BỊ HỦY</h3>
+                    
+                    <p class="cancel-message">
+                        Rất tiếc, lịch hẹn mã lịch <span class="booking-highlight"><?= $unreadCancel['ma_lich'] ?></span> của anh đã bị hủy.
+                    </p>
+
+                    <div class="reason-box">
+                        <span class="reason-label">Lý do từ Salon:</span>
+                        <div class="reason-text">
+                            "<?= htmlspecialchars($unreadCancel['cancel_reason']) ?>"
+                        </div>
+                    </div>
+
+                    <p class="support-text">
+                        Anh vui lòng đặt lại lịch khác hoặc liên hệ <strong>1900.1234</strong> để được hỗ trợ ngay.
+                    </p>
+                </div>
+            `,
+
+                    // Cấu hình nút bấm
+                    showDenyButton: true,
+                    showConfirmButton: true,
+
+                    confirmButtonText: '<i class="fa-solid fa-calendar-plus"></i> Đặt Lịch Lại Ngay',
+                    confirmButtonColor: '#D6A354', // Màu vàng nổi bật để kêu gọi hành động
+
+                    denyButtonText: 'Đã hiểu',
+                    denyButtonColor: '#6c757d', // Màu xám cho nút phụ
+
+                    width: 500,
+                    padding: '2em',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    background: '#fff url("path/to/pattern.png")', // Có thể thêm hình nền mờ nếu thích
+
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Bấm Đặt Lại -> Chuyển sang trang đặt lịch
+                        markReadAndRedirect('<?= BASE_URL ?>?act=datlich');
+                    } else if (result.isDenied) {
+                        // Bấm Đã hiểu -> Chỉ đánh dấu đã đọc
+                        markReadAndRedirect(null);
+                    }
+                });
             });
-        }
-    </script>
-<?php endif; ?>
+
+            // 💡 HÀM HỖ TRỢ: Đánh dấu đã đọc và chuyển hướng
+            function markReadAndRedirect(redirectUrl) {
+                fetch('index.php?act=api_read_notify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'id=<?= $unreadCancel['id'] ?>'
+                })
+                    .then(() => {
+                        // Sau khi server báo đã đọc, chuyển hướng (nếu có URL)
+                        if (redirectUrl) {
+                            window.location.href = redirectUrl;
+                        } else {
+                            // Nếu không có URL, reload trang để thông báo biến mất
+                            window.location.reload();
+                        }
+                    });
+            }
+        </script>
+    <?php endif; ?>
 </body>
 <script src="<?= BASE_URL ?>public/main.js"></script>
 

@@ -1313,6 +1313,88 @@ main {
     border-color: #000;
 }
 
+/* pop huỷ lịch */
+/* CSS cho nội dung Popup Hủy */
+.cancel-popup-content {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    color: #333;
+}
+
+.cancel-icon-box {
+    font-size: 50px;
+    margin-bottom: 15px;
+    color: #dc3545;
+    animation: shake 0.5s;
+    /* Hiệu ứng rung nhẹ */
+}
+
+.cancel-message {
+    font-size: 16px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.booking-highlight {
+    color: #D6A354;
+    /* Màu vàng thương hiệu */
+    font-weight: 800;
+    font-size: 1.1em;
+}
+
+.reason-box {
+    background-color: #fff5f5;
+    border: 1px dashed #fc8181;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 0 auto 20px auto;
+    text-align: left;
+    width: 90%;
+}
+
+.reason-label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #c53030;
+    margin-bottom: 5px;
+}
+
+.reason-text {
+    font-style: italic;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.support-text {
+    font-size: 13px;
+    color: #718096;
+}
+
+/* Hiệu ứng rung */
+@keyframes shake {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(5deg);
+    }
+
+    50% {
+        transform: rotate(0eg);
+    }
+
+    75% {
+        transform: rotate(-5deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
 /* phần footer */
 .footer {
     margin-top: 20px;

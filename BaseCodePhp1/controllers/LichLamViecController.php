@@ -56,50 +56,54 @@ class LichLamViecController
     //PHẦN CHỌN THỢ CHO TỪNG GIỜ
     public function editTimes()
     {
-        $phan_cong_id = $_GET['id']; //id của bảng phân công
-        //lấy thông tin
+        $phan_cong_id = $_GET['id'] ?? null;
+        if (!$phan_cong_id) {
+            header("Location: index.php?act=qlylichlamviec");
+            exit;
+        }
+
+        // Lấy thông tin để hiện tiêu đề
         $info = $this->model->getDetailPhanCong($phan_cong_id);
-        //lấy giờ hiện tại của thợ đó
+
+        // Lấy giờ hiện tại của thợ đó
         $currentTimes = $this->model->getKhungGio($phan_cong_id);
+
         require_once './views/admin/lichlamviec/edit_times.php';
     }
     //PHẦN XỬ LÝ LƯU GIỜ
 // Trong LichLamViecController.php
 
-public function updateTimes()
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $phan_cong_id = $_POST['phan_cong_id'];
-        $times = $_POST['times'] ?? []; // Danh sách giờ làm MỚI
+    public function updateTimes()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $phan_cong_id = $_POST['phan_cong_id'];
+            $times = $_POST['times'] ?? [];
+            //KIỂM TRA XUNG ĐỘT ---
+            $conflicts = $this->model->checkTimeConflicts($phan_cong_id, $times);
 
-        // 1. KIỂM TRA XUNG ĐỘT TRƯỚC KHI LƯU
-        $conflicts = $this->model->checkTimeConflicts($phan_cong_id, $times);
-        
-        if (!empty($conflicts)) {
-            // Xảy ra xung đột với lịch đặt hiện tại
-            $conflict_times = implode(', ', $conflicts);
-            
-            // 💡 Lưu thông báo lỗi SweetAlert2
-            $_SESSION['error_sa'] = "Không thể xóa hoặc thay đổi khung giờ sau: <b>{$conflict_times}</b>. Khung giờ này đã có lịch đặt của khách hàng!";
-            
-            // Quay lại trang SỬA GIỜ, giữ nguyên ID
+            if (!empty($conflicts)) {
+                // Nếu có xung đột (bỏ giờ đã có khách đặt)
+                $conflict_times = implode(', ', $conflicts);
+                // Lưu thông báo lỗi vào Session (để hiện Popup SweetAlert2)
+                $_SESSION['error_sa'] = "Không thể xóa các khung giờ: <b>{$conflict_times}</b> vì đã có khách đặt lịch!";
+
+                // Quay lại trang Sửa Giờ
+                header("Location: index.php?act=edit_times&id=" . $phan_cong_id);
+                exit();
+            }
+            $result = $this->model->saveKhungGio($phan_cong_id, $times); // Lưu thông báo thành công
+            if ($result) {
+                $_SESSION['success_sa'] = "Cập nhật khung giờ thành công!";
+            }else{
+                $_SESSION['error_sa'] = 'lỗi không thể cập nhật!';
+            }
             header("Location: index.php?act=edit_times&id=" . $phan_cong_id);
             exit();
+        } else {
+            header("Location: index.php?act=qlylichlamviec");
+            exit();
         }
-
-        // 2. Nếu không có xung đột, TIẾN HÀNH LƯU VÀ CẬP NHẬT
-        $this->model->saveKhungGio($phan_cong_id, $times);
-
-        // Lưu thông báo thành công (Đã được đổi tên thành 'success_sa' ở các bước trước)
-        $_SESSION['success_sa'] = "Cập nhật khung giờ thành công!";
-
-        header("Location: index.php?act=edit_times&id=" . $phan_cong_id);
-        exit();
-    } else {
-        header("Location: index.php?act=qlylichlamviec");
-        exit();
     }
-}
     //CHỨC NĂNG XEM CHI TIẾT NGÀY ĐÃ TẠO CHO ADMIN
     public function detail()
     {

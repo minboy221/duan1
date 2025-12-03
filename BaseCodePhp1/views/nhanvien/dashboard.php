@@ -292,10 +292,6 @@
             </form>
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>
-            <a href="#" class="notif">
-                <i class='bx bx-bell'></i>
-                <span class="count">12</span>
-            </a>
             <a href="#" class="profile">
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
             </a>
@@ -359,6 +355,7 @@
                                 <th>Khách Hàng</th>
                                 <th>Dịch Vụ</th>
                                 <th>Thời Gian & Thợ</th>
+                                <th>Thời Gian Khách Đặt</th>
                                 <th>Ghi Chú</th>
                                 <th>Trạng Thái</th>
                                 <th>Hành Động</th>
@@ -391,7 +388,7 @@
                                         </td>
 
                                         <td>
-                                            <p style="margin:0;"><?= htmlspecialchars($item['ten_dichvu']) ?></p>
+                                            <p style="margin:0;"><?=($item['ten_dichvu']) ?></p>
                                             <strong style="color: #DB504A;"><?= number_format($item['price']) ?> đ</strong>
                                         </td>
 
@@ -409,7 +406,16 @@
                                                 </div>
                                             </div>
                                         </td>
-
+                                        <td>
+                                            <span style="font-size: 13px; color: #555;">
+                                                <i class="fa fa-clock"></i>
+                                                <?= date('H:i:s', strtotime($item['created_at'])) ?>
+                                            </span>
+                                            <br>
+                                            <small class="text-muted">
+                                                <?= date('d/m/Y', strtotime($item['created_at'])) ?>
+                                            </small>
+                                        </td>
                                         <td>
                                             <span style="color:#666; font-style:italic; font-size:13px;">
                                                 <?= !empty($item['note']) ? htmlspecialchars($item['note']) : '---' ?>
@@ -453,7 +459,17 @@
                                                     <button type="button" class="btn-action btn-cancel btn-cancel-popup"
                                                         title="Hủy"><i class='bx bx-x'></i></button>
                                                 <?php else: ?>
-                                                    <span style="color:#ccc; font-size:20px;"><i class='bx bx-lock-alt'></i></span>
+                                                    <a href="index.php?act=nhanvien-lichdat-detail&ma_lich=<?= $item['ma_lich'] ?>"
+                                                        class="btn-action" style="background: #6c757d; 
+                                                                            color: white; 
+                                                                            display: inline-flex; 
+                                                                            align-items: center;   
+                                                                            justify-content: center;  
+                                                                            padding: 8px 12px;      
+                                                                            border-radius: 5px;         
+                                                                            text-decoration: none;"
+                                                        title="Xem chi tiết">
+                                                        <i class='bx bx-show' style="font-size: 18px;"></i> </a>
                                                 <?php endif; ?>
                                             </form>
                                         </td>

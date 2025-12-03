@@ -9,35 +9,33 @@ class LichDatModel
     }
 
     // --- 1. DÀNH CHO ADMIN: LẤY DANH SÁCH (CÓ PHÂN TRANG) ---
-public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null, $date = null, $time = null)
-{
-    // 1. Khởi tạo WHERE clause và mảng tham số
-    $where = " WHERE 1=1 ";
-    $params = [];
+    public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null, $date = null, $time = null)
+    {
+        $where = " WHERE 1=1 ";
+        $params = [];
 
-    // 2. Lọc theo Tên Khách hàng hoặc Mã lịch (Keyword)
-    if ($keyword) {
-        // Tìm kiếm không phân biệt chữ hoa/thường trên tên khách và mã lịch
-        $where .= " AND (kh.name LIKE :keyword OR ld.ma_lich LIKE :keyword) ";
-        $params[':keyword'] = '%' . $keyword . '%';
-    }
+        if ($keyword) {
+            // Tìm kiếm không phân biệt chữ hoa/thường trên tên khách và mã lịch
+            $where .= " AND (kh.name LIKE :keyword OR ld.ma_lich LIKE :keyword) ";
+            $params[':keyword'] = '%' . $keyword . '%';
+        }
 
-    // 3. Lọc theo Ngày làm việc (Ngày chính xác)
-    if ($date) {
-        $where .= " AND n.date = :date ";
-        $params[':date'] = $date;
-    }
+        // Lọc theo Ngày làm việc (Ngày chính xác)
+        if ($date) {
+            $where .= " AND n.date = :date ";
+            $params[':date'] = $date;
+        }
 
-    // 4. Lọc theo Giờ làm việc (Giờ chính xác)
-    if ($time) {
-        $where .= " AND kg.time = :time ";
-        $params[':time'] = $time;
-    }
-    
-    // 5. Xây dựng truy vấn SQL hoàn chỉnh
-    $sql = "SELECT 
+        // Lọc theo Giờ làm việc (Giờ chính xác)
+        if ($time) {
+            $where .= " AND kg.time = :time ";
+            $params[':time'] = $time;
+        }
+
+        //Xây dựng truy vấn SQL hoàn chỉnh
+        $sql = "SELECT 
                 ld.*, kh.name as ten_khach, kh.phone as sdt_khach,
-                dv.name as ten_dichvu, dv.price, kg.time as gio_lam,
+                dv.name as ten_dichvu, ld.price, kg.time as gio_lam,
                 n.date as ngay_lam, t.name as ten_tho
             FROM lichdat ld
             JOIN khachhang kh ON ld.khachhang_id = kh.id
@@ -50,20 +48,20 @@ public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null,
             ORDER BY ld.created_at DESC
             LIMIT :limit OFFSET :offset";
 
-    $stmt = $this->conn->prepare($sql);
-    
-    // 6. Bind các tham số Phân trang và Lọc
-    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-    
-    // Bind các tham số lọc động (đã được định nghĩa trong $params)
-    foreach ($params as $key => &$val) {
-        $stmt->bindParam($key, $val, PDO::PARAM_STR);
-    }
+        $stmt = $this->conn->prepare($sql);
 
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        // 6. Bind các tham số Phân trang và Lọc
+        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
+
+        // Bind các tham số lọc động (đã được định nghĩa trong $params)
+        foreach ($params as $key => &$val) {
+            $stmt->bindParam($key, $val, PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     // Đếm tổng số bản ghi (cho phân trang)
     public function countAllLichDat()
@@ -81,7 +79,7 @@ public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null,
                     ld.*, 
                     kh.name as ten_khach, 
                     kh.phone as sdt_khach,
-                    dv.name as ten_dichvu, dv.price,
+                    dv.name as ten_dichvu, ld.price,
                     kg.time as gio_lam,
                     n.date as ngay_lam,
                     t.name as ten_tho
@@ -142,7 +140,7 @@ public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null,
     }
 
     // --- 4. DÀNH CHO CLIENT: TẠO LỊCH MỚI ---
-    public function insertBooking($khachhang_id, $dichvu_id, $khunggio_id, $note, $ma_lich_chung = null)
+    public function insertBooking($khachhang_id, $dichvu_id, $khunggio_id, $note, $ma_lich_chung, $price)
     {
         try {
             // Nếu chưa có mã chung thì tạo mới
@@ -152,40 +150,38 @@ public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null,
                 $ma_lich = $ma_lich_chung;
             }
 
-            $sql = "INSERT INTO lichdat (ma_lich, khachhang_id, dichvu_id, khunggio_id, note, status, created_at) 
-                    VALUES (?, ?, ?, ?, ?, 'pending', NOW())";
+            $sql = "INSERT INTO lichdat (ma_lich, khachhang_id, dichvu_id, khunggio_id, note, status, price, created_at, client_read) 
+                    VALUES (?, ?, ?, ?, ?, 'pending', ?, NOW(), 0)";
 
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute([$ma_lich, $khachhang_id, $dichvu_id, $khunggio_id, $note]);
+            $stmt->execute([$ma_lich, $khachhang_id, $dichvu_id, $khunggio_id, $note, $price]);
 
-            return $ma_lich; // Trả về mã để Controller dùng
+            return $ma_lich;
         } catch (Exception $e) {
             return false;
         }
     }
 
     // get by code (chi tiết khi client được chuyển sang cam on)
-    // Trong LichDatModel.php
-
-    // Sửa hàm getBookingByCode: dùng cho cam_on
     public function getBookingByCode($ma_lich)
     {
         $sql = "SELECT 
-                 ld.*, 
-                 dv.name as ten_dichvu, dv.price,
-                 kh.name as ten_khach, kh.phone,
-                 kg.time as gio_lam,
-                 n.date as ngay_lam,
-                 t.name as ten_tho, t.image as anh_tho,
-                 ld.cancel_reason
-             FROM lichdat ld
-             JOIN dichvu dv ON ld.dichvu_id = dv.id
-             JOIN khachhang kh ON ld.khachhang_id = kh.id
-             JOIN khunggio kg ON ld.khunggio_id = kg.id
-             JOIN phan_cong pc ON kg.phan_cong_id = pc.id
-             JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
-             JOIN tho t ON pc.tho_id = t.id
-             WHERE ld.ma_lich = ?";
+                    ld.*, 
+                    ld.price,
+                    dv.name as ten_dichvu, 
+                    kh.name as ten_khach, kh.phone,
+                    kg.time as gio_lam,
+                    n.date as ngay_lam,
+                    t.name as ten_tho, t.image as anh_tho,
+                    ld.cancel_reason
+                FROM lichdat ld
+                JOIN dichvu dv ON ld.dichvu_id = dv.id
+                JOIN khachhang kh ON ld.khachhang_id = kh.id
+                JOIN khunggio kg ON ld.khunggio_id = kg.id
+                JOIN phan_cong pc ON kg.phan_cong_id = pc.id
+                JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
+                JOIN tho t ON pc.tho_id = t.id
+                WHERE ld.ma_lich = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$ma_lich]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -221,7 +217,7 @@ public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null,
         $sql = "SELECT 
                 ld.id, ld.ma_lich, ld.status, ld.created_at, ld.cancel_reason,
                 ld.rating,
-                dv.name AS ten_dichvu, dv.price,
+                dv.name AS ten_dichvu, ld.price,
                 kg.time AS gio_lam,
                 n.date AS ngay_lam,
                 t.name AS ten_tho
@@ -378,36 +374,35 @@ public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null,
     // ------------------------------
 // FIX UPDATE TRẠNG THÁI THEO MA_LICH
 // ------------------------------
-public function updateStatusByMaLich($ma_lich, $status, $reason = null)
-{
-    if ($status === 'cancelled') {
+    public function updateStatusByMaLich($ma_lich, $status, $reason = null)
+    {
+        if ($status === 'cancelled') {
 
-        $sql = "UPDATE lichdat
+            $sql = "UPDATE lichdat
                 SET status = :status,
                     cancel_reason = :reason,
                     client_read = 0
                 WHERE ma_lich = :ma_lich";
 
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([
-            ':status' => $status,
-            ':reason' => $reason,
-            ':ma_lich' => $ma_lich
-        ]);
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute([
+                ':status' => $status,
+                ':reason' => $reason,
+                ':ma_lich' => $ma_lich
+            ]);
 
-    } else {
+        } else {
 
-        $sql = "UPDATE lichdat
+            $sql = "UPDATE lichdat
                 SET status = :status
                 WHERE ma_lich = :ma_lich";
 
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([
-            ':status' => $status,
-            ':ma_lich' => $ma_lich
-        ]);
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute([
+                ':status' => $status,
+                ':ma_lich' => $ma_lich
+            ]);
+        }
     }
-}
-
 }
 ?>

@@ -187,6 +187,10 @@
                     <span class="detail-label">Thợ:</span>
                     <div><?= htmlspecialchars($info['ten_tho']) ?></div>
                 </div>
+                <div class="detail-box">
+                    <span class="detail-label">Khách Hàng Ghi Chú:</span>
+                    <div><?= htmlspecialchars($info['note']) ?> </div>
+                </div>
 
                 <div class="detail-box">
                     <span class="detail-label">Thời Gian Làm:</span>
@@ -196,16 +200,27 @@
                 <div class="detail-box">
                     <span class="detail-label">Trạng Thái:</span>
                     <?php
-                    $class = [
+                    $classMap = [
                         'pending' => 'pending',
                         'confirmed' => 'confirmed',
                         'done' => 'done',
                         'cancelled' => 'cancelled'
-                    ][$info['status']];
-                    ?>
-                    <span class="status-badge <?= $class ?>"><?= ucfirst($info['status']) ?></span>
-                </div>
+                    ];
 
+                    $textMap = [
+                        'pending' => 'Chờ duyệt',
+                        'confirmed' => 'Đã duyệt',
+                        'done' => 'Hoàn thành',
+                        'cancelled' => 'Đã hủy'
+                    ];
+
+                    $st = $info['status'];
+                    ?>
+
+                    <span class="status-badge <?= $classMap[$st] ?? '' ?>">
+                        <?= $textMap[$st] ?? 'Không xác định' ?>
+                    </span>
+                </div>
                 <?php if (!empty($info['cancel_reason'])): ?>
                     <div class="detail-box">
                         <span class="detail-label">Lý Do Hủy:</span>
@@ -252,4 +267,5 @@
     <script src="<?= BASE_URL ?>public/admin.js"></script>
 
 </body>
+
 </html>

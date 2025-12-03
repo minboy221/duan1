@@ -361,7 +361,7 @@ main {
     width: 800px;
     color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-    margin-top: 550px;
+    margin-top: 690px;
 }
 
 .baohoadon h2 {
@@ -594,7 +594,7 @@ tfoot td {
 
 /* phần footer */
 .footer {
-    margin-top: 410px;
+    margin-top: 550px;
     background-color: #111;
     /* nền đen */
     color: #f5c542;

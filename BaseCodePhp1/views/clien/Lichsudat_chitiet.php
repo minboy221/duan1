@@ -111,7 +111,7 @@
                                 ];
 
                                 $statusClass = [
-                                    'pending' => 'text-warning', 
+                                    'pending' => 'text-warning',
                                     'confirmed' => 'text-primary',
                                     'done' => 'text-success',
                                     'cancelled' => 'text-danger'
@@ -171,6 +171,18 @@
                                 </tr>
                             </tfoot>
                         </table>
+                        <div class="thongtin-donhang mb-4">
+                            <h2>Ghi chú của bạn</h2>
+                            <div class="infor-row">
+                                <p class="text-muted" style="font-style: italic;">
+                                    <?php if (!empty($booking['note'])): ?>
+                                        "<?= nl2br(htmlspecialchars($booking['note'])) ?>"
+                                    <?php else: ?>
+                                        (Không có ghi chú)
+                                    <?php endif; ?>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                     <div class="thongtin-donhang mb-4">
                         <h2>Lý do hủy (nếu có)</h2>

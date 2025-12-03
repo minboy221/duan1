@@ -188,7 +188,7 @@ match ($act) {
     'nv-dashboard' => (new NhanVienController())->dashboard(),
     'nv-xacnhan' => (new NhanVienController())->xacnhan(),
     'nv-huy' => (new NhanVienController())->huy(),
-    'admin-nhanvien-detail' => (new NhanVienAdminController())->detail(),
+    'nhanvien-lichdat-detail' =>(new NhanVienController())->chitiet(),
     // tìm kiếm nhan viên
     'admin-nhanvien-search' => (new NhanVienAdminController())->search(),
 

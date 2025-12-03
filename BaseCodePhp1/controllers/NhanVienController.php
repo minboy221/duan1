@@ -80,7 +80,7 @@ class NhanVienController
     // --- CÁC HÀM KHÁC (Chi tiết, Xác nhận, Hủy) ---
     public function chitiet()
     {
-        $ma_lich = $_GET['ma_lich'] ?? null; // Nên dùng ma_lich
+        $ma_lich = $_GET['ma_lich'] ?? null;
         if (!$ma_lich) {
             header("location: index.php?act=nv-dashboard");
             exit;
@@ -92,17 +92,31 @@ class NhanVienController
             exit;
         }
 
-        // Xử lý gộp cho trang chi tiết
+        // 1. Lấy thông tin chung (Khách, Thợ, Ngày...) từ dòng đầu tiên
         $booking = $bookingList[0];
+
+        // 2. Chuẩn bị danh sách dịch vụ và tính tổng tiền
+        $services = []; // Biến này View đang cần để chạy vòng lặp foreach
         $totalPrice = 0;
+
         foreach ($bookingList as $item) {
             $totalPrice += $item['price'];
+            // Thêm từng dịch vụ vào mảng
+            $services[] = [
+                'ten_dichvu' => $item['ten_dichvu'],
+                'price' => $item['price']
+            ];
         }
+
+        // 3. Gán tổng tiền
         $booking['price'] = $totalPrice;
 
-        include 'views/nhanvien/chitiet.php';
+        // 4. Gọi View
+        // Lưu ý: Tên file phải khớp với file bạn đã tạo trong thư mục views/nhanvien/
+        // Nếu bạn đặt tên file là 'chitiet.php' thì dùng dòng dưới:
+        require_once 'views/nhanvien/chitiet.php';
     }
-
+    
     public function xacnhan()
     {
         $id = $_GET['id'];

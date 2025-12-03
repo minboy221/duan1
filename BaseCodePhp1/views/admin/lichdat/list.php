@@ -348,6 +348,7 @@
                                 <th>Thợ</th>
                                 <th>Ngày</th>
                                 <th>Giờ</th>
+                                <th>Thời gian đặt</th>
                                 <th>Giá</th>
                                 <th>Trạng thái</th>
                                 <th>Lý do hủy</th>
@@ -386,6 +387,16 @@
                                         <td><?= date('d/m/Y', strtotime($item['ngay_lam'])) ?></td>
                                         <td><?= htmlspecialchars($item['gio_lam']) ?></td>
                                         <td>
+                                            <span style="font-size: 13px; color: #555;">
+                                                <i class="fa fa-clock"></i>
+                                                <?= date('H:i:s', strtotime($item['created_at'])) ?>
+                                            </span>
+                                            <br>
+                                            <small class="text-muted">
+                                                <?= date('d/m/Y', strtotime($item['created_at'])) ?>
+                                            </small>
+                                        </td>
+                                        <td>
                                             <strong style="color: #DB504A; display: block; margin-top: 5px;">
                                                 <?= number_format($item['total_price']) ?> đ
                                             </strong>
@@ -408,13 +419,18 @@
                                                     <button type="button" class="btn-action btn-cancel btn-cancel-popup"
                                                         title="Hủy"><i class='bx bx-x'></i></button>
                                                 <?php else: ?>
-    <a href="index.php?act=admin-lichdat-detail&ma_lich=<?= $item['ma_lich'] ?>" 
-       class="btn-action" 
-       style="background:#6c757d; color:white;" 
-       title="Xem chi tiết">
-        <i class='bx bx-show'></i>
-    </a>
-<?php endif; ?>
+                                                    <a href="index.php?act=admin-lichdat-detail&ma_lich=<?= $item['ma_lich'] ?>"
+                                                        class="btn-action" style="background: #6c757d; 
+                                                                            color: white; 
+                                                                            display: inline-flex; 
+                                                                            align-items: center;   
+                                                                            justify-content: center;  
+                                                                            padding: 8px 12px;      
+                                                                            border-radius: 5px;         
+                                                                            text-decoration: none;"
+                                                        title="Xem chi tiết">
+                                                        <i class='bx bx-show' style="font-size: 18px;"></i> </a>
+                                                <?php endif; ?>
                                             </form>
                                         </td>
                                     </tr>
@@ -430,103 +446,60 @@
                             <?php endif; ?>
                         </tbody>
                     </table>
-
-                    <div class="pagination" id="pagination"></div>
+                </div>
+            </div>
         </main>
         <script src="<?= BASE_URL ?>public/admin.js"></script>
         <script>
-            // Phân trang
-            const usersPerPage = 5;
+            document.addEventListener("DOMContentLoaded", function () {
+                // --- 2. PHẦN XỬ LÝ NÚT HỦY (SỬA LẠI DÙNG DELEGATION) ---
+                document.addEventListener('click', function (e) {
+                    // Kiểm tra nếu bấm vào nút có class 'btn-cancel-popup' hoặc icon bên trong nó
+                    const target = e.target.closest('.btn-cancel-popup');
 
-            // Lấy bảng
-            const table = document.getElementById("userTable");
-            const rows = table.querySelectorAll("tbody tr");
-            const totalRows = rows.length;
+                    if (target) {
+                        e.preventDefault(); // Ngăn chặn hành vi mặc định
 
-            // Tính số trang
-            const totalPages = Math.ceil(totalRows / usersPerPage);
+                        const form = target.closest('form');
 
-            // Tạo thanh phân trang
-            const pagination = document.createElement("div");
-            pagination.classList.add("pagination");
-            pagination.style.margin = "20px";
-            pagination.style.textAlign = "center";
-            document.querySelector(".orders").appendChild(pagination);
-
-            function showPage(page) {
-                // Ẩn toàn bộ
-                rows.forEach(r => r.style.display = "none");
-
-                // Vị trí bắt đầu – kết thúc
-                const start = (page - 1) * usersPerPage;
-                const end = start + usersPerPage;
-
-                // Hiển thị đúng 5 user
-                for (let i = start; i < end && i < totalRows; i++) {
-                    rows[i].style.display = "";
-                }
-
-                // Active nút
-                document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
-                document.getElementById("page-" + page).classList.add("active");
-            }
-
-            // Render nút phân trang
-            for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement("button");
-                btn.innerText = i;
-                btn.id = "page-" + i;
-                btn.classList.add("page-btn");
-                btn.style.margin = "3px";
-                btn.style.padding = "8px 14px";
-                btn.style.borderRadius = "5px";
-                btn.style.border = "1px solid #ccc";
-                btn.style.cursor = "pointer";
-                btn.onclick = () => showPage(i);
-                pagination.appendChild(btn);
-            }
-
-            // Hiển thị trang đầu tiên
-            showPage(1);
-
-            // SweetAlert2: popup nhập lý do hủy
-            document.querySelectorAll('.btn-cancel-popup').forEach(button => {
-                button.addEventListener('click', function () {
-                    const form = button.closest('form');
-                    Swal.fire({
-                        title: 'Nhập lý do hủy',
-                        input: 'text',
-                        inputPlaceholder: 'Nhập lý do hủy...',
-                        showCancelButton: true,
-                        confirmButtonText: 'Xác nhận',
-                        cancelButtonText: 'Hủy',
-                        preConfirm: (reason) => {
-                            if (!reason) {
-                                Swal.showValidationMessage('Bạn phải nhập lý do hủy');
+                        Swal.fire({
+                            title: 'HỦY LỊCH HẸN',
+                            text: "Vui lòng nhập lý do hủy:",
+                            input: 'textarea',
+                            inputPlaceholder: 'Ví dụ: Khách bận, Cửa hàng nghỉ...',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Xác nhận Hủy',
+                            cancelButtonText: 'Quay lại',
+                            inputValidator: (value) => {
+                                if (!value) return 'Bạn bắt buộc phải nhập lý do!';
                             }
-                            return reason;
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Xóa input ẩn cũ nếu click lại nhiều lần
-                            form.querySelectorAll('input[name="cancel_reason"], input[name="status"]').forEach(i => i.remove());
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Xóa input cũ (nếu có) để tránh trùng lặp
+                                const oldInputs = form.querySelectorAll('input[name="cancel_reason"], input[name="status"]');
+                                oldInputs.forEach(input => input.remove());
 
-                            // Thêm input ẩn
-                            let inputReason = document.createElement('input');
-                            inputReason.type = 'hidden';
-                            inputReason.name = 'cancel_reason';
-                            inputReason.value = result.value;
-                            form.appendChild(inputReason);
+                                // Tạo input Status = cancelled
+                                const inputStatus = document.createElement('input');
+                                inputStatus.type = 'hidden';
+                                inputStatus.name = 'status';
+                                inputStatus.value = 'cancelled';
+                                form.appendChild(inputStatus);
 
-                            let inputStatus = document.createElement('input');
-                            inputStatus.type = 'hidden';
-                            inputStatus.name = 'status';
-                            inputStatus.value = 'cancelled';
-                            form.appendChild(inputStatus);
+                                // Tạo input Lý do
+                                const inputReason = document.createElement('input');
+                                inputReason.type = 'hidden';
+                                inputReason.name = 'cancel_reason';
+                                inputReason.value = result.value;
+                                form.appendChild(inputReason);
 
-                            form.submit();
-                        }
-                    });
+                                // Submit form
+                                form.submit();
+                            }
+                        });
+                    }
                 });
             });
         </script>

@@ -26,7 +26,7 @@ class StatsModel
     public function getTotalRevenue(): float
     {
         $sql = "
-            SELECT SUM(dv.price) 
+            SELECT SUM(ld.price) 
             FROM lichdat ld
             JOIN dichvu dv ON ld.dichvu_id = dv.id
             WHERE ld.status = 'done'
@@ -37,7 +37,7 @@ class StatsModel
     // 4) Doanh thu trong ngày (multi service)
     public function getDailyRevenue()
 {
-    $sql = "SELECT SUM(dv.price) 
+    $sql = "SELECT SUM(ld.price) 
             FROM lichdat ld
             JOIN dichvu dv ON ld.dichvu_id = dv.id
             WHERE ld.status = 'done'
@@ -53,7 +53,7 @@ class StatsModel
         SELECT 
             ld.ma_lich,
             kh.name AS ten_khach,
-            SUM(dv.price) AS total_price,
+            SUM(ld.price) AS total_price,
             MIN(ld.created_at) AS created_at,
 
             -- LẤY TRẠNG THÁI ƯU TIÊN CAO NHẤT TRONG ĐƠN

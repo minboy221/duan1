@@ -33,16 +33,18 @@
             color: white !important;
             border-color: #0a58ca !important;
         }
+
         .btnxem {
-    padding: 6px 10px;
-    background: #0dcaf0;
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-}
-.btnxem:hover {
-    background: #0bb3d6;
-}
+            padding: 6px 10px;
+            background: #0dcaf0;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btnxem:hover {
+            background: #0bb3d6;
+        }
     </style>
 </head>
 
@@ -99,7 +101,7 @@
 
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>
-           
+
             <a href="#" class="profile">
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
             </a>
@@ -146,14 +148,12 @@
                                     <td><?= htmlspecialchars($nv['gioitinh'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($nv['role_name'] ?? '') ?></td>
                                     <td style="display:flex; gap:5px;">
-    <a class="btnxem" href="?act=admin-nhanvien-detail&id=<?= $nv['id'] ?>">Xem</a>
-    <a class="btnsua" href="?act=admin-nhanvien-edit&id=<?= $nv['id'] ?>">Sửa</a>
-    <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá nhân viên này?')"
-        href="?act=admin-nhanvien-delete&id=<?= $nv['id'] ?>">
-        Xoá
-    </a>
-</td>
-
+                                        <a class="btnsua" href="?act=admin-nhanvien-edit&id=<?= $nv['id'] ?>">Sửa</a>
+                                        <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá nhân viên này?')"
+                                            href="?act=admin-nhanvien-delete&id=<?= $nv['id'] ?>">
+                                            Xoá
+                                        </a>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                             <?php if (empty($nhanviens)): ?>
