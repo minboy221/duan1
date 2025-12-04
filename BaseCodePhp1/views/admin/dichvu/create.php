@@ -73,14 +73,7 @@
             </div>
 
             <div class="form-wrapper">
-                <?php if (!empty($_SESSION['error'])): ?>
-                    <ul style="color:red;">
-                        <?php foreach ($_SESSION['error'] as $err): ?>
-                            <li><?= htmlspecialchars($err) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                    <?php unset($_SESSION['error']); ?>
-                <?php endif; ?>
+                
 
                 <form action="?act=store_dichvu" method="POST" enctype="multipart/form-data" class="form-add">
                     <div class="form-group">
@@ -124,6 +117,30 @@
         </main>
     </div>
     <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // ----------------------------------------------------
+            // LOGIC HIỂN THỊ THÔNG BÁO SWEETALERT2 (SAU KHI REDIRECT)
+            // ----------------------------------------------------
+            
+            <?php 
+            $error_message = $_SESSION['error_sa'] ?? '';
+            unset($_SESSION['error_sa']); 
+            
+            if (!empty($error_message)): 
+            ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi Thêm Dịch Vụ!',
+                    html: '<?= htmlspecialchars($error_message) ?>', // Dùng html để hỗ trợ <br>
+                    confirmButtonText: 'Đóng',
+                    confirmButtonColor: '#DB504A'
+                });
+            <?php endif; ?>
+        });
+    </script>
 </body>
 
 </html>
