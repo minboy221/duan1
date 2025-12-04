@@ -101,6 +101,8 @@ $adminRoutes = [
     'admin-nhanvien',
     'admin-nhanvien-create',
     'admin-nhanvien-edit',
+    'lock_staff',
+    'unlock_staff',
 ];
 
 // Nếu act thuộc nhóm admin -> kiểm tra đăng nhập
@@ -166,6 +168,8 @@ match ($act) {
     // khóa
     'lock_user' => (new CattocContronler())->lockUser(),
     'unlock_user' => (new CattocContronler())->unlockUser(),
+    'lock_staff' => (new NhanVienAdminController())->lockStaff(),
+    'unlock_staff' => (new NhanVienAdminController())->unlockStaff(),
 
     // phần quản lý đánh giá
     'admin-user-comment' => (new BinhLuanUserController())->detail(),

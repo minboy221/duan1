@@ -97,4 +97,33 @@ class NhanVienAdminController
 
         require_once './views/admin/nhanvien/list.php';
     }
+    // Trong NhanVienAdminController.php
+
+// ... (Các hàm khác giữ nguyên) ...
+
+// Trong NhanVienAdminController.php
+
+public function lockStaff()
+{
+    $id = $_GET['id'] ?? null;
+    if (!$id) die("ID nhân viên không hợp lệ");
+
+    $this->model->updateStatus($id, 0); // 0: Khóa
+    // 💡 LƯU THÔNG BÁO FLASH
+    $_SESSION['success_sa'] = "Đã khóa tài khoản nhân viên thành công!";
+    header("Location: index.php?act=admin-nhanvien");
+    exit;
+}
+
+public function unlockStaff()
+{
+    $id = $_GET['id'] ?? null;
+    if (!$id) die("ID nhân viên không hợp lệ");
+
+    $this->model->updateStatus($id, 1); // 1: Mở khóa
+    // 💡 LƯU THÔNG BÁO FLASH
+    $_SESSION['success_sa'] = "Đã mở khóa tài khoản nhân viên thành công!";
+    header("Location: index.php?act=admin-nhanvien");
+    exit;
+}
 }

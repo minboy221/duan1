@@ -19,7 +19,7 @@ class KhachHangController
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
 
-            // 1. Check admin trước
+            // 1. Check admin cứng trước
             if ($username === 'admin' && $password === 'admin123') {
                 $_SESSION['is_logged_in'] = true;
                 $_SESSION['username'] = $username;
@@ -29,21 +29,23 @@ class KhachHangController
                 exit();
             }
 
-            // 2. Validate email cho khách hàng (không kiểm tra với admin)
+            // 2. Validate email cho khách hàng
             if (!filter_var($username, FILTER_VALIDATE_EMAIL)) {
                 $error = 'Email không hợp lệ!';
             } else {
                 $md5Pass = md5($password);
-                $user = $this->khachhang->login($username);
-                // Kiểm tra tài khoản bị khóa
-                if ($user && isset($user['status']) && $user['status'] == 0) {
-                    $error = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên!";
-                    require_once './views/clien/DangnhapView.php';
-                    return;
-                }
-
+                $user = $this->khachhang->login($username); // Lấy user KH
 
                 if ($user && $user['password'] === $md5Pass) {
+                    
+                    // Kiểm tra tài khoản khách hàng bị khóa
+                    if (isset($user['status']) && $user['status'] == 0) {
+                        $error = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên!";
+                        require_once './views/clien/DangnhapView.php';
+                        return;
+                    }
+                    
+                    // Đăng nhập Khách hàng thành công
                     $_SESSION['is_logged_in'] = true;
                     $_SESSION['username'] = $user['name'];
                     $_SESSION['user_id'] = $user['id'];
@@ -52,15 +54,31 @@ class KhachHangController
                     header('Location: index.php?act=home');
                     exit();
                 } else {
-                    //phần đăng nhập cho nhân viên
-                    $staff = $this->nhanvien->checkLogin($username);
-                    if ($staff && password_verify($password, $staff['password'])) {
-                        $_SESSION['is_logged_in'] = true;
-                        $_SESSION['username'] = $staff['name'];
-                        $_SESSION['user_id'] = $staff['id'];
-                        $_SESSION['role'] = $staff['role_name'] ?? 'Staff';
-                        header('Location: index.php?act=nv-dashboard');
-                        exit();
+                    // 3. Check đăng nhập cho nhân viên
+                    $staff = $this->nhanvien->checkLogin($username); // Lấy staff (cần lấy cả status)
+                    
+                    if ($staff) {
+                        
+                        // Kiểm tra trạng thái tài khoản nhân viên bị khóa
+                        if (isset($staff['status']) && $staff['status'] == 0) {
+                            $error = "Tài khoản nhân viên của bạn đã bị khóa bởi quản trị viên!";
+                            require_once './views/clien/DangnhapView.php';
+                            return;
+                        }
+                        
+                        if (password_verify($password, $staff['password'])) {
+                            // Đăng nhập Nhân viên thành công
+                            $_SESSION['is_logged_in'] = true;
+                            $_SESSION['username'] = $staff['name'];
+                            $_SESSION['user_id'] = $staff['id'];
+                            // Gán role name từ DB (ví dụ: 'Nhân Viên')
+                            $_SESSION['role'] = $staff['role_name'] ?? 'Staff'; 
+                            
+                            header('Location: index.php?act=nv-dashboard');
+                            exit();
+                        } else {
+                            $error = 'Tài khoản hoặc mật khẩu không đúng!';
+                        }
                     } else {
                         $error = 'Tài khoản hoặc mật khẩu không đúng!';
                     }

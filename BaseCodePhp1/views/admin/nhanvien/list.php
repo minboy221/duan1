@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>public/qlydanhmuc.css">
     <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .pagination button {
             margin: 3px;
@@ -147,12 +148,22 @@
                                     <td><?= htmlspecialchars($nv['phone'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($nv['gioitinh'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($nv['role_name'] ?? '') ?></td>
+                                    <td><?= htmlspecialchars($nv['role_name'] ?? 'Chưa gán') ?></td>
                                     <td style="display:flex; gap:5px;">
                                         <a class="btnsua" href="?act=admin-nhanvien-edit&id=<?= $nv['id'] ?>">Sửa</a>
-                                        <a class="btnxoa" onclick="return confirm('Bạn chắc chắn muốn xoá nhân viên này?')"
-                                            href="?act=admin-nhanvien-delete&id=<?= $nv['id'] ?>">
-                                            Xoá
-                                        </a>
+
+                                        <?php if ($nv['status'] == 1): ?>
+                                            <a class="btnxoa" onclick="return confirm('Khóa tài khoản này?')"
+                                                href="?act=lock_staff&id=<?= $nv['id'] ?>">
+                                                Khóa
+                                            </a>
+                                        <?php else: ?>
+                                            <a class="btnxem" style="background:#388E3C;" onclick="return confirm('Mở khóa tài khoản này?')"
+                                                href="?act=unlock_staff&id=<?= $nv['id'] ?>">
+                                                Mở Khóa
+                                            </a>
+                                        <?php endif; ?>
+
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -172,9 +183,9 @@
 
     <script src="<?= BASE_URL ?>public/admin.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const toggler = document.getElementById('theme-toggle');
-            toggler.addEventListener('change', function () {
+            toggler.addEventListener('change', function() {
                 if (this.checked) {
                     document.body.classList.add('dark');
                 } else {
@@ -235,6 +246,54 @@
         // Hiển thị trang đầu tiên
         showPage(1);
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        <?php if (isset($_SESSION['success_sa'])): ?>
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành Công!',
+                text: '<?= htmlspecialchars($_SESSION['success_sa']) ?>',
+                confirmButtonText: 'Đóng',
+                confirmButtonColor: '#388E3C', // Xanh lá
+                timer: 2000 // Tự động đóng sau 2 giây
+            });
+            <?php unset($_SESSION['success_sa']); // Xóa thông báo sau khi hiện xong ?>
+        <?php endif; ?>
+        
+        // ----------------------------------------------------
+        // 💡 LOGIC XÓA (SweetAlert2 cho nút Xóa Vĩnh viễn)
+        // Thay thế hàm 'onclick="return confirm(...) " của nút Xóa
+        // ----------------------------------------------------
+        
+        document.querySelector('main')?.addEventListener('click', function(event) {
+            const deleteButton = event.target.closest('.btnxoa'); // Lắng nghe nút Xóa
+
+            // Kiểm tra xem đây có phải nút xóa Nhân viên không (dựa vào href)
+            if (deleteButton && deleteButton.href.includes('act=admin-nhanvien-delete')) {
+                event.preventDefault();
+                const staffName = deleteButton.closest('tr').querySelector('td:first-child').textContent.trim();
+                const deleteUrl = deleteButton.href;
+
+                Swal.fire({
+                    title: 'Xác nhận xóa nhân viên?',
+                    text: `Bạn chắc chắn muốn xóa vĩnh viễn ${staffName} ? Hành động này không thể hoàn tác.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#DB504A',
+                    cancelButtonColor: '#004085',
+                    confirmButtonText: 'Có, Xóa!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Chuyển hướng đến URL xóa sau khi xác nhận
+                        window.location.href = deleteUrl;
+                    }
+                });
+            }
+        });
+    });
+</script>
 </body>
 
 </html>

@@ -13,13 +13,13 @@ class NhanVienAdminModel
     // Lấy tất cả nhân viên
     public function all()
     {
-        $sql = "
-    SELECT nv.*, nv.password_plain, r.id AS role_id, r.name AS role_name
-    FROM nhanvien nv
-    LEFT JOIN user_role ur ON ur.user_id = nv.id
-    LEFT JOIN role r ON r.id = ur.role_id
-    ORDER BY nv.id DESC
-";
+       $sql = "
+        SELECT nv.*, nv.password_plain, r.id AS role_id, r.name AS role_name
+        FROM nhanvien nv
+        LEFT JOIN user_role ur ON ur.user_id = nv.id
+        LEFT JOIN role r ON r.id = ur.role_id
+        ORDER BY nv.id DESC
+    ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
@@ -147,4 +147,15 @@ class NhanVienAdminModel
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    // Cập nhật trạng thái nhân viên (khóa/mở khóa)
+    public function updateStatus($id, $status)
+{
+    // Giả sử cột 'status' tồn tại trong bảng nhanvien
+    $sql = "UPDATE nhanvien SET status = :status WHERE id = :id";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute([
+        'status' => $status, // 0: Khóa, 1: Mở khóa
+        'id' => $id
+    ]);
+}
 }

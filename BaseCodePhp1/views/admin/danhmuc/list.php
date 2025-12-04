@@ -9,8 +9,11 @@
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
     <title>Trang Quản Lý Danh Mục | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+    
     <style>
+        /* CSS Phân trang và các nút đã có (Giữ nguyên) */
         .pagination button {
             margin: 3px;
             padding: 8px 14px;
@@ -27,7 +30,6 @@
 
         .pagination .active {
             background: #0d6efd !important;
-            /* màu xanh nổi bật */
             color: white !important;
             border-color: #0a58ca !important;
         }
@@ -37,86 +39,111 @@
 
 <body>
 
-    <!-- Sidebar -->
     <div class="sidebar">
+
         <a href="#" class="logo">
+
             <i class="bi bi-scissors"></i>
+
             <div class="logo-name"><span>31</span>Shine</div>
+
         </a>
 
+
+
         <ul class="side-menu">
+
             <li><a href="?act=homeadmin">Thống Kê</a></li>
+
             <li class="active"><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
+
             <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
+
             <li><a href="?act=qlylichdat">Quản Lý Đặt Lịch</a></li>
+
             <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
+
             <li><a href="?act=qlybot">Quản Lý AI</a></li>
+
             <li><a href="?act=qlychat">Quản Lý Chat</a></li>
+
             <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
+
             <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
+
             <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
+
         </ul>
+
+
 
         <ul class="side-menu">
-            <li>
-                <a href="<?= BASE_URL ?>?act=logout" class="logout">
-                    <i class='bx bx-log-out-circle'></i> Đăng Xuất
-                </a>
-            </li>
-            <li>
-                <a href="<?= BASE_URL ?>?act=home" class="logout">
-                    <i class='bx bx-log-out-circle'></i>Xem Website
-                </a>
-            </li>
-        </ul>
-    </div>
-    <!-- End Sidebar -->
 
-    <!-- Main Content -->
+            <li>
+
+                <a href="<?= BASE_URL ?>?act=logout" class="logout">
+
+                    <i class='bx bx-log-out-circle'></i> Đăng Xuất
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="<?= BASE_URL ?>?act=home" class="logout">
+
+                    <i class='bx bx-log-out-circle'></i>Xem Website
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </div>
+
     <div class="content">
-        <!-- Navbar -->
+
         <nav>
+
             <i class='bx bx-menu'></i>
 
-            <form method="GET" action="">
+
+
+            <form method="GET" action="index.php">
+
+                <input type="hidden" name="act" value="qlydanhmuc">
+
                 <div class="form-input">
-                    <input type="hidden" name="act" value="qlydanhmuc">
+
                     <input type="text" name="keyword" placeholder="Tìm danh mục..."
-                        value="<?= $_GET['keyword'] ?? '' ?>">
+
+                        value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
+
                     <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+
                 </div>
+
             </form>
 
+
+
             <input type="checkbox" id="theme-toggle" hidden>
+
             <label for="theme-toggle" class="theme-toggle"></label>
 
-            <a href="<?= BASE_URL ?>?act=logout" class="profile">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
-            </a>
-        </nav>
-        <?php if (!empty($_SESSION['error'])): ?>
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: '<?= $_SESSION['error']; ?>',
-                    confirmButtonColor: '#d33'
-                });
-            </script>
-            <?php unset($_SESSION['error']); ?>
-        <?php endif; ?>
 
-        <?php if (!empty($_SESSION['success'])): ?>
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Thành công!',
-                    text: '<?= $_SESSION['success']; ?>',
-                    confirmButtonColor: '#28a745'
-                });
-            </script>
-            <?php unset($_SESSION['success']); ?>
-        <?php endif; ?>
+
+            <a href="<?= BASE_URL ?>?act=logout" class="profile">
+
+                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+
+            </a>
+
+        </nav>
+
+
         <main>
             <div class="header">
                 <div class="left">
@@ -147,30 +174,35 @@
 
                         <tbody>
 
-                            <?php foreach ($categories as $cat): ?>
-                                <tr>
-                                    <td>
-                                        <p><?= htmlspecialchars($cat['name']) ?></p>
-                                    </td>
+                            <?php if (!empty($categories)): ?>
+                                <?php foreach ($categories as $cat): ?>
+                                    <tr>
+                                        <td>
+                                            <p><?= htmlspecialchars($cat['name']) ?></p>
+                                        </td>
 
-                                    <td>
-                                        <?= htmlspecialchars(mb_substr($cat['description'], 0, 60)) ?>...
-                                    </td>
+                                        <td>
+                                            <?= htmlspecialchars(mb_substr($cat['description'], 0, 60)) ?>...
+                                        </td>
 
-                                    <td>
-                                        <a class="btnxem" href="?act=show_danhmuc&id=<?= $cat['id'] ?>">Xem chi tiết</a>
+                                        <td>
+                                            <a class="btnxem" href="?act=show_danhmuc&id=<?= $cat['id'] ?>">Xem chi tiết</a>
 
-                                        <a class="btnsua" href="?act=edit_danhmuc&id=<?= $cat['id'] ?>">Sửa</a>
-                                        <a class="btnxoa" href="?act=delete_danhmuc&id=<?= $cat['id'] ?>"
-                                            onclick="return confirmDelete(event)">
-                                            Xoá
-                                        </a>
+                                            <a class="btnsua" href="?act=edit_danhmuc&id=<?= $cat['id'] ?>">Sửa</a>
+                                            
+                                            <a class="btnxoa btn-delete-cat" 
+                                                href="?act=delete_danhmuc&id=<?= $cat['id'] ?>"
+                                                style="cursor: pointer;"
+                                                data-id="<?= htmlspecialchars($cat['id']) ?>" 
+                                                data-name="<?= htmlspecialchars($cat['name']) ?>">
+                                                Xoá
+                                            </a>
 
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
 
-                            <?php if (empty($categories)): ?>
+                                <?php else: ?>
                                 <tr>
                                     <td colspan="3" style="text-align:center; padding:20px;">
                                         Chưa có danh mục nào.
@@ -181,6 +213,8 @@
                         </tbody>
                     </table>
 
+                    <div class="pagination" id="pagination"></div>
+
                 </div>
             </div>
 
@@ -189,82 +223,128 @@
 
     <script src="<?= BASE_URL ?>public/admin.js"></script>
     <script>
-        function confirmDelete(e) {
-            e.preventDefault();
-            const url = e.currentTarget.getAttribute('href');
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // ----------------------------------------------------
+            // LOGIC HIỂN THỊ THÔNG BÁO SWEETALERT2 (SESSION FLASH)
+            // ----------------------------------------------------
+            
+            <?php 
+            // Lấy thông báo từ SESSION (Đây là trang đích)
+            $success_message = $_SESSION['success_sa'] ?? '';
+            $error_message = $_SESSION['error_sa'] ?? '';
+            
+            // Dọn dẹp session sau khi lấy xong
+            unset($_SESSION['success_sa']); 
+            unset($_SESSION['error_sa']);
+            ?>
 
-            Swal.fire({
-                title: 'Bạn chắc muốn xoá?',
-                text: "Không thể hoàn tác!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Xoá luôn',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = url;
+            // Hiển thị thông báo Thành công
+            <?php if (!empty($success_message)): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành Công!',
+                    text: '<?= htmlspecialchars($success_message) ?>', 
+                    showConfirmButton: false,
+                    timer: 3000 // Tự đóng sau 3 giây
+                });
+            <?php endif; ?>
+            
+            // Hiển thị thông báo Lỗi (Ví dụ: Lỗi xóa)
+            <?php if (!empty($error_message)): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi Thao Tác!',
+                    text: '<?= htmlspecialchars($error_message) ?>',
+                    confirmButtonText: 'Đóng',
+                    confirmButtonColor: '#DB504A'
+                });
+            <?php endif; ?>
+
+            // ----------------------------------------------------
+            // LOGIC XÓA DÙNG SWEETALERT2 VÀ EVENT DELEGATION
+            // ----------------------------------------------------
+            
+            document.querySelector('.orders')?.addEventListener('click', function(e) {
+                
+                const deleteButton = e.target.closest('.btn-delete-cat');
+                
+                if (deleteButton) {
+                    e.preventDefault(); 
+                    const url = deleteButton.getAttribute('href');
+                    const catName = deleteButton.dataset.name; // Lấy tên từ data-name
+
+                    Swal.fire({
+                        title: 'Xác nhận xóa Danh mục?',
+                        text: `Bạn chắc chắn muốn xoá danh mục "${catName}"? Hành động này không thể hoàn tác.`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#DB504A',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Có, Xóa luôn!',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Chuyển hướng đến URL xóa sau khi xác nhận SweetAlert2
+                            window.location.href = url;
+                        }
+                    });
                 }
             });
 
-            return false;
-        }
-        // Số user mỗi trang
-        const usersPerPage = 5;
 
-        // Lấy bảng
-        const table = document.getElementById("userTable");
-        const rows = table.querySelectorAll("tbody tr");
-        const totalRows = rows.length;
+            // ----------------------------------------------------
+            // LOGIC PHÂN TRANG (Client-side Pagination)
+            // ----------------------------------------------------
+            
+const usersPerPage = 5;
+    const table = document.getElementById("userTable");
+    const rows = Array.from(table.querySelectorAll("tbody tr"))
+        .filter(r => r.querySelectorAll("td").length >= 3); // CHỈ lấy dòng dữ liệu
 
-        // Tính số trang
-        const totalPages = Math.ceil(totalRows / usersPerPage);
+    const totalRows = rows.length;
+    const totalPages = Math.ceil(totalRows / usersPerPage);
 
-        // Tạo thanh phân trang
-        const pagination = document.createElement("div");
-        pagination.classList.add("pagination");
-        pagination.style.margin = "20px";
-        pagination.style.textAlign = "center";
-        document.querySelector(".orders").appendChild(pagination);
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
 
-        function showPage(page) {
-            // Ẩn toàn bộ
-            rows.forEach(r => r.style.display = "none");
+    let currentPage = 1;
 
-            // Vị trí bắt đầu – kết thúc
-            const start = (page - 1) * usersPerPage;
-            const end = start + usersPerPage;
+    function renderPage(page) {
+        currentPage = page;
 
-            // Hiển thị đúng 5 user
-            for (let i = start; i < end && i < totalRows; i++) {
-                rows[i].style.display = "";
-            }
+        // Ẩn tất cả dòng
+        rows.forEach(r => r.style.display = "none");
 
-            // Active nút
-            document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
-            document.getElementById("page-" + page).classList.add("active");
+        const start = (page - 1) * usersPerPage;
+        const end = start + usersPerPage;
+
+        // Hiện các dòng thuộc trang
+        for (let i = start; i < end && i < totalRows; i++) {
+            rows[i].style.display = "";
         }
 
-        // Render nút phân trang
+        // Active nút trang
+        document.querySelectorAll("#pagination button").forEach(btn => btn.classList.remove("active"));
+        document.getElementById("page-" + page).classList.add("active");
+    }
+
+    // Render nút phân trang
+    if (totalPages > 1) {
         for (let i = 1; i <= totalPages; i++) {
-            const btn = document.createElement("button");
-            btn.innerText = i;
+            let btn = document.createElement("button");
             btn.id = "page-" + i;
+            btn.innerText = i;
             btn.classList.add("page-btn");
-            btn.style.margin = "3px";
-            btn.style.padding = "8px 14px";
-            btn.style.borderRadius = "5px";
-            btn.style.border = "1px solid #ccc";
-            btn.style.cursor = "pointer";
-            btn.onclick = () => showPage(i);
+            btn.onclick = () => renderPage(i);
             pagination.appendChild(btn);
         }
+    }
 
-        // Hiển thị trang đầu tiên
-        showPage(1);
+    // Hiện trang đầu tiên
+    renderPage(1);
+});
     </script>
-
 </body>
 
 </html>

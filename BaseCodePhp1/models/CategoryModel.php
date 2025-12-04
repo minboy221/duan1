@@ -79,5 +79,20 @@ class CategoryModel
     $stmt->execute(['%' . $keyword . '%']);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+public function checkDuplicateName($name, $excludeId = null)
+{
+    $sql = "SELECT COUNT(id) FROM danhmuc WHERE name = ?";
+    $params = [$name];
+
+    if ($excludeId) {
+        $sql .= " AND id != ?";
+        $params[] = $excludeId;
+    }
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute($params);
+    
+    return $stmt->fetchColumn() > 0;
+}
 
 }

@@ -36,34 +36,45 @@ class DichVuController
         include 'views/admin/dichvu/create.php';
     }
 
-    // xử lý store
-    public function store()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $errors = [];
+public function store()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+        $name = $_POST['name'] ?? '';
+        $errors = [];
 
-            if (empty($_POST['name'])) {
-                $errors[] = "Tên dịch vụ không được để trống";
-            }
-            if (empty($_POST['price'])) {
-                $errors[] = "Giá không được để trống";
-            }
-
-            if (!empty($errors)) {
-                $_SESSION['error'] = $errors;
-                header("Location: index.php?act=createdichvu");
-                exit();
-            }
-
-            $this->model->insert($_POST, $_FILES);
-
-            $_SESSION['success'] = "Thêm dịch vụ thành công!";
+        // 💡 KIỂM TRA TRÙNG TÊN DỊCH VỤ
+        if ($this->model->checkDuplicateName($name)) {
+            // Nếu trùng tên -> Báo lỗi và dừng
+            $errors[] = "Tên dịch vụ '$name' đã tồn tại. Vui lòng chọn tên khác!";
+        }
+        
+        // Validate các trường khác (Giữ nguyên logic cũ)
+        if (empty($_POST['name'])) {
+            $errors[] = "Tên dịch vụ không được để trống";
+        }
+        if (empty($_POST['price'])) {
+            $errors[] = "Giá không được để trống";
         }
 
-        header("Location: index.php?act=qlydichvu");
-        exit();
+        if (!empty($errors)) {
+            // 💡 SỬ DỤNG $_SESSION['error_sa'] CHO POPUP
+            $_SESSION['error_sa'] = implode('<br>', $errors); // Gộp các lỗi thành 1 chuỗi
+            header("Location: index.php?act=createdichvu");
+            exit();
+        }
+
+        // Nếu không có lỗi, tiến hành Insert
+        $this->model->insert($_POST, $_FILES);
+
+        // 💡 Dùng $_SESSION['success_sa'] cho popup thành công
+        $_SESSION['success_sa'] = "Thêm dịch vụ thành công!";
     }
+
+    header("Location: index.php?act=qlydichvu");
+    exit();
+}
 
     // form sửa
     public function edit()

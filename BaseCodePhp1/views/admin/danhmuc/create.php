@@ -72,6 +72,7 @@
                 <h1>Thêm Danh Mục</h1>
                 <a href="?act=qlydanhmuc" class="btnthem btn-back">← Quay lại</a>
             </div>
+            
 
             <div class="form-wrapper">
                 <form id="formDanhMuc" action="?act=store_danhmuc" method="POST" class="form-add">
@@ -138,6 +139,25 @@
             input.classList.add("error");
             errorMsg.textContent = message;
         }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            <?php if (isset($_SESSION['error_sa'])): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi Thao Tác!',
+                    text: '<?= htmlspecialchars($_SESSION['error_sa']) ?>',
+                    confirmButtonText: 'Đóng',
+                    confirmButtonColor: '#DB504A'
+                });
+                <?php unset($_SESSION['error_sa']); ?>
+            <?php endif; ?>
+
+           
+            
+        });
     </script>
 </body>
 

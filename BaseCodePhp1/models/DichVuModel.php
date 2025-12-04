@@ -156,5 +156,12 @@ public function delete($id)
     $stmt->execute(['kw' => '%' . $keyword . '%']);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
+public function checkDuplicateName($name)
+{
+    $sql = "SELECT COUNT(id) FROM dichvu WHERE name = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute([$name]);
+    
+    return $stmt->fetchColumn() > 0;
+}
 }
