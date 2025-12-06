@@ -262,11 +262,12 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <a href="?act=nv_home" class="logo">
-            <i class="bi bi-scissors"></i>
+            <i class='bx bx-cut'></i>
             <div class="logo-name"><span>31</span>Shine</div>
         </a>
         <ul class="side-menu">
-            <li class="active"><a href="index.php?act=nv-dashboard">Quản Lý Lịch Đặt</a></li>
+            <li class="active"><a href="index.php?act=nv-dashboard"><i class='bx bx-receipt'></i>Quản Lý Lịch Đặt</a>
+            </li>
             <li class="<?= ($_GET['act'] ?? '') == 'doimatkhau_nhanvien' ? 'active' : '' ?>">
                 <a href="index.php?act=doimatkhau_nhanvien">Đổi Mật Khẩu</a>
             </li>
@@ -302,8 +303,8 @@
                 <div class="left">
                     <h1>Lịch Đặt</h1>
                     <ul class="breadcrumb">
-                        <li><a href="#">Nhân Viên</a></li> /
-                        <li><a href="#" class="active">Lịch Đặt</a></li>
+                        <li>Nhân Viên</li> /
+                        <li>class="active">Lịch Đặt</li>
                     </ul>
                 </div>
                 <div class="bottom-data">
@@ -388,7 +389,7 @@
                                         </td>
 
                                         <td>
-                                            <p style="margin:0;"><?=($item['ten_dichvu']) ?></p>
+                                            <p style="margin:0;"><?= ($item['ten_dichvu']) ?></p>
                                             <strong style="color: #DB504A;"><?= number_format($item['price']) ?> đ</strong>
                                         </td>
 

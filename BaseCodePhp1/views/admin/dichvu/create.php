@@ -15,32 +15,31 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <a href="#" class="logo">
-            <i class="bi bi-scissors"></i>
+            <i class='bx bx-cut'></i>
             <div class="logo-name"><span>31</span>Shine</div>
         </a>
-
         <ul class="side-menu">
-            <li><a href="?act=homeadmin">Thống Kê</a></li>
-            <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
-            <li class="active"><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
-            <li><a href="?act=qlylichdat">Quản Lý Đặt Lịch</a></li>
-            <li><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
-            <li><a href="?act=qlybot">Quản Lý AI</a></li>
-            <li><a href="?act=qlychat">Quản Lý Chat</a></li>
-            <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
-            <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
-            <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
+            <li><a href="?act=homeadmin"><i class='bx bxs-dashboard'></i>Thống Kê</a></li>
+            <li><a href="?act=qlydanhmuc"><i class='bx bx-store-alt'></i>Quản Lý Danh Mục</a></li>
+            <li class="active"><a href="?act=qlydichvu"><i class='bx bx-book-alt'></i>Quản Lý Dịch Vụ</a></li>
+            <li><a href="?act=qlylichdat"> <i class='bx bx-receipt'></i>Quản Lý Đặt Lịch</a></li>
+            <li><a href="?act=admin-nhanvien"><i class='bx bx-user-voice'></i>Quản Lý Nhân Viên</a></li>
+            <li><a href="?act=qlybot"><i class="bx bx-bot"></i>Quản Lý AI</a></li>
+            <li><a href="?act=qlychat"><i class='bx bx-brain'></i>Quản Lý Chat</a></li>
+            <li><a href="?act=qlylichlamviec"><i class='bx bx-cog'></i>Quản Lý Làm Việc</a></li>
+            <li><a href="?act=qlytho"><i class='bx bx-cut'></i>Quản Lý Thợ</a></li>
+            <li><a href="?act=qlytaikhoan"><i class='bx bx-group'></i>Quản Lý Người Dùng</a></li>
         </ul>
-
         <ul class="side-menu">
             <li>
                 <a href="<?= BASE_URL ?>?act=logout" class="logout">
-                    <i class='bx bx-log-out-circle'></i> Đăng Xuất
+                    <i class='bx bx-log-out-circle'></i>
+                    Đăng Xuất
                 </a>
             </li>
             <li>
                 <a href="<?= BASE_URL ?>?act=home" class="logout">
-                    <i class='bx bx-log-out-circle'></i>Xem Website
+                    <i class='bx bx-home-alt-2'></i>Xem Website
                 </a>
             </li>
         </ul>
@@ -73,7 +72,7 @@
             </div>
 
             <div class="form-wrapper">
-                
+
 
                 <form action="?act=store_dichvu" method="POST" enctype="multipart/form-data" class="form-add">
                     <div class="form-group">
@@ -117,20 +116,20 @@
         </main>
     </div>
     <script src="<?= BASE_URL ?>public/admin.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            
+        document.addEventListener('DOMContentLoaded', function () {
+
             // ----------------------------------------------------
             // LOGIC HIỂN THỊ THÔNG BÁO SWEETALERT2 (SAU KHI REDIRECT)
             // ----------------------------------------------------
-            
-            <?php 
+
+            <?php
             $error_message = $_SESSION['error_sa'] ?? '';
-            unset($_SESSION['error_sa']); 
-            
-            if (!empty($error_message)): 
-            ?>
+            unset($_SESSION['error_sa']);
+
+            if (!empty($error_message)):
+                ?>
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi Thêm Dịch Vụ!',

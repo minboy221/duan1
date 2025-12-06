@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>public/qlydanhmuc.css">
     <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .pagination button {
             margin: 3px;
@@ -52,21 +52,21 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <a href="?act=homeadmin" class="logo">
-            <i class="bi bi-scissors"></i>
+        <a href="#" class="logo">
+            <i class='bx bx-cut'></i>
             <div class="logo-name"><span>31</span>Shine</div>
         </a>
         <ul class="side-menu">
-            <li><a href="?act=homeadmin">Thống Kê</a></li>
-            <li><a href="?act=qlydanhmuc">Quản Lý Danh Mục</a></li>
-            <li><a href="?act=qlydichvu">Quản Lý Dịch Vụ</a></li>
-            <li><a href="?act=qlylichdat">Quản Lý Đặt Lịch</a></li>
-            <li class="active"><a href="?act=admin-nhanvien">Quản Lý Nhân Viên</a></li>
-            <li><a href="?act=qlybot">Quản Lý AI</a></li>
-            <li><a href="?act=qlychat">Quản Lý Chat</a></li>
-            <li><a href="?act=qlylichlamviec">Quản Lý Làm Việc</a></li>
-            <li><a href="?act=qlytho">Quản Lý Thợ</a></li>
-            <li><a href="?act=qlytaikhoan">Quản Lý Người Dùng</a></li>
+            <li><a href="?act=homeadmin"><i class='bx bxs-dashboard'></i>Thống Kê</a></li>
+            <li><a href="?act=qlydanhmuc"><i class='bx bx-store-alt'></i>Quản Lý Danh Mục</a></li>
+            <li><a href="?act=qlydichvu"><i class='bx bx-book-alt'></i>Quản Lý Dịch Vụ</a></li>
+            <li><a href="?act=qlylichdat"> <i class='bx bx-receipt'></i>Quản Lý Đặt Lịch</a></li>
+            <li class="active"><a href="?act=admin-nhanvien"><i class='bx bx-user-voice'></i>Quản Lý Nhân Viên</a></li>
+            <li><a href="?act=qlybot"><i class="bx bx-bot"></i>Quản Lý AI</a></li>
+            <li><a href="?act=qlychat"><i class='bx bx-brain'></i>Quản Lý Chat</a></li>
+            <li><a href="?act=qlylichlamviec"><i class='bx bx-cog'></i>Quản Lý Làm Việc</a></li>
+            <li><a href="?act=qlytho"><i class='bx bx-cut'></i>Quản Lý Thợ</a></li>
+            <li><a href="?act=qlytaikhoan"><i class='bx bx-group'></i>Quản Lý Người Dùng</a></li>
         </ul>
         <ul class="side-menu">
             <li>
@@ -77,7 +77,7 @@
             </li>
             <li>
                 <a href="<?= BASE_URL ?>?act=home" class="logout">
-                    <i class='bx bx-log-out-circle'></i>Xem Website
+                    <i class='bx bx-home-alt-2'></i>Xem Website
                 </a>
             </li>
         </ul>
@@ -158,7 +158,8 @@
                                                 Khóa
                                             </a>
                                         <?php else: ?>
-                                            <a class="btnxem" style="background:#388E3C;" onclick="return confirm('Mở khóa tài khoản này?')"
+                                            <a class="btnxem" style="background:#388E3C;"
+                                                onclick="return confirm('Mở khóa tài khoản này?')"
                                                 href="?act=unlock_staff&id=<?= $nv['id'] ?>">
                                                 Mở Khóa
                                             </a>
@@ -183,9 +184,9 @@
 
     <script src="<?= BASE_URL ?>public/admin.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const toggler = document.getElementById('theme-toggle');
-            toggler.addEventListener('change', function() {
+            toggler.addEventListener('change', function () {
                 if (this.checked) {
                     document.body.classList.add('dark');
                 } else {
@@ -247,53 +248,53 @@
         showPage(1);
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
 
-        <?php if (isset($_SESSION['success_sa'])): ?>
-            Swal.fire({
-                icon: 'success',
-                title: 'Thành Công!',
-                text: '<?= htmlspecialchars($_SESSION['success_sa']) ?>',
-                confirmButtonText: 'Đóng',
-                confirmButtonColor: '#388E3C', // Xanh lá
-                timer: 2000 // Tự động đóng sau 2 giây
-            });
-            <?php unset($_SESSION['success_sa']); // Xóa thông báo sau khi hiện xong ?>
-        <?php endif; ?>
-        
-        // ----------------------------------------------------
-        // 💡 LOGIC XÓA (SweetAlert2 cho nút Xóa Vĩnh viễn)
-        // Thay thế hàm 'onclick="return confirm(...) " của nút Xóa
-        // ----------------------------------------------------
-        
-        document.querySelector('main')?.addEventListener('click', function(event) {
-            const deleteButton = event.target.closest('.btnxoa'); // Lắng nghe nút Xóa
-
-            // Kiểm tra xem đây có phải nút xóa Nhân viên không (dựa vào href)
-            if (deleteButton && deleteButton.href.includes('act=admin-nhanvien-delete')) {
-                event.preventDefault();
-                const staffName = deleteButton.closest('tr').querySelector('td:first-child').textContent.trim();
-                const deleteUrl = deleteButton.href;
-
+            <?php if (isset($_SESSION['success_sa'])): ?>
                 Swal.fire({
-                    title: 'Xác nhận xóa nhân viên?',
-                    text: `Bạn chắc chắn muốn xóa vĩnh viễn ${staffName} ? Hành động này không thể hoàn tác.`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#DB504A',
-                    cancelButtonColor: '#004085',
-                    confirmButtonText: 'Có, Xóa!',
-                    cancelButtonText: 'Hủy'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Chuyển hướng đến URL xóa sau khi xác nhận
-                        window.location.href = deleteUrl;
-                    }
+                    icon: 'success',
+                    title: 'Thành Công!',
+                    text: '<?= htmlspecialchars($_SESSION['success_sa']) ?>',
+                    confirmButtonText: 'Đóng',
+                    confirmButtonColor: '#388E3C', // Xanh lá
+                    timer: 2000 // Tự động đóng sau 2 giây
                 });
-            }
+                <?php unset($_SESSION['success_sa']); // Xóa thông báo sau khi hiện xong ?>
+            <?php endif; ?>
+
+            // ----------------------------------------------------
+            // 💡 LOGIC XÓA (SweetAlert2 cho nút Xóa Vĩnh viễn)
+            // Thay thế hàm 'onclick="return confirm(...) " của nút Xóa
+            // ----------------------------------------------------
+
+            document.querySelector('main')?.addEventListener('click', function (event) {
+                const deleteButton = event.target.closest('.btnxoa'); // Lắng nghe nút Xóa
+
+                // Kiểm tra xem đây có phải nút xóa Nhân viên không (dựa vào href)
+                if (deleteButton && deleteButton.href.includes('act=admin-nhanvien-delete')) {
+                    event.preventDefault();
+                    const staffName = deleteButton.closest('tr').querySelector('td:first-child').textContent.trim();
+                    const deleteUrl = deleteButton.href;
+
+                    Swal.fire({
+                        title: 'Xác nhận xóa nhân viên?',
+                        text: `Bạn chắc chắn muốn xóa vĩnh viễn ${staffName} ? Hành động này không thể hoàn tác.`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#DB504A',
+                        cancelButtonColor: '#004085',
+                        confirmButtonText: 'Có, Xóa!',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Chuyển hướng đến URL xóa sau khi xác nhận
+                            window.location.href = deleteUrl;
+                        }
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
 </body>
 
 </html>
