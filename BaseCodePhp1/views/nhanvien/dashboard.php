@@ -7,7 +7,6 @@
     <title>Trang Nhân Viên | 31Shine</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="<?= BASE_URL ?>public/homeadmin.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* Phân trang */
@@ -269,7 +268,7 @@
             <li class="active"><a href="index.php?act=nv-dashboard"><i class='bx bx-receipt'></i>Quản Lý Lịch Đặt</a>
             </li>
             <li class="<?= ($_GET['act'] ?? '') == 'doimatkhau_nhanvien' ? 'active' : '' ?>">
-                <a href="index.php?act=doimatkhau_nhanvien">Đổi Mật Khẩu</a>
+                <a href="index.php?act=doimatkhau_nhanvien"><i class='bx bx-key'></i> Đổi Mật Khẩu</a>
             </li>
             <li>
                 <a href="?act=logout" class="logout">
@@ -304,7 +303,7 @@
                     <h1>Lịch Đặt</h1>
                     <ul class="breadcrumb">
                         <li>Nhân Viên</li> /
-                        <li>class="active">Lịch Đặt</li>
+                        <li>Lịch Đặt</li>
                     </ul>
                 </div>
                 <div class="bottom-data">
@@ -488,15 +487,12 @@
                         </tbody>
                     </table>
                     <div class="pagination" id="pagination"></div>
-
                 </div>
             </div>
         </main>
     </div>
     <script src="<?= BASE_URL ?>public/admin.js"></script>
     <script>
-        // public/admin.js
-
         document.addEventListener("DOMContentLoaded", function () {
 
             /* ---------------- PHÂN TRANG ---------------- */
