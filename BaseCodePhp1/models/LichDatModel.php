@@ -9,31 +9,34 @@ class LichDatModel
     }
 
     // --- 1. DÀNH CHO ADMIN: LẤY DANH SÁCH (CÓ PHÂN TRANG) ---
-    public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null, $date = null, $time = null)
-    {
-        $where = " WHERE 1=1 ";
-        $params = [];
 
-        if ($keyword) {
-            // Tìm kiếm không phân biệt chữ hoa/thường trên tên khách và mã lịch
-            $where .= " AND (kh.name LIKE :keyword OR ld.ma_lich LIKE :keyword) ";
-            $params[':keyword'] = '%' . $keyword . '%';
-        }
+    // Lấy danh sách với phân trang và lọc/tìm kiếm
+    public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null, $date = null, $time = null, $status = null)
+{
+    $where = " WHERE 1=1 ";
+    $params = [];
 
-        // Lọc theo Ngày làm việc (Ngày chính xác)
-        if ($date) {
-            $where .= " AND n.date = :date ";
-            $params[':date'] = $date;
-        }
+    if ($keyword) {
+        $where .= " AND (kh.name LIKE :keyword OR ld.ma_lich LIKE :keyword) ";
+        $params[':keyword'] = '%' . $keyword . '%';
+    }
 
-        // Lọc theo Giờ làm việc (Giờ chính xác)
-        if ($time) {
-            $where .= " AND kg.time = :time ";
-            $params[':time'] = $time;
-        }
+    if ($date) {
+        $where .= " AND n.date = :date ";
+        $params[':date'] = $date;
+    }
 
-        //Xây dựng truy vấn SQL hoàn chỉnh
-        $sql = "SELECT 
+    if ($time) {
+        $where .= " AND kg.time = :time ";
+        $params[':time'] = $time;
+    }
+    
+    if ($status) {
+        $where .= " AND ld.status = :status ";
+        $params[':status'] = $status;
+    }
+
+    $sql = "SELECT 
                 ld.*, kh.name as ten_khach, kh.phone as sdt_khach,
                 dv.name as ten_dichvu, ld.price, kg.time as gio_lam,
                 n.date as ngay_lam, t.name as ten_tho
@@ -44,33 +47,67 @@ class LichDatModel
             JOIN phan_cong pc ON kg.phan_cong_id = pc.id
             JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
             JOIN tho t ON pc.tho_id = t.id
-            " . $where . " /* ÁP DỤNG CÁC ĐIỀU KIỆN LỌC */
+            " . $where . "
             ORDER BY ld.created_at DESC
             LIMIT :limit OFFSET :offset";
 
-        $stmt = $this->conn->prepare($sql);
-
-        // 6. Bind các tham số Phân trang và Lọc
-        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
-
-        // Bind các tham số lọc động (đã được định nghĩa trong $params)
-        foreach ($params as $key => &$val) {
-            $stmt->bindParam($key, $val, PDO::PARAM_STR);
-        }
-
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $this->conn->prepare($sql);
+    
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    
+    foreach ($params as $key => &$val) {
+        $stmt->bindParam($key, $val, PDO::PARAM_STR);
     }
+
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     // Đếm tổng số bản ghi (cho phân trang)
-    public function countAllLichDat()
-    {
-        $sql = "SELECT COUNT(*) as total FROM lichdat";
-        $stmt = $this->conn->query($sql);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return (int) $row['total'];
+    public function countAllLichDat($keyword = null, $date = null, $time = null, $status = null)
+{
+    $where = " WHERE 1=1 ";
+    $params = [];
+
+    if ($keyword) {
+        $where .= " AND (kh.name LIKE :keyword OR ld.ma_lich LIKE :keyword) ";
+        $params[':keyword'] = '%' . $keyword . '%';
     }
+    
+    if ($date) {
+        $where .= " AND n.date = :date ";
+        $params[':date'] = $date;
+    }
+
+    if ($time) {
+        $where .= " AND kg.time = :time ";
+        $params[':time'] = $time;
+    }
+    
+    if ($status) {
+        $where .= " AND ld.status = :status ";
+        $params[':status'] = $status;
+    }
+
+    $sql = "SELECT COUNT(ld.id) as total 
+            FROM lichdat ld
+            JOIN khachhang kh ON ld.khachhang_id = kh.id
+            JOIN khunggio kg ON ld.khunggio_id = kg.id
+            JOIN phan_cong pc ON kg.phan_cong_id = pc.id
+            JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
+            " . $where;
+
+    $stmt = $this->conn->prepare($sql);
+    
+    foreach ($params as $key => &$val) {
+        $stmt->bindParam($key, $val, PDO::PARAM_STR);
+    }
+
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return (int) $row['total'];
+}
 
     // dành cho admin lấy toàn bộ danh sách (KHÔNG PHÂN TRANG) ---
     public function getAllLichDat()
