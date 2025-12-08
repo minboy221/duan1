@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Nhân Viên | 31Shine</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/homeadmin.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/qlydanhmuc.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* Phân trang */
@@ -344,11 +344,11 @@
             <div class="bottom-data">
                 <div class="orders">
                     <div class="header">
-                        <i class='bx bx-receipt'></i>
+                        <i class='bx bx-calendar-event'></i>
                         <h3>Tất Cả Lịch Đặt</h3>
                     </div>
 
-                    <table id="table">
+                    <table id="userTable">
                         <thead>
                             <tr>
                                 <th>Mã Lịch</th>
