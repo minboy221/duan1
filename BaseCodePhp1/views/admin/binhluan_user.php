@@ -88,7 +88,6 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th>Dịch Vụ</th>
                                     <th>Nội dung</th>
                                     <th>Số sao</th>
@@ -99,7 +98,6 @@
                             <tbody>
                                 <?php foreach ($comments as $c): ?>
                                     <tr>
-                                        <td><?= $c['id'] ?></td>
                                         <td><?= htmlspecialchars($c['ten_dichvu']) ?></td>
                                         <td><?= htmlspecialchars($c['comment']) ?></td>
                                         <td><?= str_repeat('⭐', (int) $c['rating']) ?></td>

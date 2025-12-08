@@ -134,7 +134,6 @@
                     <table id="userTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Họ Tên</th>
                                 <th>Email</th>
                                 <th>Số Điện Thoại</th>
@@ -146,7 +145,6 @@
                             <?php if (!empty($taikhoan) && is_array($taikhoan)): ?>
                                 <?php foreach ($taikhoan as $p): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($p['id']) ?></td>
                                         <td><?= htmlspecialchars($p['name']) ?></td>
                                         <td><?= htmlspecialchars($p['email']) ?></td>
                                         <td><?= htmlspecialchars($p['phone']) ?></td>
