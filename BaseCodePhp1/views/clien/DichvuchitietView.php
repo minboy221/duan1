@@ -151,8 +151,6 @@
                             <p>Bạn có muốn đi đến trang đăng nhập không?</p>
                         </div>
                         <div class="popup-footer">
-                            <button onclick="closePopup()" class="btn-cancel">Để sau</button>
-
                             <a href="<?= BASE_URL ?>?act=dangnhap_khachhang">
                                 <button class="btn-confirm">Đăng nhập ngay</button>
                             </a>

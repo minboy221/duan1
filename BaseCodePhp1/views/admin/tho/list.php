@@ -99,7 +99,6 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Ảnh Thợ</th>
                                 <th>Tên Thợ</th>
                                 <th>Ngày Tạo</th>
@@ -112,10 +111,6 @@
                             <?php if (!empty($thoList)): ?>
                                 <?php foreach ($thoList as $tho): ?>
                                     <tr>
-                                        <td>
-                                            <p><?= $tho['id'] ?></p>
-                                        </td>
-
                                         <td>
                                             <?php if (!empty($tho['image'])): ?>
                                                 <img src="./anhtho/<?= $tho['image'] ?>" alt="Ảnh thợ" width="80" height="80"

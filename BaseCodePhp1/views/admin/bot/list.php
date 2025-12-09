@@ -90,7 +90,7 @@
                                 <table id="userTable">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>STT</th>
                                             <th>Từ khóa (Khách hỏi)</th>
                                             <th>Bot trả lời</th>
                                             <th>Hành động</th>
