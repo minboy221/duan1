@@ -67,7 +67,7 @@
         <!-- End Navbar -->
         <main>
             <div class="header">
-                <h1>Thêm Danh Mục</h1>
+                <h1>Thêm Cấu Hình</h1>
                 <a href="?act=qlybot" class="btnthem btn-back">← Quay lại</a>
             </div>
 

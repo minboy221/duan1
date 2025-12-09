@@ -1192,8 +1192,8 @@ main {
 
 
 .cattoccon {
-    width: 350px;
-    height: 450px;
+    width: 300px;
+    height: 400px;
 }
 
 .cattoccon img {
@@ -1205,7 +1205,7 @@ main {
 .cattoccon .infor {
     position: relative;
     margin-top: -20px;
-    width: 350px;
+    width: 300px;
     height: 60px;
     background-color: #222;
     color: #fff;
