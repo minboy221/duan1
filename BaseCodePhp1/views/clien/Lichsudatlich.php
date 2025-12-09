@@ -202,8 +202,8 @@
             </div>
 
             <form action="index.php?act=huylich" method="POST" onsubmit="return validateForm()">
-                <p style="margin: 15px 0; color: #555;">Bạn đang hủy lịch: <strong id="displayMaLich"
-                        style="color:#000;"></strong></p>
+                <p style="margin: 15px 0; color: #555;">Bạn đang hủy lịch: <strong id=""
+                        style="color:#000;"><?= htmlspecialchars($item['ten_dichvu']) ?></strong></p>
 
                 <input type="hidden" name="id" id="inputLichId" value="">
                 <input type="hidden" name="ly_do_chon" id="inputLyDoChon" value="">

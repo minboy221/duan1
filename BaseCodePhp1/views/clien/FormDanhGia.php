@@ -150,5 +150,5 @@
         </div>
     </footer>
 </body>
-
+<script src="<?= BASE_URL ?>public/main.js"></script>
 </html>
