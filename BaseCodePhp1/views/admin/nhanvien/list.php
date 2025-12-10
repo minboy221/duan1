@@ -147,7 +147,6 @@
                                     <td><?= htmlspecialchars($nv['email']) ?></td>
                                     <td><?= htmlspecialchars($nv['phone'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($nv['gioitinh'] ?? '') ?></td>
-                                    <td><?= htmlspecialchars($nv['role_name'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($nv['role_name'] ?? 'Chưa gán') ?></td>
                                     <td style="display:flex; gap:5px;">
                                         <a class="btnsua" href="?act=admin-nhanvien-edit&id=<?= $nv['id'] ?>">Sửa</a>
@@ -164,6 +163,7 @@
                                                 Mở Khóa
                                             </a>
                                         <?php endif; ?>
+                                        <a href="?act=admin-nhanvien-delete&id=<?= $nv['id'] ?>" class="btnxoa">Xóa</a>
 
                                     </td>
                                 </tr>

@@ -311,7 +311,7 @@
                         <form method="GET" action="index.php" class="filter-form">
                             <input type="hidden" name="act" value="nv-dashboard">
 
-                            <div class="input-group">
+                             <div class="input-group">
                                 <span class="input-icon"><i class='bx bx-search'></i></span>
                                 <input type="search" name="keyword" class="form-control input-keyword"
                                     placeholder="Mã lịch, Tên khách..."
@@ -322,11 +322,67 @@
                                 <input type="date" name="date" class="form-control input-date"
                                     value="<?= htmlspecialchars($_GET['date'] ?? '') ?>" title="Lọc theo ngày">
                             </div>
+                            <div class="input-group">
+                                <select name="tho_name" class="form-control" style="width: 150px;">
+                                    <option value="">--Chọn Thợ--</option>
+                                    <?php
+                                    $currentTho = $_GET['tho_name'] ?? '';
+                                    // Giả định $allTho đã được truyền từ Controller (Bước 2)
+                                    if (isset($allTho)):
+                                        foreach ($allTho as $tho):
+                                            $selected = ($currentTho === $tho['name']) ? 'selected' : '';
+                                            // Lọc theo TÊN THỢ
+                                            echo "<option value=\"" . htmlspecialchars($tho['name']) . "\" {$selected}>" . htmlspecialchars($tho['name']) . "</option>";
+                                        endforeach;
+                                    endif;
+                                    ?>
+                                </select>
+                            </div>
 
                             <div class="input-group">
-                                <input type="text" name="time" class="form-control input-time"
-                                    placeholder="Giờ (VD: 08:00)" value="<?= htmlspecialchars($_GET['time'] ?? '') ?>">
+                                <select name="time" class="form-control input-time" style="width: 150px;">
+                                    <option value="">--Chọn Giờ--</option>
+                                    <?php
+                                    // Danh sách các khung giờ 30 phút từ 08:00 đến 21:00
+                                    $currentTime = $_GET['time'] ?? '';
+                                    $timeSlots = [];
+                                    for ($h = 8; $h <= 21; $h++) {
+                                        foreach (['00', '30'] as $min) {
+                                            if ($h == 21 && $min == '30') continue; // Loại bỏ 21:30
+                                            $time = str_pad($h, 2, "0", STR_PAD_LEFT) . ":" . $min;
+                                            $timeSlots[] = $time;
+                                        }
+                                    }
+
+                                    foreach ($timeSlots as $timeOption) {
+                                        $selected = ($currentTime === $timeOption) ? 'selected' : '';
+                                        echo "<option value=\"{$timeOption}\" {$selected}>{$timeOption}</option>";
+                                    }
+                                    ?>
+                                </select>
                             </div>
+                            <div class="input-group">
+                                <select name="status" class="form-control" style="width: 150px;">
+                                    <option value="">--Tất cả Trạng thái--</option>
+
+                                    <?php
+                                    $currentStatus = $_GET['status'] ?? '';
+                                    $statuses = [
+                                        'pending' => 'Chờ duyệt',
+                                        'confirmed' => 'Đã duyệt',
+                                        'done' => 'Hoàn thành',
+                                        'cancelled' => 'Đã hủy'
+                                    ];
+
+                                    foreach ($statuses as $val => $text):
+                                    ?>
+                                        <option value="<?= $val ?>" <?= ($currentStatus === $val) ? 'selected' : '' ?>>
+                                            <?= $text ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
 
                             <div class="btn-group">
                                 <button type="submit" class="btn-filter btn-primary">

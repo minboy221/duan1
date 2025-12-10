@@ -1,66 +1,85 @@
 <?php
 require_once './models/NhanVienModel.php';
 require_once './models/LichDatModel.php';
-
+require_once './models/ThoModel.php';
 class NhanVienController
 {
     protected $nvModel;
     protected $lichModel;
+    protected $thoModel; // 💡 Khai báo ThoModel
 
     public function __construct()
     {
         $this->nvModel = new NhanVienModel();
         $this->lichModel = new LichDatModel();
+        // 💡 Khởi tạo ThoModel
+        $this->thoModel = new ThoModel(); 
     }
 
     // --- GIAO DIỆN DASHBOARD (CÓ LỌC & PHÂN TRANG) ---
     public function dashboard()
     {
+        // 💡 LẤY ID CỦA THỢ (NHÂN VIÊN ĐANG ĐĂNG NHẬP)
+        $thoId = $_SESSION['user_id'] ?? null; 
+        
+        if (!$thoId) {
+            header("Location: index.php?act=dangnhap_khachhang");
+            exit;
+        }
+
         // 1. Lấy tham số lọc từ URL
         $keyword = $_GET['keyword'] ?? null;
         $date = $_GET['date'] ?? null;
         $time = $_GET['time'] ?? null;
-
+        $status = $_GET['status'] ?? null; 
+        
         $limit = 10;
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-        if ($page < 1)
-            $page = 1;
+        if ($page < 1) $page = 1;
         $offset = ($page - 1) * $limit;
 
         // 2. Xử lý AJAX (Nếu JS gọi để phân trang/lọc không tải lại)
         if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
-            // Gọi Model (Sửa $this->model thành $this->lichModel)
-            $rawList = $this->lichModel->getAllLichDatPaginate($limit, $offset, $keyword, $date, $time);
-            $total = $this->lichModel->countAllLichDat($keyword, $date, $time);
+            
+            // LẤY DỮ LIỆU CÓ LỌC/TÌM KIẾM VÀ GIỚI HẠN BỞI ID THỢ
+            $rawList = $this->lichModel->getAllLichDatPaginate($limit, $offset, $keyword, $date, $time, $status, null, $thoId); 
+
+            // TÍNH TỔNG SỐ TRANG
+            $total = $this->lichModel->countAllLichDat($keyword, $date, $time, $status, null, $thoId);
             $totalPages = ceil($total / $limit);
 
-            // Gộp dịch vụ
             $listLich = $this->processMergeBooking($rawList);
-
+            
             echo json_encode([
                 'listLich' => array_values($listLich),
                 'page' => $page,
                 'totalPages' => $totalPages,
-                'filter' => ['keyword' => $keyword, 'date' => $date, 'time' => $time]
+                'filter' => ['keyword' => $keyword, 'date' => $date, 'time' => $time, 'status' => $status]
             ]);
             exit();
         }
 
-        // 3. Xử lý hiển thị thường (Lần đầu vào trang)
-        $rawList = $this->lichModel->getAllLichDatPaginate($limit, $offset, $keyword, $date, $time);
+        // 3. Xử lý hiển thị trang thường (Lần đầu vào trang)
+        
+        // LẤY DỮ LIỆU CÓ LỌC/TÌM KIẾM VÀ GIỚI HẠN BỞI ID THỢ
+        $rawList = $this->lichModel->getAllLichDatPaginate($limit, $offset, $keyword, $date, $time, $status, null, $thoId);
 
-        // Gộp dịch vụ (Hàm này bạn bị thiếu ở code cũ)
         $listLich = $this->processMergeBooking($rawList);
 
-        $total = $this->lichModel->countAllLichDat($keyword, $date, $time);
+        // Tính tổng số trang
+        $total = $this->lichModel->countAllLichDat($keyword, $date, $time, $status, null, $thoId);
         $totalPages = ceil($total / $limit);
-        $currentPage = $page;
-
+        $currentPage = 1;
+        
+        // 💡 LẤY DANH SÁCH TẤT CẢ THỢ CHO DROPDOWN LỌC
+        // Giả định ThoModel có hàm all() để lấy tất cả thợ
+        $allTho = $this->thoModel->all(); 
+        
         // Gửi sang View
         require_once './views/nhanvien/dashboard.php';
     }
 
-    // --- HÀM HỖ TRỢ: GỘP MẢNG DỊCH VỤ (Bắt buộc phải có) ---
+    // --- HÀM HỖ TRỢ: GỘP MẢNG DỊCH VỤ ---
     private function processMergeBooking($rawList)
     {
         $listLich = [];
