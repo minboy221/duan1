@@ -19,7 +19,6 @@ class NhanVienAdminController
 
     public function createForm()
     {
-        // $nv không tồn tại → thêm mới
         $roles = $this->model->allRoles();
         require_once './views/admin/nhanvien/role.php';
     }
@@ -97,10 +96,6 @@ class NhanVienAdminController
 
         require_once './views/admin/nhanvien/list.php';
     }
-    // Trong NhanVienAdminController.php
-
-// ... (Các hàm khác giữ nguyên) ...
-
 // Trong NhanVienAdminController.php
 
 public function lockStaff()
@@ -109,7 +104,7 @@ public function lockStaff()
     if (!$id) die("ID nhân viên không hợp lệ");
 
     $this->model->updateStatus($id, 0); // 0: Khóa
-    // 💡 LƯU THÔNG BÁO FLASH
+    // LƯU THÔNG BÁO
     $_SESSION['success_sa'] = "Đã khóa tài khoản nhân viên thành công!";
     header("Location: index.php?act=admin-nhanvien");
     exit;
@@ -121,7 +116,7 @@ public function unlockStaff()
     if (!$id) die("ID nhân viên không hợp lệ");
 
     $this->model->updateStatus($id, 1); // 1: Mở khóa
-    // 💡 LƯU THÔNG BÁO FLASH
+    //LƯU THÔNG BÁO
     $_SESSION['success_sa'] = "Đã mở khóa tài khoản nhân viên thành công!";
     header("Location: index.php?act=admin-nhanvien");
     exit;

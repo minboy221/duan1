@@ -36,7 +36,7 @@ class LichDatModel
         $params[':status'] = $status;
     }
     
-    // 💡 Lọc theo Tên Thợ
+    // Lọc theo Tên Thợ
     if ($thoName) {
         $where .= " AND t.name LIKE :thoName ";
         $params[':thoName'] = '%' . $thoName . '%'; 
@@ -99,7 +99,7 @@ public function countAllLichDat($keyword = null, $date = null, $time = null, $st
         $params[':status'] = $status;
     }
     
-    // 💡 Lọc theo Tên Thợ
+    //Lọc theo Tên Thợ
     if ($thoName) {
         $where .= " AND t.name LIKE :thoName ";
         $params[':thoName'] = '%' . $thoName . '%';
@@ -262,7 +262,6 @@ public function countAllLichDat($keyword = null, $date = null, $time = null, $st
              LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$ma_lich]);
-        // 💡 SỬA: Dùng fetch() thay vì fetchAll()
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     // xem lịch sử đặt của client (có phân trang)
@@ -425,9 +424,7 @@ public function countAllLichDat($keyword = null, $date = null, $time = null, $st
         $stmt->execute([$khachhang_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    // ------------------------------
-// FIX UPDATE TRẠNG THÁI THEO MA_LICH
-// ------------------------------
+    //phần update trạng thái theo MA_LICH
     public function updateStatusByMaLich($ma_lich, $status, $reason = null)
     {
         if ($status === 'cancelled') {

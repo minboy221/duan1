@@ -71,8 +71,6 @@ class LichLamViecController
         require_once './views/admin/lichlamviec/edit_times.php';
     }
     //PHẦN XỬ LÝ LƯU GIỜ
-// Trong LichLamViecController.php
-
     public function updateTimes()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

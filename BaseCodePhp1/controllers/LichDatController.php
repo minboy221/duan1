@@ -14,16 +14,14 @@ class LichDatController
     }
 
     // --- HIỂN THỊ DANH SÁCH ĐƠN ĐẶT (Đã gộp mảng + Phân trang) ---
-// Trong LichDatController.php, hàm index()
-
 public function index()
     {
-        // 💡 Lấy tham số lọc/tìm kiếm từ URL
+        // Lấy tham số lọc/tìm kiếm từ URL
         $keyword = $_GET['keyword'] ?? null;
         $date = $_GET['date'] ?? null;
         $time = $_GET['time'] ?? null;
         $status = $_GET['status'] ?? null;
-        $thoName = $_GET['tho_name'] ?? null; // 💡 LẤY TÊN THỢ
+        $thoName = $_GET['tho_name'] ?? null; // LẤY TÊN THỢ
         
         $limit = 10;
         $offset = 0;
@@ -64,14 +62,12 @@ public function index()
         $totalPages = ceil($total / $limit);
         $currentPage = 1;
         
-        // 💡 LẤY DANH SÁCH TẤT CẢ THỢ CHO DROPDOWN
+        //LẤY DANH SÁCH TẤT CẢ THỢ CHO DROPDOWN
         $allTho = $this->thoModel->all(); 
 
         // Gửi sang View
         require_once './views/admin/lichdat/list.php';
     }
-
-    // Hàm này giúp code gọn hơn, không phải viết lặp lại logic gộp
     private function processMergeBooking($rawList)
     {
         $listLich = [];
@@ -93,7 +89,7 @@ public function index()
     public function updateStatus()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Ưu tiên lấy ID, nếu không có thì lấy MA_LICH (để tương thích cả 2 cách gọi)
+            // Ưu tiên lấy ID, nếu không có thì lấy MA_LICH
             $id = $_POST['id'] ?? null;
             $status = $_POST['status'] ?? null;
             $reason = $_POST['cancel_reason'] ?? null;

@@ -16,10 +16,8 @@ class BotController{
         $listBot = $this->model->all();
     }
     
-    // 💡 Lưu keyword hiện tại vào session để có thể sử dụng lại trong form nếu cần
-    // $_SESSION['last_search_bot'] = $keyword; // Không cần thiết nếu dùng $_GET trực tiếp
-    
-    require_once './views/admin/bot/list.php'; // Gửi $listBot sang View
+    // Lưu keyword hiện tại vào session để có thể sử dụng lại trong form nếu cần
+    require_once './views/admin/bot/list.php';
 }
     //phần thêm
     public function create(){

@@ -16,7 +16,7 @@ class AdminChatController
         $listCustomers = $this->model->getChatCustomers();
         require_once './views/admin/chat/index.php';
     }
-    //API lấy nội dung hội thoại của khách
+    //API lấy nội dung hội thoại của khách và hiển thị ở admin
     public function getConversation()
     {
         $client_id = $_GET['client_id'] ?? 0;

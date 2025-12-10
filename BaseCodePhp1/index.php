@@ -4,7 +4,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// require_once file common
 require_once('./commons/env.php');
 require_once('./commons/function.php');
 
@@ -133,12 +132,12 @@ match ($act) {
     'datlich' => $clientController->datlich(),
     'chondichvu' => $clientController->chondichvu(),
     'lichsudat' => $clientController->lichSuDatLich(),
-    'lichsudatchitiet' => $clientController->lichSuChiTiet(),    //đăng nhập và đăng ký cho khách hàng
+    'lichsudatchitiet' => $clientController->lichSuChiTiet(),
     'dangky_khachhang' => (new KhachHangController())->register(),
     'dangnhap_khachhang' => (new KhachHangController())->login(),
     'logout' => (new KhachHangController())->logout(),
     'huylich' => $clientController->huyLich(),
-    //phần thông báo huỷ lịch có lý do
+    //phần thông báo huỷ lịch có lý do của admin và nhân viên
     'api_read_notify' => $clientController->apiReadNotify(),
     'quenmatkhau' => (new KhachHangController())->forgotPassword(),//quên mật khẩu
     'doimatkhau_nhanvien' => (new khachHangController)->changePasswordStaff(), //đổi mật khẩu cho nhân viên
@@ -146,6 +145,7 @@ match ($act) {
     'api_load_chat' => $chatController->loadChat(),
     'api_send_chat' => $chatController->sendChat(),
     //phần hiển thị dữ liệu ra clien
+
     //phần hiển thị giao diện admin
     'homeadmin' => (new AdminHomeController())->index(),
     'qlydanhmuc' => (new CategoryController())->quanlydanhmuc(),
@@ -165,7 +165,7 @@ match ($act) {
     'delete_dichvu' => (new DichVuController())->delete(),
     //phần tài khoản khách hàng ở admin
     'qlytaikhoan' => (new CattocContronler())->taikhoanuser(),
-    // khóa
+    // khóa tài khoản
     'lock_user' => (new CattocContronler())->lockUser(),
     'unlock_user' => (new CattocContronler())->unlockUser(),
     'lock_staff' => (new NhanVienAdminController())->lockStaff(),
@@ -177,10 +177,9 @@ match ($act) {
     'search_user' => (new CattocContronler())->searchUser(),
     // tìm kiếm khách hàng clien
     'search_client' => (new CattocContronler())->searchClient(),
-    // đánh giá khách hàng
+    // đánh giá khách hàng clien
     'danhgia' => (new BinhLuanUserController())->formDanhGia(),
     'submit_danhgia' => (new BinhLuanUserController())->submitDanhGia(),
-
 
     //PHẦN QUẢN LÝ LỊCH ĐẶT
     'qlylichdat' => (new LichDatController())->index(),
@@ -248,5 +247,4 @@ match ($act) {
     // trang không tồn tại
     default => notFound(),
 }
-
-    ?>
+?>

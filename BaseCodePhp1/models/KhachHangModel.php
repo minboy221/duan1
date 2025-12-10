@@ -35,7 +35,6 @@ class Khachhang
             $stmt->execute([':email' => $email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            // Do không có cột 'password', nên không thể kiểm tra mật khẩu.
             // Chỉ trả về thông tin người dùng nếu email tồn tại.
             if ($user) {
                 return $user; // trả về thông tin người dùng nếu tìm thấy
@@ -70,7 +69,7 @@ class Khachhang
             $sql = "UPDATE khachhang SET password = :password WHERE email = :email";
             $stmt = $this->conn->prepare($sql);
             return $stmt->execute([
-                ':password' => $newPassword, // Lưu ý: password này phải đã được mã hóa md5 ở Controller
+                ':password' => $newPassword,
                 ':email' => $email
             ]);
         } catch (Exception $e) {

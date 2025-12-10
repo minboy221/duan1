@@ -460,8 +460,6 @@ class CattocContronler
     }
 
     // PHẦN LỊCH SỬ ĐẶT LỊCH CỦA CLIEN
-    // File: controllers/CattocController.php
-
     public function lichSuDatLich()
     {
         // 1. Kiểm tra đăng nhập
@@ -492,8 +490,6 @@ class CattocContronler
         }
 
         // (Tùy chọn) Chuyển key mã lịch thành key số để dễ xử lý ở view nếu cần
-        // $historyList = array_values($historyList);
-
         require_once './views/clien/Lichsudatlich.php';
     }
 

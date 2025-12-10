@@ -8,7 +8,7 @@ class CategoryModel
 
     public function __construct()
     {
-        $this->conn = connectDB(); // PDO
+        $this->conn = connectDB();
     }
 
     // Lấy tất cả danh mục

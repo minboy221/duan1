@@ -44,7 +44,7 @@ public function store()
         $name = $_POST['name'] ?? '';
         $errors = [];
 
-        // 💡 KIỂM TRA TRÙNG TÊN DỊCH VỤ
+        //KIỂM TRA TRÙNG TÊN DỊCH VỤ
         if ($this->model->checkDuplicateName($name)) {
             // Nếu trùng tên -> Báo lỗi và dừng
             $errors[] = "Tên dịch vụ '$name' đã tồn tại. Vui lòng chọn tên khác!";
@@ -59,7 +59,6 @@ public function store()
         }
 
         if (!empty($errors)) {
-            // 💡 SỬ DỤNG $_SESSION['error_sa'] CHO POPUP
             $_SESSION['error_sa'] = implode('<br>', $errors); // Gộp các lỗi thành 1 chuỗi
             header("Location: index.php?act=createdichvu");
             exit();
@@ -68,7 +67,7 @@ public function store()
         // Nếu không có lỗi, tiến hành Insert
         $this->model->insert($_POST, $_FILES);
 
-        // 💡 Dùng $_SESSION['success_sa'] cho popup thành công
+        //Dùng $_SESSION['success_sa'] cho popup thành công
         $_SESSION['success_sa'] = "Thêm dịch vụ thành công!";
     }
 
@@ -115,9 +114,6 @@ public function store()
     }
 
     // xóa dịch vụ
-// Trong DichVuController.php, sửa hàm delete:
-
-// public function delete() (Sửa lại tên hàm)
 public function delete()
 {
     $id = $_GET['id'] ?? null;
@@ -126,11 +122,10 @@ public function delete()
         exit;
     }
 
-    // 💡 SỬA LỖI: Gọi đúng Model DichVu
+    //SỬA LỖI: Gọi đúng Model DichVu
     $result = $this->model->delete($id); 
 
     if ($result === "foreign_key_violation") {
-        // Lỗi Khóa ngoại (dịch vụ có liên kết)
         $_SESSION['error_sa'] = "Không thể xóa dịch vụ này vì đã có lịch đặt hoặc dữ liệu liên quan sử dụng nó.";
     } elseif ($result) {
         $_SESSION['success_sa'] = "Đã xóa dịch vụ thành công!";

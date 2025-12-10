@@ -6,7 +6,7 @@ class NhanVienController
 {
     protected $nvModel;
     protected $lichModel;
-    protected $thoModel; // 💡 Khai báo ThoModel
+    protected $thoModel;
 
     public function __construct()
     {
@@ -19,7 +19,7 @@ class NhanVienController
     // --- GIAO DIỆN DASHBOARD (CÓ LỌC & PHÂN TRANG) ---
     public function dashboard()
     {
-        // 💡 LẤY ID CỦA THỢ (NHÂN VIÊN ĐANG ĐĂNG NHẬP)
+        //LẤY ID CỦA THỢ (NHÂN VIÊN ĐANG ĐĂNG NHẬP)
         $thoId = $_SESSION['user_id'] ?? null; 
         
         if (!$thoId) {
@@ -71,7 +71,7 @@ class NhanVienController
         $totalPages = ceil($total / $limit);
         $currentPage = 1;
         
-        // 💡 LẤY DANH SÁCH TẤT CẢ THỢ CHO DROPDOWN LỌC
+        //LẤY DANH SÁCH TẤT CẢ THỢ CHO DROPDOWN LỌC
         // Giả định ThoModel có hàm all() để lấy tất cả thợ
         $allTho = $this->thoModel->all(); 
         
@@ -115,7 +115,7 @@ class NhanVienController
         $booking = $bookingList[0];
 
         // 2. Chuẩn bị danh sách dịch vụ và tính tổng tiền
-        $services = []; // Biến này View đang cần để chạy vòng lặp foreach
+        $services = [];
         $totalPrice = 0;
 
         foreach ($bookingList as $item) {
@@ -131,8 +131,6 @@ class NhanVienController
         $booking['price'] = $totalPrice;
 
         // 4. Gọi View
-        // Lưu ý: Tên file phải khớp với file bạn đã tạo trong thư mục views/nhanvien/
-        // Nếu bạn đặt tên file là 'chitiet.php' thì dùng dòng dưới:
         require_once 'views/nhanvien/chitiet.php';
     }
     

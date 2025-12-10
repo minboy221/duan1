@@ -62,7 +62,7 @@ class NhanVienAdminModel
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-            'password_plain' => $data['password'],  // <── lưu mật khẩu thường
+            'password_plain' => $data['password'],
             'phone' => $data['phone'],
             'gioitinh' => $data['gioitinh']
         ]);
@@ -125,7 +125,6 @@ class NhanVienAdminModel
         $stmt2 = $this->conn->prepare($sql2);
         return $stmt2->execute(['id' => $id]);
     }
-    // Tìm kiếm nhân viên theo tên hoặc email
     // Tìm kiếm nhân viên theo tên, email hoặc số điện thoại
     public function search($keyword)
     {

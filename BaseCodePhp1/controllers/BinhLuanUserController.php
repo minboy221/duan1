@@ -11,7 +11,7 @@ class BinhLuanUserController
     public function __construct()
     {
         $this->commentModel = new DanhGiaModel();
-        $this->userModel = new ThongTinUser(); // nhớ sửa đúng tên class
+        $this->userModel = new ThongTinUser();
     }
 
     // Xem danh sách đánh giá của 1 khách hàng
@@ -27,7 +27,6 @@ class BinhLuanUserController
         //$comments sẽ chứa danh sách đánh giá lấy từ bảng lichdat
         $comments = $this->commentModel->getByUser($id);
 
-        // Truyền $user và $comments sang view
         require_once './views/admin/binhluan_user.php';
     }
 
@@ -87,7 +86,7 @@ class BinhLuanUserController
             $bookingInfo = $bookingInfo[0];
         }
 
-        // Kiểm tra xem key 'khachhang_id' có tồn tại không
+        //phần kiểm tra xem key 'khachhang_id' có tồn tại không
         if (!isset($bookingInfo['khachhang_id'])) {
             echo "Lỗi dữ liệu: Không tìm thấy thông tin khách hàng trong đơn hàng.";
             return;

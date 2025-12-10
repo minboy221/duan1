@@ -11,7 +11,7 @@ class LichLamViecModel
     {
         try {
             $count = 0;
-            //tạo 7 ngày
+            //tạo 30 ngày
             for ($i = 0; $i < 30; $i++) {
                 $date = date('Y-m-d', strtotime("+$i day"));
                 //phần kiểm tra ngày
@@ -221,7 +221,7 @@ class LichLamViecModel
         foreach ($allSlots as &$slot) {
             // Mặc định là chưa bị đặt
             $slot['is_booked'] = false;
-            $slot['status_text'] = ''; // Thêm text để giải thích (nếu cần)
+            $slot['status_text'] = '';
 
             // kiểm tra trong danh sách đã đặt
             if (isset($bookedMap[$slot['id']])) {
