@@ -312,6 +312,22 @@
                                 <input type="date" name="date" class="form-control input-date"
                                     value="<?= htmlspecialchars($_GET['date'] ?? '') ?>" title="Lọc theo ngày">
                             </div>
+                            <div class="input-group">
+                                <select name="tho_name" class="form-control" style="width: 150px;">
+                                    <option value="">--Chọn Thợ--</option>
+                                    <?php
+                                    $currentTho = $_GET['tho_name'] ?? '';
+                                    // Giả định $allTho đã được truyền từ Controller (Bước 2)
+                                    if (isset($allTho)):
+                                        foreach ($allTho as $tho):
+                                            $selected = ($currentTho === $tho['name']) ? 'selected' : '';
+                                            // Lọc theo TÊN THỢ
+                                            echo "<option value=\"" . htmlspecialchars($tho['name']) . "\" {$selected}>" . htmlspecialchars($tho['name']) . "</option>";
+                                        endforeach;
+                                    endif;
+                                    ?>
+                                </select>
+                            </div>
 
                             <div class="input-group">
                                 <select name="time" class="form-control input-time" style="width: 150px;">

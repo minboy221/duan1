@@ -9,10 +9,6 @@ class DanhGiaModel
     {
         $this->conn = connectDB();
     }
-
-    // Lấy bình luận theo id khách hàng
-// Trong DanhGiaModel.php
-
 // Lấy bình luận theo id khách hàng
 public function getByUser($client_id)
 {
@@ -24,7 +20,7 @@ public function getByUser($client_id)
             JOIN dichvu dv ON ld.dichvu_id = dv.id
             JOIN khachhang kh ON ld.khachhang_id = kh.id
             WHERE ld.khachhang_id = ? 
-            AND ld.rating IS NOT NULL  /* 💡 CHỈ LẤY CÁC BẢN GHI ĐÃ ĐƯỢC ĐÁNH GIÁ */
+            AND ld.rating IS NOT NULL  /* CHỈ LẤY CÁC BẢN GHI ĐÃ ĐƯỢC ĐÁNH GIÁ */
             ORDER BY ld.created_at DESC";
 
     $stmt = $this->conn->prepare($sql);
@@ -35,7 +31,7 @@ public function getByUser($client_id)
 // Lưu ý: Các hàm khác (checkExist, insert, getByLich) không cần dùng nữa hoặc cần được 
 // điều chỉnh lại nếu bạn đã chuyển hoàn toàn logic đánh giá sang bảng lichdat.
 
-    // ⭐ Kiểm tra xem 1 lịch đã được đánh giá chưa
+    //Kiểm tra xem 1 lịch đã được đánh giá chưa
     public function checkExist($ma_lich)
     {
         $sql = "SELECT * FROM danhgia WHERE ma_lich = ? LIMIT 1";
@@ -44,7 +40,7 @@ public function getByUser($client_id)
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // ⭐ Lấy chi tiết đánh giá theo mã lịch (để hiển thị lại khi xem chi tiết)
+    //Lấy chi tiết đánh giá theo mã lịch (để hiển thị lại khi xem chi tiết)
     public function getByLich($ma_lich)
     {
         $sql = "SELECT dg.*, dv.name AS ten_dichvu

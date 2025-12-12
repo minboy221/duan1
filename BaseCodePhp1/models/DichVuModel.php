@@ -1,5 +1,4 @@
 <?php
-// models/DichVuModel.php
 require_once './commons/function.php';
 
 class DichVuModel
@@ -8,7 +7,7 @@ class DichVuModel
 
     public function __construct()
     {
-        $this->conn = connectDB(); // PDO
+        $this->conn = connectDB();
     }
 
     // Lấy tất cả dịch vụ kèm tên danh mục (LEFT JOIN)
@@ -98,9 +97,7 @@ class DichVuModel
         return $stmt->execute($params);
     }
 
-    // Xoá dịch vụ
-// Trong DichVuModel.php
-
+// Xoá dịch vụ
 public function delete($id)
 {
     try {
@@ -111,12 +108,9 @@ public function delete($id)
         return true; // Xóa thành công
         
     } catch (PDOException $e) {
-        // Mã lỗi 23000 thường là lỗi vi phạm ràng buộc (Integrity constraint violation)
         if ($e->getCode() == '23000' || strpos($e->getMessage(), '1451') !== false) {
-            // Lỗi khóa ngoại (dịch vụ đang được sử dụng)
             return "foreign_key_violation";
         }
-        // Ném lỗi khác nếu không phải lỗi khóa ngoại
         throw $e; 
     }
 }
@@ -130,7 +124,6 @@ public function delete($id)
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     // Tìm kiếm dịch vụ theo từ khoá
-    // models/DichVuModel.php
     public function search($keyword)
     {
         $sql = "SELECT * FROM dichvu 

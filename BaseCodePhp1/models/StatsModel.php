@@ -10,7 +10,7 @@ class StatsModel
         $this->conn = connectDB();
     }
 
-    // ----- Basic stats -----
+    // phần thống kê
     public function getTotalStaff(): int
     {
         return (int)$this->conn->query("SELECT COUNT(*) FROM nhanvien")->fetchColumn();
@@ -27,8 +27,8 @@ class StatsModel
         return (float)($this->conn->query($sql)->fetchColumn() ?? 0);
     }
 
-    // ----- Monthly stats: compute and store into thongke_tho_monthly -----
-    // month and year must be integers
+    //thống kê hàng tháng
+    // tháng và năm phải là số nguyên
     public function updateMonthlyStats(int $month, int $year)
     {
         $sql = "
@@ -55,8 +55,7 @@ class StatsModel
         return $stmt->execute([':m' => $month, ':y' => $year]);
     }
 
-    // ----- Weekly stats: compute and store into thongke_tho_weekly -----
-    // year must be integer
+    // thống kê hành tuần
     public function updateWeeklyStats(int $year)
     {
         $sql = "
@@ -82,7 +81,7 @@ class StatsModel
         return $stmt->execute([':y' => $year]);
     }
 
-    // ----- Read revenue from monthly table (for a specific month/year) -----
+    // đọc doanh thu từ bảng hàng tháng (cho một tháng/năm cụ thể)
     public function getRevenueFromTKTable(int $year = null, int $month = null): float
     {
         $sql = "SELECT SUM(total_revenue) FROM thongke_tho_monthly WHERE 1=1";
@@ -100,7 +99,7 @@ class StatsModel
         return (float)($stmt->fetchColumn() ?? 0);
     }
 
-    // ----- Top stylists from monthly table -----
+    // top thợ của tháng ở trong bảng
     public function getTopThoByMonth(int $year, int $month, string $search = "", int $limit = 10)
     {
         $sql = "
@@ -121,7 +120,7 @@ class StatsModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // ----- Top stylists from weekly table -----
+    // top thợ của tuần ở trong bảng
     public function getTopThoByWeek(int $year, int $week, string $search = "", int $limit = 10)
     {
         $sql = "
@@ -142,7 +141,7 @@ class StatsModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // ----- Chart data for top stylists (month) -----
+    //phần biểu đồ dữ liệu về thợ có đơn đặt
     public function getChartDataTopTho(int $year, int $month, int $limit = 10)
     {
         $rows = $this->getTopThoByMonth($year, $month, "", $limit);
@@ -154,7 +153,7 @@ class StatsModel
         return ['labels' => $labels, 'values' => $values, 'rows' => $rows];
     }
 
-    // ----- Revenue chart by year (12 months) -----
+    //biểu đồ doanh thu theo năm
     public function getRevenueChartByYear(int $year)
     {
         $sql = "
@@ -168,7 +167,7 @@ class StatsModel
         $stmt->execute([':y' => $year]);
         $raw = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // build 12 months
+        // tạo 12 tháng
         $labels = []; $values = [];
         for ($i = 1; $i <= 12; $i++) {
             $labels[] = $i;
@@ -178,14 +177,13 @@ class StatsModel
             $m = (int)$r['thang'];
             $values[$m] = (float)$r['revenue'];
         }
-        // reindex values to array[0..11]
         $vals = [];
         for ($i = 1; $i <= 12; $i++) $vals[] = $values[$i];
 
         return ['labels' => $labels, 'values' => $vals];
     }
 
-    // ----- Revenue chart by weeks in a year (returns arrays of week numbers and sums) -----
+    //Biểu đồ doanh thu theo tuần trong năm
     public function getRevenueChartByYearWeekly(int $year)
     {
         $sql = "

@@ -7,41 +7,39 @@ class AdminHomeController
     {
         $stats = new StatsModel();
 
-        // get filters (month/year/chartMode/week if provided)
+        //phần bộ lọc doanh thu
         $month = isset($_GET['month']) ? (int)$_GET['month'] : (int)date('n');
         $year  = isset($_GET['year']) ? (int)$_GET['year'] : (int)date('Y');
         $chartMode = $_GET['chartMode'] ?? 'month'; // 'month' or 'week'
         $search = $_GET['search'] ?? '';
-        $week = isset($_GET['week']) ? (int)$_GET['week'] : null; // optional week number
+        $week = isset($_GET['week']) ? (int)$_GET['week'] : null; //phần chọn số tuần
 
-        // ensure monthly stats exist for selected month
         $stats->updateMonthlyStats($month, $year);
 
-        // ensure weekly stats exist for selected year
         $stats->updateWeeklyStats($year);
 
-        // Basic stats
+        // phần thống kê
         $totalStaff    = $stats->getTotalStaff();
         $totalBookings = $stats->getTotalBookings();
         $dailyRevenue  = $stats->getDailyRevenue();
 
-        // total revenue for selected month
+        // phần tổng doanh thu của tháng đã chọn
         $totalRevenue = $stats->getRevenueFromTKTable($year, $month);
 
-        // Top stylists (for the selected mode: month view uses monthly table)
+        // Phần hiển thị thợ cắt nhiều nhất xem theo tháng
         $topTho = $stats->getTopThoByMonth($year, $month, $search, 20);
 
-        // Chart for top stylists (month)
+        // phần bảng xếp hạng thợ được đặt nhiều
         $chartTopTho = $stats->getChartDataTopTho($year, $month, 20);
 
-        // Revenue chart: if chartMode == 'month' show 12 months; if 'week' show weeks for selected year
+        //phần biểu đồ doanh thu: nếu chartMode == 'month' thì hiển thị 12 tháng; nếu là 'week' thì hiển thị các tuần trong năm đã chọn.
         if ($chartMode === 'week') {
             $revChart = $stats->getRevenueChartByYearWeekly($year);
         } else {
             $revChart = $stats->getRevenueChartByYear($year);
         }
 
-        // Prepare arrays to pass to view
+        // chuẩn bị các mảng để truyền vào view
         $revenueLabels = $revChart['labels'] ?? [];
         $revenueValues = $revChart['values'] ?? [];
         $chartMode = $chartMode; // pass through

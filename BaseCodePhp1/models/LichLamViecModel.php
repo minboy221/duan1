@@ -221,7 +221,7 @@ class LichLamViecModel
         foreach ($allSlots as &$slot) {
             // Mặc định là chưa bị đặt
             $slot['is_booked'] = false;
-            $slot['status_text'] = ''; // Thêm text để giải thích (nếu cần)
+            $slot['status_text'] = '';
 
             // kiểm tra trong danh sách đã đặt
             if (isset($bookedMap[$slot['id']])) {

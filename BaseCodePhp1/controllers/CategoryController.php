@@ -35,15 +35,12 @@ class CategoryController
         include 'views/admin/danhmuc/create.php';
     }
 
-    // store
-    // Trong CategoryController.php::store()
-
     public function store()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? '';
 
-            // 💡 KIỂM TRA TRÙNG TÊN
+            // KIỂM TRA TRÙNG TÊN
             if ($this->model->checkDuplicateName($name)) {
                 // Dùng Session Flash cho SweetAlert2
                 $_SESSION['error_sa'] = "Lỗi: Tên danh mục đã tồn tại!";
@@ -52,7 +49,7 @@ class CategoryController
             }
 
             $this->model->insert($_POST);
-            $_SESSION['success_sa'] = "Thêm danh mục thành công!"; // Dùng success_sa
+            $_SESSION['success_sa'] = "Thêm danh mục thành công!";
         }
 
         header("Location: index.php?act=qlydanhmuc");
@@ -74,7 +71,7 @@ class CategoryController
             die("ID danh mục không hợp lệ");
         }
 
-        // 💡 KIỂM TRA TRÙNG TÊN
+        // KIỂM TRA TRÙNG TÊN
         if ($this->model->checkDuplicateName($name, $id)) {
             // Dùng Session Flash cho SweetAlert2
             $_SESSION['error_sa'] = "Lỗi: Tên danh mục đã tồn tại (trùng với danh mục khác)!";
@@ -101,12 +98,7 @@ class CategoryController
         include 'views/admin/danhmuc/edit.php';
     }
 
-    // update
-
-
     // delete
-    // Trong CategoryController.php::delete()
-
     public function delete()
     {
         $id = $_GET['id'];
@@ -114,10 +106,8 @@ class CategoryController
         $result = $this->model->delete($id);
 
         if (!$result) {
-            // 💡 SỬA: Dùng $_SESSION['error_sa'] để kích hoạt SweetAlert2
             $_SESSION['error_sa'] = "Không thể xoá danh mục vì vẫn còn dịch vụ thuộc danh mục này!";
         } else {
-            // Nếu xóa thành công, dùng $_SESSION['success_sa']
             $_SESSION['success_sa'] = "Xoá danh mục thành công!";
         }
 
@@ -127,7 +117,6 @@ class CategoryController
 
 
     // show (xem chi tiết 1 danh mục + danh sách dịch vụ trong đó)
-    // controllers/CategoryController.php
     public function show()
     {
         $id = $_GET['id'] ?? null;

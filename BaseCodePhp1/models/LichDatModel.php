@@ -11,7 +11,7 @@ class LichDatModel
     // --- 1. DÀNH CHO ADMIN: LẤY DANH SÁCH (CÓ PHÂN TRANG) ---
 
     // Lấy danh sách với phân trang và lọc/tìm kiếm
-    public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null, $date = null, $time = null, $status = null)
+    public function getAllLichDatPaginate($limit = 10, $offset = 0, $keyword = null, $date = null, $time = null, $status = null, $thoName = null)
 {
     $where = " WHERE 1=1 ";
     $params = [];
@@ -34,6 +34,12 @@ class LichDatModel
     if ($status) {
         $where .= " AND ld.status = :status ";
         $params[':status'] = $status;
+    }
+    
+    // Lọc theo Tên Thợ
+    if ($thoName) {
+        $where .= " AND t.name LIKE :thoName ";
+        $params[':thoName'] = '%' . $thoName . '%'; 
     }
 
     $sql = "SELECT 
@@ -64,8 +70,11 @@ class LichDatModel
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-    // Đếm tổng số bản ghi (cho phân trang)
-    public function countAllLichDat($keyword = null, $date = null, $time = null, $status = null)
+
+/**
+ * Đếm tổng số bản ghi có áp dụng bộ lọc.
+ */
+public function countAllLichDat($keyword = null, $date = null, $time = null, $status = null, $thoName = null)
 {
     $where = " WHERE 1=1 ";
     $params = [];
@@ -89,13 +98,21 @@ class LichDatModel
         $where .= " AND ld.status = :status ";
         $params[':status'] = $status;
     }
+    
+    //Lọc theo Tên Thợ
+    if ($thoName) {
+        $where .= " AND t.name LIKE :thoName ";
+        $params[':thoName'] = '%' . $thoName . '%';
+    }
 
+    // Cần tất cả các JOIN liên quan, bao gồm cả bảng `tho` (t)
     $sql = "SELECT COUNT(ld.id) as total 
             FROM lichdat ld
             JOIN khachhang kh ON ld.khachhang_id = kh.id
             JOIN khunggio kg ON ld.khunggio_id = kg.id
             JOIN phan_cong pc ON kg.phan_cong_id = pc.id
             JOIN ngay_lam_viec n ON pc.ngay_lv_id = n.id
+            JOIN tho t ON pc.tho_id = t.id 
             " . $where;
 
     $stmt = $this->conn->prepare($sql);
@@ -245,7 +262,6 @@ class LichDatModel
              LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$ma_lich]);
-        // 💡 SỬA: Dùng fetch() thay vì fetchAll()
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     // xem lịch sử đặt của client (có phân trang)
@@ -408,9 +424,7 @@ class LichDatModel
         $stmt->execute([$khachhang_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    // ------------------------------
-// FIX UPDATE TRẠNG THÁI THEO MA_LICH
-// ------------------------------
+    //phần update trạng thái theo MA_LICH
     public function updateStatusByMaLich($ma_lich, $status, $reason = null)
     {
         if ($status === 'cancelled') {

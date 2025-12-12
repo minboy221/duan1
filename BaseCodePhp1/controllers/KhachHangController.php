@@ -150,7 +150,7 @@ class KhachHangController
 
                 $new_pass_md5 = md5($new_pass);
 
-                // 1. Check Khách hàng (Khách hàng không bị giới hạn ngày - tùy bạn)
+                // 1. Check Khách hàng (Khách hàng không bị giới hạn ngày)
                 $khachhang = $this->khachhang->checkUserReset($email, $phone);
 
                 if ($khachhang) {
@@ -235,15 +235,11 @@ class KhachHangController
             } elseif (strlen($new_pass) < 6) {
                 $error = "Mật khẩu mới phải trên 6 ký tự!";
             } else {
-                // --- THAY ĐỔI TẠI ĐÂY ---
-
                 // 1. Kiểm tra mật khẩu cũ bằng password_verify
-                // Hàm này sẽ tự động kiểm tra xem $old_pass (nhập vào) có khớp với hash trong DB không
                 if (!password_verify($old_pass, $current_user['password'])) {
                     $error = "Mật khẩu cũ không chính xác!";
                 } else {
                     // 2. Mã hóa mật khẩu mới bằng password_hash (BCRYPT)
-                    // Thay vì dùng md5($new_pass)
                     $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT);
 
                     // Cập nhật vào DB
