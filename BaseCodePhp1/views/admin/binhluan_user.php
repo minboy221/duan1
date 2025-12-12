@@ -75,6 +75,8 @@
                     <p>Email: <?= htmlspecialchars($user['email']) ?></p>
                     <p>SĐT: <?= htmlspecialchars($user['phone']) ?></p>
                 </div>
+            </div>
+            <div class="bottom-data">
                 <div class="orders">
 
                     <div class="header">

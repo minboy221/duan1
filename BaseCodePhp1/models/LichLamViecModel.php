@@ -11,7 +11,7 @@ class LichLamViecModel
     {
         try {
             $count = 0;
-            //tạo 7 ngày
+            //tạo 30 ngày
             for ($i = 0; $i < 30; $i++) {
                 $date = date('Y-m-d', strtotime("+$i day"));
                 //phần kiểm tra ngày
