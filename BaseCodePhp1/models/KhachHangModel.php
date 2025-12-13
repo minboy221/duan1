@@ -46,6 +46,7 @@ class Khachhang
             return false;
         }
     }
+    //check thông tin khách hàng để reset mk
     public function checkUserReset($email, $phone)
     {
         try {
