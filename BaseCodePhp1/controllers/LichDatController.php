@@ -23,7 +23,7 @@ public function index()
         $status = $_GET['status'] ?? null;
         $thoName = $_GET['tho_name'] ?? null; // LẤY TÊN THỢ
         
-        $limit = 999999;
+        $limit = 999999999;
         $offset = 0;
         
         // 1. Xử lý AJAX Phân trang (Nếu có yêu cầu từ JS)

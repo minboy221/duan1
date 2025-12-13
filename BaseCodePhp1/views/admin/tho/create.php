@@ -9,6 +9,22 @@
     <title>Thêm Dịch Vụ | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .form-group.error input,
+        .form-group.error textarea {
+            border-color: #e74c3c !important;
+            /* Viền đỏ */
+            background-color: #fceae9;
+        }
+
+        .form-group .error-msg {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+            font-style: italic;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,7 +44,7 @@
             <li><a href="?act=qlychat"><i class='bx bx-brain'></i>Quản Lý Chat</a></li>
             <li><a href="?act=qlylichlamviec"><i class='bx bx-cog'></i>Quản Lý Làm Việc</a></li>
             <li class="active"><a href="?act=qlytho"><i class='bx bx-cut'></i>Quản Lý Thợ</a></li>
-            <li>><a href="?act=qlytaikhoan"><i class='bx bx-group'></i>Quản Lý Người Dùng</a></li>
+            <li><a href="?act=qlytaikhoan"><i class='bx bx-group'></i>Quản Lý Người Dùng</a></li>
         </ul>
         <ul class="side-menu">
             <li>
@@ -73,22 +89,26 @@
         <main>
             <div class="header">
                 <h1>Thêm Thợ</h1>
-                <a href="?act=qlydichvu" class="btnthem" style="background:#ccc;color:#000">← Quay lại</a>
+                <a href="?act=qlytho" class="btnthem" style="background:#ccc;color:#000">← Quay lại</a>
             </div>
 
             <div class="form-wrapper">
+                <h3 class="mb-4">Thêm Thợ Mới</h3>
                 <form id="formTho" action="index.php?act=storetho" method="POST" enctype="multipart/form-data"
                     class="form-add">
 
                     <div class="form-group">
-                        <label for="name">Tên thợ</label>
-                        <input type="text" name="name" id="name" placeholder="Nhập tên thợ..." required>
+                        <label for="name">Tên thợ <span style="color:red">*</span></label>
+                        <input type="text" name="name" id="name" placeholder="Nhập tên thợ..." >
                         <span class="error-msg"></span>
                     </div>
 
                     <div class="form-group">
                         <label for="image">Ảnh đại diện</label>
-                        <input type="file" name="image" id="image" class="form-control" style="padding: 5px;">
+                        <input type="file" name="image" id="image" class="form-control" accept="image/*"
+                            style="padding: 5px;">
+                        <small class="text-muted" style="display:block; margin-top:5px;">Chấp nhận: jpg, jpeg, png, webp
+                            (Max 2MB)</small>
                         <span class="error-msg"></span>
                     </div>
 
@@ -105,6 +125,115 @@
         </main>
     </div>
     <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('formTho');
+
+            // Hàm hiển thị lỗi (dùng class .error-msg)
+            function showError(input, message) {
+                const formGroup = input.parentElement;
+                formGroup.classList.add('error');
+                formGroup.querySelector('.error-msg').innerText = message;
+            }
+
+            // Hàm xóa lỗi
+            function showSuccess(input) {
+                const formGroup = input.parentElement;
+                formGroup.classList.remove('error');
+                formGroup.querySelector('.error-msg').innerText = '';
+            }
+
+            // Hàm kiểm tra định dạng và kích thước ảnh
+            function validateImage(input) {
+                const file = input.files[0];
+                showSuccess(input); // Xóa lỗi cũ trước
+
+                if (!file) return true; // Ảnh không bắt buộc, nếu không có thì bỏ qua
+
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+                const maxSize = 2 * 1024 * 1024; // 2MB
+
+                // 1. Kiểm tra định dạng
+                if (!allowedTypes.includes(file.type)) {
+                    showError(input, 'Chỉ chấp nhận file ảnh (JPG, PNG, WEBP).');
+                    return false;
+                }
+
+                // 2. Kiểm tra kích thước
+                if (file.size > maxSize) {
+                    showError(input, 'File ảnh quá lớn (Tối đa 2MB).');
+                    return false;
+                }
+                return true;
+            }
+
+            // Hàm chính kiểm tra tất cả các trường
+            function validateForm() {
+                let isValid = true;
+                const nameInput = document.getElementById('name');
+                const imageInput = document.getElementById('image');
+                const lylichInput = document.getElementById('lylich');
+
+                // --- 1. Validate Tên thợ (Name) ---
+                const nameValue = nameInput.value.trim();
+                showSuccess(nameInput); // Reset trước khi kiểm tra
+
+                if (nameValue === '') {
+                    showError(nameInput, 'Tên thợ không được để trống.');
+                    isValid = false;
+                } else if (nameValue.length < 3) {
+                    showError(nameInput, 'Tên thợ phải có ít nhất 3 ký tự.');
+                    isValid = false;
+                } else if (nameValue.length > 100) {
+                    showError(nameInput, 'Tên thợ quá dài (tối đa 100 ký tự).');
+                    isValid = false;
+                }
+
+                // --- 2. Validate Ảnh đại diện (Image) ---
+                if (!validateImage(imageInput)) {
+                    isValid = false;
+                }
+
+                // --- 3. Validate Lý lịch / Kinh nghiệm (LyLich) ---
+                const lylichValue = lylichInput.value.trim();
+                showSuccess(lylichInput); // Reset trước khi kiểm tra
+
+                if (lylichValue.length > 1000) {
+                    showError(lylichInput, 'Lý lịch quá dài (tối đa 1000 ký tự).');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // --- BẮT SỰ KIỆN SUBMIT FORM ---
+            form.addEventListener('submit', function (e) {
+                if (!validateForm()) {
+                    e.preventDefault(); // Chặn form submit nếu validation thất bại
+                }
+            });
+
+            // --- Xóa lỗi khi người dùng bắt đầu nhập (UX) ---
+            const inputs = form.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', function () {
+                    // Lắng nghe sự kiện input/change để xóa lỗi
+                    const formGroup = this.parentElement;
+                    if (formGroup.classList.contains('error') && this.type !== 'file') {
+                        formGroup.classList.remove('error');
+                        formGroup.querySelector('.error-msg').innerText = '';
+                    }
+                });
+
+                // Xử lý riêng cho input type="file"
+                if (input.type === 'file') {
+                    input.addEventListener('change', function () {
+                        validateImage(this); // Validate lại khi file thay đổi
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

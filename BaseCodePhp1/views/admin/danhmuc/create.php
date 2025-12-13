@@ -152,10 +152,7 @@
                     confirmButtonColor: '#DB504A'
                 });
                 <?php unset($_SESSION['error_sa']); ?>
-            <?php endif; ?>
-
-           
-            
+            <?php endif; ?>   
         });
     </script>
 </body>

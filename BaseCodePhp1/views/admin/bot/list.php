@@ -10,6 +10,28 @@
     <title>Trang Quản Lý Chat | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .pagination button {
+            margin: 3px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .pagination button:hover {
+            background: #e0e0e0;
+        }
+
+        .pagination .active {
+            background: #0d6efd !important;
+            /* màu xanh nổi bật */
+            color: white !important;
+            border-color: #0a58ca !important;
+        }
+    </style>
 </head>
 
 <body>
