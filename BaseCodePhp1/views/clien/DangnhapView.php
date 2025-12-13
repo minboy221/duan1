@@ -23,63 +23,90 @@
                 <form action="?act=dangnhap_khachhang" method="POST" onsubmit="return validateLogin();">
                     <div class="field">
 
-                        <label for="email">Email</label>
-                        <input id="email" type="text" name="username">
+                        <label for="email">Email <span style="color: red;">*</span></label>
+                        <input id="email" type="text" name="username" placeholder="Nhập email...">
 
-                        <label for="password">Mật Khẩu</label>
-                        <input id="password" type="password" name="password">
-                        <!-- báo sai tài khoản mật khẩu -->
-                        <!-- báo lỗi trùng email -->
+                        <label for="password">Mật Khẩu <span style="color: red;">*</span></label>
+                        <input id="password" type="password" name="password" placeholder="Nhập mật khẩu...">
+                        
                         <?php if (!empty($error)): ?>
                             <p style="color: red; font-style: italic; margin-top: 10px; font-weight: bold;">
                                 <i class="fa fa-exclamation-circle"></i> <?= $error ?>
                             </p>
                         <?php endif; ?>
-                        <!-- Hiển thị lỗi -->
-                        <p id="error-msg" style="color:red; margin-top:10px;"></p>
+                        
+                        <p id="error-msg" style="color:red; margin-top:10px; font-weight: bold;"></p>
                     </div>
 
                     <button class="btn" type="submit">Đăng Nhập</button>
 
                     <div class="footer">
                         <a href="<?= BASE_URL ?>?act=dangky_khachhang" class="link">Đăng Ký</a>
-                        <a href="<?= BASE_URL ?>?act=quenmatkhau" class="quen">?Bạn quên mật khẩu</a>
+                        <a href="<?= BASE_URL ?>?act=quenmatkhau" class="quen">Bạn quên mật khẩu</a>
                     </div>
                 </form>
 
-                <!-- VALIDATE JAVASCRIPT -->
                 <script>
                     function validateLogin() {
-                        let username = document.getElementById("email").value.trim();
-                        let password = document.getElementById("password").value.trim();
+                        // Lấy element input để thao tác style
+                        let usernameInput = document.getElementById("email");
+                        let passwordInput = document.getElementById("password");
+                        
+                        let username = usernameInput.value.trim();
+                        let password = passwordInput.value.trim();
                         let error = document.getElementById("error-msg");
+                        
+                        // Reset lỗi cũ
                         error.innerText = "";
+                        usernameInput.style.border = "1px solid #ccc"; // Reset viền về mặc định
+                        passwordInput.style.border = "1px solid #ccc";
 
-                        // 1. Nếu username là "admin" thì không cần validate email
-                        if (username === "admin") {
-                            if (password === "") {
-                                error.innerText = "Vui lòng nhập mật khẩu!";
-                                return false;
-                            }
-                            return true; // CHO PHÉP submit
-                        }
-
-                        // 2. Ngược lại: validate email cho khách hàng
-                        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                        if (!emailPattern.test(username)) {
-                            error.innerText = "Email không hợp lệ!";
+                        // 1. Kiểm tra để trống Email/Tên đăng nhập
+                        if (username === "") {
+                            error.innerText = "Vui lòng nhập email!";
+                            usernameInput.style.border = "1px solid red";
+                            usernameInput.focus();
                             return false;
                         }
 
+                        // 2. Logic đặc biệt cho Admin
+                        if (username === "admin") {
+                            if (password === "") {
+                                error.innerText = "Vui lòng nhập mật khẩu!";
+                                passwordInput.style.border = "1px solid red";
+                                passwordInput.focus();
+                                return false;
+                            }
+                            return true; // Admin thì bỏ qua check định dạng email
+                        }
+
+                        // 3. Validate định dạng Email (nếu không phải admin)
+                        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test(username)) {
+                            error.innerText = "Email không hợp lệ!";
+                            usernameInput.style.border = "1px solid red";
+                            usernameInput.focus();
+                            return false;
+                        }
+
+                        // 4. Validate mật khẩu
+                        if (password === "") {
+                            error.innerText = "Vui lòng nhập mật khẩu!";
+                            passwordInput.style.border = "1px solid red";
+                            passwordInput.focus();
+                            return false;
+                        }
+                        
                         if (password.length < 6) {
                             error.innerText = "Mật khẩu phải ít nhất 6 ký tự!";
+                            passwordInput.style.border = "1px solid red";
+                            passwordInput.focus();
                             return false;
                         }
 
                         return true;
                     }
                 </script>
-
 
             </div>
         </main>

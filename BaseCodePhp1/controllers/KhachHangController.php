@@ -130,7 +130,7 @@ class KhachHangController
         exit();
     }
 
-    //phần quên mk cho nhân viên
+    //phần quên mk cho nhân viên và khách hàng
     public function forgotPassword()
     {
         $error = '';
@@ -150,7 +150,7 @@ class KhachHangController
 
                 $new_pass_md5 = md5($new_pass);
 
-                // 1. Check Khách hàng (Khách hàng không bị giới hạn ngày)
+                // 1. Check Khách hàng 
                 $khachhang = $this->khachhang->checkUserReset($email, $phone);
 
                 if ($khachhang) {

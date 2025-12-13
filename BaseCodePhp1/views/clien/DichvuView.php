@@ -122,6 +122,8 @@
                                 </option>
                                 <option value="100000-200000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '100001-200000') ? 'selected' : '' ?>>100.000 - 200.000VNĐ
                                 </option>
+                                <option value="250000-500000" <?= (isset($_GET['price_range']) && $_GET['price_range'] == '250001-500000') ? 'selected' : '' ?>>250.000 - 500.000VNĐ
+                                </option>
                             </select>
                         </div>
 
