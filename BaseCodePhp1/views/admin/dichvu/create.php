@@ -9,6 +9,28 @@
     <title>Thêm Dịch Vụ | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* Style cho ô input khi có lỗi */
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
+            border-color: #e74c3c;
+            /* Viền đỏ */
+            background-color: #fceae9;
+        }
+
+        .form-group .form-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+            font-style: italic;
+        }
+
+        .form-group.success input {
+            border-color: #2ecc71;
+        }
+    </style>
 </head>
 
 <body>
@@ -72,45 +94,51 @@
             </div>
 
             <div class="form-wrapper">
+                <form action="?act=store_dichvu" method="POST" enctype="multipart/form-data" class="form-add"
+                    id="form-dichvu">
 
-
-                <form action="?act=store_dichvu" method="POST" enctype="multipart/form-data" class="form-add">
                     <div class="form-group">
-                        <label>Tên dịch vụ</label>
-                        <input type="text" name="name" required>
+                        <label>Tên dịch vụ <span style="color:red">*</span></label>
+                        <input type="text" id="name" name="name" placeholder="Nhập tên dịch vụ...">
+                        <span class="form-message"></span>
                     </div>
 
                     <div class="form-group">
                         <label>Mô tả</label>
-                        <textarea name="description" rows="4"></textarea>
+                        <textarea id="description" name="description" rows="4"></textarea>
+                        <span class="form-message"></span>
                     </div>
 
                     <div class="form-group">
-                        <label>Giá</label>
-                        <input type="number" name="price" min="0" required>
+                        <label>Giá (VNĐ) <span style="color:red">*</span></label>
+                        <input type="number" id="price" name="price" placeholder="0">
+                        <span class="form-message"></span>
                     </div>
 
                     <div class="form-group">
                         <label>Thời gian (phút)</label>
-                        <input type="number" name="time" min="0">
+                        <input type="number" id="time" name="time" placeholder="VD: 60">
+                        <span class="form-message"></span>
                     </div>
 
                     <div class="form-group">
-                        <label>Danh mục</label>
-                        <select name="danhmuc_id" required>
+                        <label>Danh mục <span style="color:red">*</span></label>
+                        <select id="danhmuc_id" name="danhmuc_id">
                             <option value="">--Chọn danh mục--</option>
                             <?php foreach ($categories as $cat): ?>
                                 <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
                             <?php endforeach; ?>
                         </select>
+                        <span class="form-message"></span>
                     </div>
 
                     <div class="form-group">
-                        <label>Ảnh</label>
-                        <input type="file" name="image" accept="image/*">
+                        <label>Ảnh đại diện</label>
+                        <input type="file" id="image" name="image" accept="image/*">
+                        <span class="form-message"></span>
                     </div>
 
-                    <button class="btnthem" style="padding:10px 25px;">Thêm Dịch Vụ</button>
+                    <button type="submit" class="btnthem" style="padding:10px 25px;">Thêm Dịch Vụ</button>
                 </form>
             </div>
         </main>
@@ -138,6 +166,124 @@
                     confirmButtonColor: '#DB504A'
                 });
             <?php endif; ?>
+        });
+        //phần validate
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('form-dichvu');
+
+            // Hàm hiển thị lỗi
+            function showError(input, message) {
+                const formGroup = input.parentElement;
+                const messageSpan = formGroup.querySelector('.form-message');
+
+                formGroup.className = 'form-group error'; // Thêm class error để đổi màu đỏ
+                messageSpan.innerText = message;
+            }
+
+            // Hàm xóa lỗi (khi người dùng nhập đúng)
+            function showSuccess(input) {
+                const formGroup = input.parentElement;
+                const messageSpan = formGroup.querySelector('.form-message');
+
+                formGroup.className = 'form-group success'; // (Tùy chọn) Thêm class success
+                messageSpan.innerText = '';
+            }
+
+            // Hàm kiểm tra định dạng ảnh
+            function validateImage(input) {
+                const file = input.files[0];
+                if (!file) return true;
+
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+                const maxSize = 2 * 1024 * 1024; // 2MB
+
+                if (!allowedTypes.includes(file.type)) {
+                    showError(input, 'Chỉ chấp nhận file ảnh (JPG, PNG, WEBP).');
+                    return false;
+                }
+
+                if (file.size > maxSize) {
+                    showError(input, 'File ảnh quá lớn (Tối đa 2MB).');
+                    return false;
+                }
+
+                return true;
+            }
+            form.addEventListener('submit', function (e) {
+                let isValid = true; // Cờ kiểm tra, mặc định là đúng
+
+                // 1. Lấy các element
+                const name = document.getElementById('name');
+                const price = document.getElementById('price');
+                const time = document.getElementById('time');
+                const category = document.getElementById('danhmuc_id');
+                const image = document.getElementById('image');
+
+                // 2. Validate Tên Dịch Vụ
+                if (name.value.trim() === '') {
+                    showError(name, 'Tên dịch vụ không được để trống.');
+                    isValid = false;
+                } else if (name.value.trim().length < 3) {
+                    showError(name, 'Tên dịch vụ phải có ít nhất 3 ký tự.');
+                    isValid = false;
+                } else {
+                    showSuccess(name);
+                }
+
+                // 3. Validate Giá
+                if (price.value === '') {
+                    showError(price, 'Vui lòng nhập giá dịch vụ.');
+                    isValid = false;
+                } else if (parseFloat(price.value) < 0) {
+                    showError(price, 'Giá dịch vụ không được âm.');
+                    isValid = false;
+                } else {
+                    showSuccess(price);
+                }
+
+                // 4. Validate Thời Gian (nếu có nhập)
+                if (time.value !== '' && parseFloat(time.value) < 0) {
+                    showError(time, 'Thời gian thực hiện không được âm.');
+                    isValid = false;
+                } else {
+                    showSuccess(time);
+                }
+
+                // 5. Validate Danh Mục
+                if (category.value === '') {
+                    showError(category, 'Vui lòng chọn một danh mục.');
+                    isValid = false;
+                } else {
+                    showSuccess(category);
+                }
+
+                // 6. Validate Ảnh
+                if (!validateImage(image)) {
+                    isValid = false;
+                } else {
+                    // Nếu validateImage trả về true, ta cần xóa lỗi cũ (nếu có)
+                    showSuccess(image);
+                }
+
+                // 7. Kết luận
+                if (!isValid) {
+                    e.preventDefault(); // CHẶN form submit nếu có lỗi
+                }
+                // Nếu isValid = true, form sẽ tự động gửi đi sang PHP
+            });
+
+            // (Tùy chọn) Xóa lỗi ngay khi người dùng bắt đầu nhập lại
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', function () {
+                    // Chỉ xóa style lỗi, không cần validate lại ngay lập tức cho đỡ rối
+                    const formGroup = this.parentElement;
+                    if (formGroup.classList.contains('error')) {
+                        formGroup.classList.remove('error');
+                        formGroup.querySelector('.form-message').innerText = '';
+                    }
+                });
+            });
         });
     </script>
 </body>
