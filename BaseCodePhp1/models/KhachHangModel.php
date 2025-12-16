@@ -63,7 +63,7 @@ class Khachhang
         }
     }
 
-    // THÊM HÀM NÀY: Cập nhật mật khẩu mới
+    // Cập nhật mật khẩu mới
     public function updatePassword($email, $newPassword)
     {
         try {
