@@ -157,4 +157,39 @@ class NhanVienAdminModel
         'id' => $id
     ]);
 }
+public function checkDuplicates($email, $phone, $excludeId = null)
+    {
+        $errors = [];
+        $excludeSql = $excludeId ? " AND id != :id" : "";
+
+        // --- 1. Check Email ---
+        $sqlEmail = "SELECT COUNT(id) FROM nhanvien WHERE email = :email" . $excludeSql;
+        $paramsEmail = [':email' => $email];
+        if ($excludeId) {
+            $paramsEmail[':id'] = $excludeId;
+        }
+        
+        $stmtEmail = $this->conn->prepare($sqlEmail);
+        $stmtEmail->execute($paramsEmail); // 💡 CHỈ DÙNG THAM SỐ EMAIL & ID
+        
+        if ($stmtEmail->fetchColumn() > 0) {
+            $errors[] = 'email';
+        }
+
+        // --- 2. Check Phone ---
+        $sqlPhone = "SELECT COUNT(id) FROM nhanvien WHERE phone = :phone" . $excludeSql;
+        $paramsPhone = [':phone' => $phone];
+        if ($excludeId) {
+            $paramsPhone[':id'] = $excludeId;
+        }
+        
+        $stmtPhone = $this->conn->prepare($sqlPhone);
+        $stmtPhone->execute($paramsPhone); // 💡 CHỈ DÙNG THAM SỐ PHONE & ID
+        
+        if ($stmtPhone->fetchColumn() > 0) {
+            $errors[] = 'phone';
+        }
+
+        return $errors;
+    }
 }

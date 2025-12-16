@@ -34,12 +34,35 @@ class NhanVienAdminController
             'role_id' => $_POST['role_id'] ?? 2
         ];
 
-        if ($data['name'] == '' || $data['email'] == '' || $data['password'] == '') {
-            die("Vui lòng nhập đầy đủ thông tin.");
+        $errorMessages = [];
+
+        // 1. Validate thiếu thông tin cơ bản
+        if ($data['name'] == '' || $data['email'] == '' || $data['password'] == '' || $data['phone'] == '' || $data['gioitinh'] == '' || $data['role_id'] == '') {
+            $errorMessages[] = "Vui lòng nhập đầy đủ các trường có dấu (*).";
+        }
+        
+        // 2. KIỂM TRA TRÙNG LẶP (Email/Phone)
+        if (!empty($data['email']) && !empty($data['phone'])) {
+            $duplicateErrors = $this->model->checkDuplicates($data['email'], $data['phone']);
+            
+            if (in_array('email', $duplicateErrors)) {
+                $errorMessages[] = "Email **{$data['email']}** đã được sử dụng.";
+            }
+            if (in_array('phone', $duplicateErrors)) {
+                $errorMessages[] = "Số điện thoại **{$data['phone']}** đã được sử dụng.";
+            }
+        }
+        
+        if (!empty($errorMessages)) {
+            // LƯU LỖI CHO SWEETALERT2
+            $_SESSION['error_sa'] = implode('<br>', $errorMessages);
+            header("Location: index.php?act=admin-nhanvien-create");
+            exit;
         }
 
+        // TIẾN HÀNH TẠO MỚI
         $this->model->create($data);
-
+        $_SESSION['success_sa'] = "Thêm nhân viên thành công!";
         header("Location: index.php?act=admin-nhanvien");
         exit;
     }
@@ -70,8 +93,35 @@ class NhanVienAdminController
             'role_id' => $_POST['role_id'] ?? 2
         ];
 
-        $this->model->update($id, $data);
+        $errorMessages = [];
+        
+        // 1. Validate thiếu thông tin cơ bản
+        if ($data['name'] == '' || $data['email'] == '' || $data['phone'] == '' || $data['gioitinh'] == '' || $data['role_id'] == '') {
+            $errorMessages[] = "Vui lòng nhập đầy đủ các trường bắt buộc.";
+        }
+        
+        // 2. KIỂM TRA TRÙNG LẶP (Email/Phone), LOẠI TRỪ CHÍNH MÌNH
+        if (!empty($data['email']) && !empty($data['phone'])) {
+            $duplicateErrors = $this->model->checkDuplicates($data['email'], $data['phone'], $id);
+            
+            if (in_array('email', $duplicateErrors)) {
+                $errorMessages[] = "Email **{$data['email']}** đã được sử dụng bởi người khác.";
+            }
+            if (in_array('phone', $duplicateErrors)) {
+                $errorMessages[] = "Số điện thoại **{$data['phone']}** đã được sử dụng bởi người khác.";
+            }
+        }
+        
+        if (!empty($errorMessages)) {
+            $_SESSION['error_sa'] = implode('<br>', $errorMessages);
+            // Quay lại form edit
+            header("Location: index.php?act=admin-nhanvien-edit&id={$id}"); 
+            exit;
+        }
 
+        // TIẾN HÀNH CẬP NHẬT
+        $this->model->update($id, $data);
+        $_SESSION['success_sa'] = "Cập nhật nhân viên thành công!";
         header("Location: index.php?act=admin-nhanvien");
         exit;
     }
