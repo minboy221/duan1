@@ -149,7 +149,7 @@
                                     <td><?= htmlspecialchars($nv['gioitinh'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($nv['role_name'] ?? 'Chưa gán') ?></td>
                                     <td style="display:flex; gap:5px;">
-                                        <a class="btnsua" href="?act=admin-nhanvien-edit&id=<?= $nv['id'] ?>">Sửa</a>
+                                        <!-- <a class="btnsua" href="?act=admin-nhanvien-edit&id=<?= $nv['id'] ?>">Sửa</a> -->
 
                                         <?php if ($nv['status'] == 1): ?>
                                             <a class="btnxoa" onclick="return confirm('Khóa tài khoản này?')"
