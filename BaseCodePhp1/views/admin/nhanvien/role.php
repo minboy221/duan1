@@ -12,10 +12,10 @@ $editing = isset($nv);
     <link rel="stylesheet" href="<?= BASE_URL ?>public/createdanhmuc.css">
     <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
         <a href="#" class="logo">
             <i class='bx bx-cut'></i>
@@ -47,10 +47,8 @@ $editing = isset($nv);
             </li>
         </ul>
     </div>
-    <!-- Main Content -->
     <div class="content">
 
-        <!-- Navbar -->
         <nav>
             <i class='bx bx-menu'></i>
             <form action="" method="GET">
@@ -71,7 +69,6 @@ $editing = isset($nv);
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
             </a>
         </nav>
-        <!-- main -->
         <main>
             <div class="header">
                 <h1><?= $editing ? 'Sửa' : 'Thêm' ?> Nhân Viên</h1>
@@ -94,21 +91,21 @@ $editing = isset($nv);
                     <div class="form-group">
                         <label>Tên nhân viên <span style="color:red">*</span></label>
                         <input type="text" name="name" id="name"
-                            value="<?= $editing ? htmlspecialchars($nv['name']) : '' ?>" >
+                            value="<?= $editing ? htmlspecialchars($nv['name']) : '' ?>">
                         <span class="error-msg"></span>
                     </div>
 
                     <div class="form-group">
                         <label>Email <span style="color:red">*</span></label>
                         <input type="email" name="email" id="email"
-                            value="<?= $editing ? htmlspecialchars($nv['email']) : '' ?>" >
+                            value="<?= $editing ? htmlspecialchars($nv['email']) : '' ?>">
                         <span class="error-msg"></span>
                     </div>
 
                     <?php if (!$editing): ?>
                         <div class="form-group">
                             <label>Mật khẩu <span style="color:red">*</span></label>
-                            <input type="password" name="password" id="password" >
+                            <input type="password" name="password" id="password">
                             <span class="error-msg"></span>
                         </div>
                     <?php endif; ?>
@@ -116,13 +113,13 @@ $editing = isset($nv);
                     <div class="form-group">
                         <label>Số điện thoại <span style="color:red">*</span></label>
                         <input type="text" name="phone" id="phone"
-                            value="<?= $editing ? htmlspecialchars($nv['phone']) : '' ?>" >
+                            value="<?= $editing ? htmlspecialchars($nv['phone']) : '' ?>">
                         <span class="error-msg"></span>
                     </div>
 
                     <div class="form-group">
                         <label>Giới tính <span style="color:red">*</span></label>
-                        <select name="gioitinh" id="gioitinh" >
+                        <select name="gioitinh" id="gioitinh">
                             <option value="">--Chọn giới tính--</option>
                             <option value="nam" <?= ($editing && ($nv['gioitinh'] ?? '') == 'nam') ? 'selected' : '' ?>>Nam
                             </option>
@@ -134,7 +131,7 @@ $editing = isset($nv);
 
                     <div class="form-group">
                         <label>Quyền / Vai trò <span style="color:red">*</span></label>
-                        <select name="role_id" id="role_id" >
+                        <select name="role_id" id="role_id">
                             <option value="">--Chọn quyền--</option>
                             <?php foreach ($roles as $role): ?>
                                 <option value="<?= $role['id'] ?>" <?= ($editing && isset($nv['role_id']) && $nv['role_id'] == $role['id']) ? 'selected' : '' ?>>
@@ -153,7 +150,7 @@ $editing = isset($nv);
         </main>
         <script src="<?= BASE_URL ?>public/admin.js"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 const form = document.getElementById('form-nhanvien');
 
                 // Hàm hiển thị lỗi (giống các form trước)
@@ -178,7 +175,7 @@ $editing = isset($nv);
 
                 // Hàm kiểm tra định dạng Số điện thoại (chỉ chấp nhận số, 10-11 chữ số)
                 function isPhoneNumber(phone) {
-                    const re = /^\d{10,11}$/;
+                    const re = /^(0|\+84)\d{9}$/;
                     return re.test(String(phone).trim());
                 }
 
@@ -217,7 +214,6 @@ $editing = isset($nv);
                     }
 
                     // --- 3. Validate Mật khẩu (Chỉ khi Thêm mới) ---
-                    // Kiểm tra xem trường password có tồn tại (khi $editing là false)
                     if (passwordInput) {
                         const passwordValue = passwordInput.value.trim();
                         showSuccess(passwordInput); // Reset
@@ -261,7 +257,7 @@ $editing = isset($nv);
                 }
 
                 // --- BẮT SỰ KIỆN SUBMIT FORM ---
-                form.addEventListener('submit', function (e) {
+                form.addEventListener('submit', function(e) {
                     if (!validateForm()) {
                         e.preventDefault(); // Chặn form submit nếu validation thất bại
                     }
@@ -270,8 +266,7 @@ $editing = isset($nv);
                 // --- (Tùy chọn) Xóa lỗi khi người dùng bắt đầu nhập (UX) ---
                 const inputs = form.querySelectorAll('input, select');
                 inputs.forEach(input => {
-                    input.addEventListener('input', function () {
-                        // Lắng nghe sự kiện input (cho text) hoặc change (cho select)
+                    input.addEventListener('input', function() {
                         const formGroup = this.parentElement;
                         if (formGroup.classList.contains('error')) {
                             formGroup.classList.remove('error');
@@ -279,8 +274,38 @@ $editing = isset($nv);
                         }
                     });
                 });
+                
+                // 💡 LOGIC HIỂN THỊ SWEETALERT2 (BÂY GIỜ SẼ HOẠT ĐỘNG)
+                <?php
+                $error_message = $_SESSION['error_sa'] ?? '';
+                $success_message = $_SESSION['success_sa'] ?? '';
+
+                unset($_SESSION['error_sa']);
+                unset($_SESSION['success_sa']);
+
+                if (!empty($error_message)):
+                ?>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi Thao Tác!',
+                        html: '<?= htmlspecialchars($error_message) ?>',
+                        confirmButtonText: 'Đóng',
+                        confirmButtonColor: '#DB504A'
+                    });
+                <?php endif; ?>
+
+                <?php if (!empty($success_message)): ?>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành Công!',
+                        text: '<?= htmlspecialchars($success_message) ?>',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                <?php endif; ?>
             });
         </script>
+    </div>
 </body>
 
 </html>
