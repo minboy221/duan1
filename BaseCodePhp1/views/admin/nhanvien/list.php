@@ -263,7 +263,7 @@
             <?php endif; ?>
 
             // ----------------------------------------------------
-            // 💡 LOGIC XÓA (SweetAlert2 cho nút Xóa Vĩnh viễn)
+            // LOGIC XÓA (SweetAlert2 cho nút Xóa Vĩnh viễn)
             // Thay thế hàm 'onclick="return confirm(...) " của nút Xóa
             // ----------------------------------------------------
 
