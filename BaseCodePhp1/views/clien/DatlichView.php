@@ -137,7 +137,7 @@
                                 <?php endforeach; ?>
                             </ul>
                             <p style="text-align: right; margin-top: 10px; font-size: 18px; color: #d63031;">
-                                Tổng tạm tính: <strong><?= number_format($totalMoney) ?> VNĐ</strong>
+                                Tổng tạm tính: <strong><?= number_format(num: $totalMoney) ?> VNĐ</strong>
                             </p>
                         <?php else: ?>
                             <p>Bạn chưa chọn dịch vụ nào.</p>

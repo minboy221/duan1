@@ -151,6 +151,7 @@
     </div>
 
     <script>
+        //phần chọn nhiều dịch vụ và tính tổng tiền
         document.addEventListener("DOMContentLoaded", function () {
             let totalCount = 0;
             let totalPrice = 0;
