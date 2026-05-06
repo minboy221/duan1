@@ -73,12 +73,12 @@
 
             <div class="bottom-data" style="padding:20px;">
                 <?php if (!empty($service)): ?>
-                    <form action="?act=update_dichvu" method="POST" enctype="multipart/form-data" class="form-add">
+                    <form action="?act=update_dichvu" method="POST" enctype="multipart/form-data" class="form-add" onsubmit="return validateDichVu()">
                         <input type="hidden" name="id" value="<?= htmlspecialchars($service['id']) ?>">
 
                         <div class="form-group">
                             <label>Tên dịch vụ</label>
-                            <input type="text" name="name" value="<?= htmlspecialchars($service['name'] ?? '') ?>" required>
+                            <input type="text" name="name" id="dichvu_name" value="<?= htmlspecialchars($service['name'] ?? '') ?>">
                         </div>
 
                         <div class="form-group">
@@ -89,8 +89,8 @@
 
                         <div class="form-group">
                             <label>Giá</label>
-                            <input type="number" name="price" value="<?= htmlspecialchars($service['price'] ?? '') ?>"
-                                min="0" required>
+                            <input type="number" name="price" id="dichvu_price" value="<?= htmlspecialchars($service['price'] ?? '') ?>"
+                                min="0">
                         </div>
 
                         <div class="form-group">
@@ -101,7 +101,7 @@
 
                         <div class="form-group">
                             <label>Danh mục</label>
-                            <select name="danhmuc_id" required>
+                            <select name="danhmuc_id" id="dichvu_danhmuc">
                                 <option value="">--Chọn danh mục--</option>
                                 <?php foreach ($categories as $cat): ?>
                                     <option value="<?= $cat['id'] ?>" <?= ($cat['id'] == ($service['danhmuc_id'] ?? '')) ? 'selected' : '' ?>>
@@ -123,6 +123,7 @@
                             <input type="file" name="image" accept="image/*">
                         </div>
 
+                        <p id="error-msg" style="color:red; margin-bottom:15px; font-weight: bold;"></p>
                         <button class="btnthem" style="padding:10px 25px;">Lưu Thay Đổi</button>
                     </form>
                 <?php else: ?>
@@ -132,6 +133,41 @@
         </main>
     </div>
     <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script>
+        function validateDichVu() {
+            var nameInput = document.getElementById('dichvu_name');
+            var priceInput = document.getElementById('dichvu_price');
+            var danhmucInput = document.getElementById('dichvu_danhmuc');
+            var error = document.getElementById("error-msg");
+
+            var name = nameInput.value.trim();
+            var price = priceInput.value.trim();
+            var danhmuc = danhmucInput.value;
+
+            error.innerText = "";
+            [nameInput, priceInput, danhmucInput].forEach(input => input.style.border = "1px solid #ccc");
+
+            if (name === '') {
+                error.innerText = 'Vui lòng nhập tên dịch vụ!';
+                nameInput.style.border = '1px solid red';
+                nameInput.focus();
+                return false;
+            }
+            if (price === '') {
+                error.innerText = 'Vui lòng nhập giá dịch vụ!';
+                priceInput.style.border = '1px solid red';
+                priceInput.focus();
+                return false;
+            }
+            if (danhmuc === '') {
+                error.innerText = 'Vui lòng chọn danh mục!';
+                danhmucInput.style.border = '1px solid red';
+                danhmucInput.focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 
 </html>

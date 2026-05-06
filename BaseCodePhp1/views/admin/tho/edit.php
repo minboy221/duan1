@@ -73,14 +73,14 @@
                 <a href="?act=qlytho" class="btnthem" style="background:#ccc;color:#000">← Quay lại</a>
             </div>
             <div class="form-wrapper">
-                <form action="index.php?act=updatetho" method="POST" enctype="multipart/form-data" class="form-add">
+                <form action="index.php?act=updatetho" method="POST" enctype="multipart/form-data" class="form-add" onsubmit="return validateTho()">
 
                     <input type="hidden" name="id" value="<?= isset($tho['id']) ? $tho['id'] : '' ?>">
 
                     <div class="form-group">
                         <label>Tên thợ</label>
-                        <input type="text" name="name"
-                            value="<?= isset($tho['name']) ? htmlspecialchars($tho['name']) : '' ?>" required
+                        <input type="text" name="name" id="tho_name"
+                            value="<?= isset($tho['name']) ? htmlspecialchars($tho['name']) : '' ?>"
                             class="form-control">
                         <span class="error-msg"></span>
                     </div>
@@ -106,12 +106,31 @@
                         <span class="error-msg"></span>
                     </div>
 
+                    <p id="error-msg" style="color:red; margin-bottom:15px; font-weight: bold;"></p>
                     <button class="btnthem btn-submit" type="submit">Cập nhật</button>
                 </form>
             </div>
         </main>
     </div>
     <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script>
+        function validateTho() {
+            var nameInput = document.getElementById('tho_name');
+            var name = nameInput.value.trim();
+            var error = document.getElementById("error-msg");
+
+            error.innerText = "";
+            nameInput.style.border = "1px solid #ccc";
+
+            if (name === '') {
+                error.innerText = 'Vui lòng nhập tên thợ!';
+                nameInput.style.border = '1px solid red';
+                nameInput.focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 
 </html>

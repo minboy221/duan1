@@ -71,6 +71,7 @@
                                 </button>
                                 <div class="dropdown-content">
                                     <a href="<?= BASE_URL ?>?act=lichsudat">Lịch sử toả sáng</a>
+                                    <a href="<?= BASE_URL ?>?act=doimatkhau_khachhang">Đổi mật khẩu</a>
                                     <a href="<?= BASE_URL ?>?act=logout">Đăng xuất</a>
                                 </div>
                             <?php else: ?>

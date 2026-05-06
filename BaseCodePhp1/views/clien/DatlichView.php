@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>public/datlich.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -72,6 +71,7 @@
                                 </button>
                                 <div class="dropdown-content">
                                     <a href="<?= BASE_URL ?>?act=lichsudat">Lịch sử toả sáng</a>
+                                    <a href="<?= BASE_URL ?>?act=doimatkhau_khachhang">Đổi mật khẩu</a>
                                     <a href="<?= BASE_URL ?>?act=logout">Đăng xuất</a>
                                 </div>
                             <?php else: ?>
@@ -158,7 +158,7 @@
 
                     <div class="chonngay">
                         <label class="fw-bold"><i class="fa-regular fa-calendar"></i> Chọn ngày:</label>
-                        <select id="chonngay" name="ngay_id" onchange="loadStylists()" class="form-select" required>
+                        <select id="chonngay" name="ngay_id" onchange="loadStylists()" class="form-select">
                             <option value="">-- Chọn ngày bạn đến --</option>
 
                             <?php
@@ -193,14 +193,14 @@
                             style="display: flex; gap: 10px; flex-wrap: wrap;">
                         </div>
 
-                        <input type="hidden" name="tho_id" id="selected_tho_id" required>
+                        <input type="hidden" name="tho_id" id="selected_tho_id">
                     </div>
 
                     <div class="chonngay" id="step-time" style="display:none; margin-top: 15px;">
                         <label class="fw-bold"><i class="fa-regular fa-clock"></i> Chọn giờ:</label>
                         <div class="chontime" id="time-container" style="display: flex; gap: 10px; flex-wrap: wrap;">
                         </div>
-                        <input type="hidden" name="khunggio_id" id="selected_time_id" required>
+                        <input type="hidden" name="khunggio_id" id="selected_time_id">
                     </div>
                 </div>
                 <div class="buoc">
@@ -215,6 +215,7 @@
                     </div>
                 </div>
                 <div class="chotgio" style="margin-top: 30px; text-align: center;">
+                    <p id="error-msg" style="color:red; margin-bottom:15px; font-weight: bold;"></p>
                     <button type="submit" class="btn-submit"
                         style="padding: 15px 40px; background: #D6A354; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 16px; cursor: pointer;">
                         CHỐT GIỜ CẮT
@@ -375,8 +376,24 @@
     }
 
     function validateBooking() {
+        let chonNgay = document.getElementById('chonngay');
+        let error = document.getElementById("error-msg");
+        
+        error.innerText = "";
+        chonNgay.style.border = "1px solid #ccc";
+
+        if (!chonNgay.value) {
+            error.innerText = 'Vui lòng chọn ngày!';
+            chonNgay.style.border = '1px solid red';
+            chonNgay.focus();
+            return false;
+        }
+        if (!document.getElementById('selected_tho_id').value) {
+            error.innerText = 'Vui lòng chọn Stylist!';
+            return false;
+        }
         if (!document.getElementById('selected_time_id').value) {
-            alert("Vui lòng chọn giờ!");
+            error.innerText = 'Vui lòng chọn giờ!';
             return false;
         }
         return true;

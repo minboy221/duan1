@@ -69,6 +69,7 @@
                                 </button>
                                 <div class="dropdown-content">
                                     <a href="<?= BASE_URL ?>?act=lichsudat">Lịch sử toả sáng</a>
+                                    <a href="<?= BASE_URL ?>?act=doimatkhau_khachhang">Đổi mật khẩu</a>
                                     <a href="<?= BASE_URL ?>?act=logout">Đăng xuất</a>
                                 </div>
                             <?php else: ?>
@@ -90,13 +91,13 @@
         </div>
         <main>
             <div class="lichsu">
-                <form action="<?= BASE_URL ?>?act=submit_danhgia" method="POST" class="rating-box">
+                <form action="<?= BASE_URL ?>?act=submit_danhgia" method="POST" class="rating-box" onsubmit="return validateReview()">
                     <input type="hidden" name="ma_lich" value="<?= $ma_lich ?>">
 
                     <h2>Đánh Giá Lịch Hẹn</h2>
 
                     <label>Số sao:</label>
-                    <select name="rating" required>
+                    <select name="rating" id="rating">
                         <option value="5">⭐⭐⭐⭐⭐</option>
                         <option value="4">⭐⭐⭐⭐</option>
                         <option value="3">⭐⭐⭐</option>
@@ -105,8 +106,9 @@
                     </select>
 
                     <label>Bình luận:</label>
-                    <textarea name="comment" placeholder="Cảm nghĩ của bạn..." required></textarea>
+                    <textarea name="comment" id="comment" placeholder="Cảm nghĩ của bạn..."></textarea>
 
+                    <p id="error-msg" style="color:red; margin-top:10px; font-weight: bold;"></p>
                     <button type="submit">Gửi đánh giá</button>
                 </form>
             </div>
@@ -151,4 +153,33 @@
     </footer>
 </body>
 <script src="<?= BASE_URL ?>public/main.js"></script>
+<script>
+    function validateReview() {
+        var ratingInput = document.getElementById('rating');
+        var commentInput = document.getElementById('comment');
+        var error = document.getElementById("error-msg");
+
+        var rating = ratingInput.value;
+        var comment = commentInput.value.trim();
+
+        error.innerText = "";
+        [ratingInput, commentInput].forEach(input => input.style.border = "1px solid #ccc");
+
+        if (rating === '') {
+            error.innerText = 'Vui lòng chọn số sao đánh giá!';
+            ratingInput.style.border = '1px solid red';
+            ratingInput.focus();
+            return false;
+        }
+
+        if (comment === '') {
+            error.innerText = 'Vui lòng nhập bình luận của bạn!';
+            commentInput.style.border = '1px solid red';
+            commentInput.focus();
+            return false;
+        }
+
+        return true;
+    }
+</script>
 </html>

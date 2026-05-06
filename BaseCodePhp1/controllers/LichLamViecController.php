@@ -18,11 +18,11 @@ class LichLamViecController
     {
         $count = $this->model->taoNgayTuDong();
         if ($count !== false) {
-            echo "<script>alert('Thàn công! đã tạo thêm $count ngày làm việc mới.');
-                window.location.href='index.php?act=qlylichlamviec';
-                </script>";
+            $_SESSION['success_sa'] = "Thành công! Đã tạo thêm $count ngày làm việc mới.";
+            header("Location: index.php?act=qlylichlamviec");
             exit();
         } else {
+            $_SESSION['error_sa'] = "Có lỗi xảy ra khi tạo ngày tự động!";
             header("Location: index.php?act=qlylichlamviec");
             exit();
         }

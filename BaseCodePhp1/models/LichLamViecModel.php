@@ -206,15 +206,15 @@ class LichLamViecModel
         //Lấy các giờ ĐÃ BỊ ĐẶT
         $sqlBooked = "SELECT khunggio_id, status, cancel_reason 
                       FROM lichdat 
-                      WHERE status IN ('pending', 'confirmed', 'done', 'cancelled')";
+                      WHERE status IN ('pending', 'confirmed', 'done')";
         $stmtBooked = $this->conn->prepare($sqlBooked);
         $stmtBooked->execute();
         $bookedRows = $stmtBooked->fetchAll(PDO::FETCH_ASSOC);
         $bookedMap = [];
         foreach ($bookedRows as $row) {
             $bookedMap[$row['khunggio_id']] = [
-                'status' => ['status'],
-                'reason' => ['cancel_reason']
+                'status' => $row['status'],
+                'reason' => $row['cancel_reason']
             ];
         }
         //XỬ LÝ LOGIC: Đã đặt OR Đã qua giờ

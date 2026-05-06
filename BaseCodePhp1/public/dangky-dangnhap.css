@@ -121,3 +121,132 @@ main {
   color: #fff;
   text-decoration: underline;
 }
+
+/* ==================== OTP STYLES ==================== */
+
+.otp-container {
+  max-width: 420px;
+}
+
+.otp-desc {
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.otp-email {
+  color: #f5c542;
+  font-size: 15px;
+}
+
+/* 6 ô nhập OTP */
+.otp-boxes {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.otp-input {
+  width: 48px !important;
+  height: 56px;
+  text-align: center !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #f5c542 !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 2px solid #f5c542 !important;
+  border-radius: 12px !important;
+  outline: none;
+  transition: all 0.3s ease;
+  caret-color: #f5c542;
+  padding: 0 !important;
+}
+
+.otp-input:focus {
+  background: rgba(245, 197, 66, 0.15) !important;
+  border-color: #fff !important;
+  box-shadow: 0 0 15px rgba(245, 197, 66, 0.3);
+  transform: scale(1.08);
+}
+
+/* Timer */
+.otp-timer {
+  color: #aaa;
+  font-size: 14px;
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.otp-timer span {
+  color: #f5c542;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Button xác nhận */
+.otp-btn {
+  margin-top: 15px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+/* Error / Success */
+.otp-error {
+  color: #ff6b6b;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 10px 0;
+  padding: 10px;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.otp-success {
+  color: #51cf66;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 10px 0;
+  padding: 10px;
+  background: rgba(81, 207, 102, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(81, 207, 102, 0.3);
+}
+
+/* Resend */
+.otp-resend {
+  margin-top: 15px;
+  animation: fadeInUp 0.4s ease;
+}
+
+.otp-resend-btn {
+  background: transparent;
+  border: 1px solid #f5c542;
+  color: #f5c542;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.otp-resend-btn:hover {
+  background: #f5c542;
+  color: #111;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -141,6 +141,13 @@ match ($act) {
     'api_read_notify' => $clientController->apiReadNotify(),
     'quenmatkhau' => (new KhachHangController())->forgotPassword(),//quên mật khẩu
     'doimatkhau_nhanvien' => (new khachHangController)->changePasswordStaff(), //đổi mật khẩu cho nhân viên
+    'doimatkhau_khachhang' => (new KhachHangController())->changePasswordClient(), //đổi mật khẩu cho khách hàng
+    // OTP xác thực
+    'verify_otp_register' => (new KhachHangController())->verifyOtpRegister(),
+    'verify_otp_forgot' => (new KhachHangController())->verifyOtpForgot(),
+    'verify_otp_changepass' => (new KhachHangController())->verifyOtpChangePass(),
+    'reset_password' => (new KhachHangController())->resetPassword(),
+    'resend_otp' => (new KhachHangController())->resendOtp(),
     //PHẦN AI CHAT VỚI CLIEN
     'api_load_chat' => $chatController->loadChat(),
     'api_send_chat' => $chatController->sendChat(),

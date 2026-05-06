@@ -189,26 +189,27 @@
             </div>
         <?php endif; ?>
 
-        <form action="index.php?act=doimatkhau_nhanvien" method="POST">
+        <form action="index.php?act=doimatkhau_nhanvien" method="POST" onsubmit="return validateChangePass()">
 
             <div class="form-group">
                 <label for="old_pass">Mật khẩu hiện tại</label>
-                <input type="password" id="old_pass" name="old_password" required placeholder="••••••">
+                <input type="password" id="old_pass" name="old_password" placeholder="••••••">
                 <i class="fa-solid fa-lock"></i>
             </div>
 
             <div class="form-group">
                 <label for="new_pass">Mật khẩu mới</label>
-                <input type="password" id="new_pass" name="new_password" required placeholder="••••••">
+                <input type="password" id="new_pass" name="new_password" placeholder="••••••">
                 <i class="fa-solid fa-key"></i>
             </div>
 
             <div class="form-group">
                 <label for="confirm_pass">Xác nhận mật khẩu mới</label>
-                <input type="password" id="confirm_pass" name="confirm_password" required placeholder="••••••">
+                <input type="password" id="confirm_pass" name="confirm_password" placeholder="••••••">
                 <i class="fa-solid fa-check-double"></i>
             </div>
 
+            <p id="error-msg" style="color:red; margin-bottom:15px; font-weight: bold; text-align:center;"></p>
             <button type="submit" class="btn-submit">
                 Cập nhật mật khẩu <i class="fa-solid fa-arrow-right" style="margin-left:5px;"></i>
             </button>
@@ -219,6 +220,47 @@
         </form>
     </div>
 
+    <script>
+        function validateChangePass() {
+            let oldPassInput = document.getElementById('old_pass');
+            let newPassInput = document.getElementById('new_pass');
+            let confirmPassInput = document.getElementById('confirm_pass');
+            let error = document.getElementById("error-msg");
+
+            let oldPass = oldPassInput.value;
+            let newPass = newPassInput.value;
+            let confirmPass = confirmPassInput.value;
+
+            error.innerText = "";
+            [oldPassInput, newPassInput, confirmPassInput].forEach(input => input.style.border = "2px solid #eee");
+
+            if (oldPass === '') {
+                error.innerText = 'Vui lòng nhập mật khẩu hiện tại!';
+                oldPassInput.style.border = '1px solid red';
+                oldPassInput.focus();
+                return false;
+            }
+            if (newPass === '') {
+                error.innerText = 'Vui lòng nhập mật khẩu mới!';
+                newPassInput.style.border = '1px solid red';
+                newPassInput.focus();
+                return false;
+            }
+            if (confirmPass === '') {
+                error.innerText = 'Vui lòng xác nhận mật khẩu mới!';
+                confirmPassInput.style.border = '1px solid red';
+                confirmPassInput.focus();
+                return false;
+            }
+            if (newPass !== confirmPass) {
+                error.innerText = 'Mật khẩu mới và xác nhận mật khẩu không khớp!';
+                confirmPassInput.style.border = '1px solid red';
+                confirmPassInput.focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 
 </html>
