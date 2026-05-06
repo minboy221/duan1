@@ -1,0 +1,10 @@
+# Ignore env file containing sensitive data
+commons/env.php
+
+# Ignore logs
+error_log
+*.log
+
+# Ignore vendor folder
+vendor/
+node_modules/

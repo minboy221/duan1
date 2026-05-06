@@ -26,8 +26,8 @@ function sendOTP($email, $otp, $purpose = 'register') {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'phamtuan20061969@gmail.com';
-        $mail->Password = 'nuxsavohkrkjhcqn';
+        $mail->Username = SMTP_USERNAME;
+        $mail->Password = SMTP_PASSWORD;
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
         $mail->CharSet = 'UTF-8';
