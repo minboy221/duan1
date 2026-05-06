@@ -71,27 +71,53 @@
             <div class="form-wrapper">
                 <h3 class="mb-4">Chỉnh Sửa Câu Trả Lời</h3>
 
-                <form action="index.php?act=updatebot" method="POST" class="form-add">
+                <form action="index.php?act=updatebot" method="POST" class="form-add" onsubmit="return validateBot()">
                     <input type="hidden" name="id" value="<?= $bot['id'] ?>">
 
                     <div class="form-group">
                         <label>Từ khóa nhận diện:</label>
-                        <input type="text" name="keywords" class="form-control"
-                            value="<?= htmlspecialchars($bot['keywords']) ?>" required>
+                        <input type="text" name="keywords" id="bot_keywords" class="form-control"
+                            value="<?= htmlspecialchars($bot['keywords']) ?>">
                     </div>
 
                     <div class="form-group">
                         <label>Nội dung Bot trả lời:</label>
-                        <textarea name="answer" rows="4" class="form-control"
-                            required><?= htmlspecialchars($bot['answer']) ?></textarea>
+                        <textarea name="answer" id="bot_answer" rows="4" class="form-control"><?= htmlspecialchars($bot['answer']) ?></textarea>
                     </div>
 
+                    <p id="error-msg" style="color:red; margin-bottom:15px; font-weight: bold;"></p>
                     <button type="submit" class="btnthem">Cập nhật</button>
                 </form>
             </div>
         </main>
     </div>
     <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script>
+        function validateBot() {
+            var keywordsInput = document.getElementById('bot_keywords');
+            var answerInput = document.getElementById('bot_answer');
+            var keywords = keywordsInput.value.trim();
+            var answer = answerInput.value.trim();
+            var error = document.getElementById("error-msg");
+
+            error.innerText = "";
+            [keywordsInput, answerInput].forEach(input => input.style.border = "1px solid #ccc");
+
+            if (keywords === '') {
+                error.innerText = 'Vui lòng nhập từ khóa nhận diện!';
+                keywordsInput.style.border = '1px solid red';
+                keywordsInput.focus();
+                return false;
+            }
+            if (answer === '') {
+                error.innerText = 'Vui lòng nhập nội dung Bot trả lời!';
+                answerInput.style.border = '1px solid red';
+                answerInput.focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
 
 </body>
 

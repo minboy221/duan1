@@ -75,15 +75,14 @@
                 <div class="orders" style="padding:20px;">
 
                     <?php if (!empty($category)): ?>
-                        <form action="?act=update_danhmuc" method="POST" class="form-add">
+                        <form action="?act=update_danhmuc" method="POST" class="form-add" onsubmit="return validateDanhMuc()">
 
                             <!-- hidden input để gửi id -->
                             <input type="hidden" name="id" value="<?= htmlspecialchars($category['id']) ?>">
 
                             <div class="form-group">
                                 <label>Tên danh mục</label>
-                                <input type="text" name="name" value="<?= htmlspecialchars($category['name'] ?? '') ?>"
-                                    required>
+                                <input type="text" name="name" id="danhmuc_name" value="<?= htmlspecialchars($category['name'] ?? '') ?>">
                             </div>
 
                             <div class="form-group">
@@ -92,6 +91,7 @@
                                     rows="4"><?= htmlspecialchars($category['description'] ?? '') ?></textarea>
                             </div>
 
+                            <p id="error-msg" style="color:red; margin-bottom:15px; font-weight: bold;"></p>
                             <button class="btnthem" style="padding:10px 25px;">Lưu thay đổi</button>
                         </form>
                     <?php else: ?>
@@ -104,6 +104,24 @@
         </main>
     </div>
     <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script>
+        function validateDanhMuc() {
+            var nameInput = document.getElementById('danhmuc_name');
+            var name = nameInput.value.trim();
+            var error = document.getElementById("error-msg");
+
+            error.innerText = "";
+            nameInput.style.border = "1px solid #ccc";
+
+            if (name === '') {
+                error.innerText = 'Vui lòng nhập tên danh mục!';
+                nameInput.style.border = '1px solid red';
+                nameInput.focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
 
 </body>
 

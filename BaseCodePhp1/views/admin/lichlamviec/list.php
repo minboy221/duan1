@@ -87,9 +87,9 @@
                             <h3>Lịch Làm Việc</h3>
                         </div>
 
-                        <form action="index.php?act=auto_create_days" method="POST">
-                            <button type="submit" class="btnthem"
-                                onclick="return confirm('Hệ thống sẽ tạo ngày làm việc cho 7 ngày tới. Bạn chắc chắn chứ?')">
+                        <form action="index.php?act=auto_create_days" method="POST" id="form-auto-create">
+                            <button type="button" class="btnthem"
+                                onclick="confirmAutoCreate(event)">
                                 <i class="fa fa-magic"></i> Tự động tạo 30 ngày tới
                             </button>
                         </form>
@@ -273,7 +273,53 @@
                 showPage(1); // Mặc định hiện trang 1
             }
         });
+
+        function confirmAutoCreate(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Bạn chắc chắn chứ?',
+                text: "Hệ thống sẽ tạo ngày làm việc cho 30 ngày tới.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('form-auto-create').submit();
+                }
+            });
+        }
     </script>
+    <?php if (isset($_SESSION['success_sa'])): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: '<?= htmlspecialchars($_SESSION['success_sa']) ?>',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        </script>
+        <?php unset($_SESSION['success_sa']); ?>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['error_sa'])): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: '<?= htmlspecialchars($_SESSION['error_sa']) ?>',
+                    confirmButtonText: 'Đóng',
+                    confirmButtonColor: '#DB504A'
+                });
+            });
+        </script>
+        <?php unset($_SESSION['error_sa']); ?>
+    <?php endif; ?>
 </body>
 
 </html>

@@ -47,6 +47,19 @@ class Khachhang
         }
     }
     //check thông tin khách hàng để reset mk
+    public function findById($id)
+    {
+        try {
+            $sql = "SELECT * FROM khachhang WHERE id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id' => $id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            echo 'Lỗi: ' . $e->getMessage();
+            return false;
+        }
+    }
+
     public function checkUserReset($email, $phone)
     {
         try {
