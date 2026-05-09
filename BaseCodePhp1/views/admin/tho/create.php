@@ -25,6 +25,7 @@
             font-style: italic;
         }
     </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -124,7 +125,7 @@
             </div>
         </main>
     </div>
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.83968"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('formTho');

@@ -9,6 +9,7 @@
     <title>Sửa Thông Tin Thợ | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -112,7 +113,7 @@
             </div>
         </main>
     </div>
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.84419"></script>
     <script>
         function validateTho() {
             var nameInput = document.getElementById('tho_name');

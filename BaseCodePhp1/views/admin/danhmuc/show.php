@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>public/qlydanhmuc.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -104,6 +105,6 @@
         </main>
     </div>
 </body>
-<script src="<?= BASE_URL ?>public/admin.js"></script>
+<script src="<?= BASE_URL ?>public/admin.js?v=1778077146.74981"></script>
 
 </html>

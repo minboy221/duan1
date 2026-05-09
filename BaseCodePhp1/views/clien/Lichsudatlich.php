@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>public/lichsudatlich.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -33,6 +34,12 @@
                 <div class="logo">
                     <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
                 </div>
+                                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="mobile-menu-overlay"></div>
                 <div class="menu">
                     <ul>
                         <li><a href="<?= BASE_URL ?>?act=home">Trang Chủ</a></li>
@@ -232,7 +239,21 @@
             </form>
         </div>
     </div>
-    <footer class="footer">
+    <!-- Bottom Navigation Mobile -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li><a href="<?= BASE_URL ?>?act=home"><i class="fa-solid fa-house"></i><span>Trang chủ</span></a></li>
+            <li><a href="<?= BASE_URL ?>?act=dichvu"><i class="fa-solid fa-scissors"></i><span>Dịch vụ</span></a></li>
+            <li><a href="<?= BASE_URL ?>?act=datlich"><i class="fa-solid fa-calendar-plus"></i><span>Đặt lịch</span></a></li>
+            <li><a href="<?= BASE_URL ?>?act=nhanvien"><i class="fa-solid fa-users"></i><span>Nhân viên</span></a></li>
+            <?php if (isset($_SESSION['username'])): ?>
+                <li><a href="<?= BASE_URL ?>?act=lichsudat"><i class="fa-solid fa-clock-rotate-left"></i><span>Lịch sử</span></a></li>
+            <?php else: ?>
+                <li><a href="<?= BASE_URL ?>?act=dangnhap_khachhang"><i class="fa-solid fa-user"></i><span>Đăng nhập</span></a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+<footer class="footer">
         <div class="footer-container">
             <div class="footer-column">
                 <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"

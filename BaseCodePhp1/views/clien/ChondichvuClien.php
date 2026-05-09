@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>public/chondichvu.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png" />
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -35,6 +36,12 @@
                         <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="" />
                     </a>
                 </div>
+                                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="mobile-menu-overlay"></div>
                 <div class="menu">
                     <ul>
                         <li><a href="<?= BASE_URL ?>?act=home">Trang Chủ</a></li>

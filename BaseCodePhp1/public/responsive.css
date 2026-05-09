@@ -1,0 +1,716 @@
+/* ============================================
+   RESPONSIVE.CSS - 31Shine Mobile Responsive
+   File này CHỈ chứa @media queries.
+   Giao diện desktop KHÔNG bị ảnh hưởng.
+============================================ */
+
+/* ============================================
+   HAMBURGER MENU - CLIENT
+============================================ */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 1001;
+    padding: 8px;
+}
+
+.hamburger span {
+    display: block;
+    width: 28px;
+    height: 3px;
+    background: #f5c542;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Hamburger animation khi active */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Mobile menu overlay */
+.mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+.mobile-menu-overlay.active {
+    display: block;
+}
+
+/* ============================================
+   ADMIN SIDEBAR OVERLAY
+============================================ */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* ============================================
+   BOTTOM NAV BAR - CLIENT MOBILE
+============================================ */
+.mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #111;
+    z-index: 9998;
+    padding: 8px 0 12px;
+    box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.2);
+    border-top: 1px solid #333;
+}
+
+.mobile-bottom-nav ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-bottom-nav ul li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    text-decoration: none;
+    color: #999;
+    font-size: 10px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.mobile-bottom-nav ul li a i {
+    font-size: 20px;
+}
+
+.mobile-bottom-nav ul li a:hover,
+.mobile-bottom-nav ul li a.active {
+    color: #f5c542;
+}
+
+/* ============================================
+   TABLET: 769px - 1024px
+============================================ */
+@media (max-width: 1024px) {
+
+    /* --- CLIENT NAV --- */
+    .aside {
+        padding: 15px 30px !important;
+    }
+
+    /* --- Banner --- */
+    .banner {
+        height: 600px !important;
+    }
+
+    .banner-text h1 {
+        font-size: 42px !important;
+    }
+
+    /* --- Dịch vụ --- */
+    .benphai .noidung {
+        width: 100% !important;
+    }
+
+    /* --- Thợ cắt tóc --- */
+    .baothocattoc {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+
+    .tho {
+        width: calc(50% - 15px) !important;
+    }
+
+    .ten {
+        width: 100% !important;
+    }
+
+    /* --- Báo giá --- */
+    .cattocbo {
+        justify-content: center !important;
+    }
+
+    .cattoccon {
+        width: calc(50% - 15px) !important;
+    }
+
+    .cattoccon .infor {
+        width: 100% !important;
+    }
+
+    /* --- Top thợ margin --- */
+    .baotoptho {
+        margin-top: 250px !important;
+    }
+
+    /* --- Phần báo giá height --- */
+    .phanbaogia {
+        height: auto !important;
+        padding-bottom: 50px;
+    }
+}
+
+/* ============================================
+   MOBILE: <= 768px
+============================================ */
+@media (max-width: 768px) {
+
+    /* --- HAMBURGER hiện ra --- */
+    .hamburger {
+        display: flex;
+        order: 3;
+    }
+
+    /* --- CLIENT NAV --- */
+    .mocua {
+        display: none !important;
+    }
+
+    .aside {
+        padding: 10px 15px !important;
+        position: relative !important;
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+
+    .aside .logo {
+        order: 1;
+        flex-shrink: 0;
+    }
+
+    .aside .mobile-menu-overlay {
+        order: 4;
+    }
+
+    .menu {
+        position: fixed !important;
+        top: 0;
+        right: -280px;
+        width: 280px;
+        height: 100vh;
+        background: #111 !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding: 80px 30px 30px !important;
+        gap: 0 !important;
+        transition: right 0.3s ease !important;
+        z-index: 999 !important;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+        overflow-y: auto;
+        order: 2;
+        flex: none !important;
+    }
+
+    .menu.active {
+        right: 0 !important;
+    }
+
+    .menu ul {
+        flex-direction: column !important;
+        gap: 0 !important;
+        width: 100%;
+    }
+
+    .menu ul li {
+        width: 100%;
+        border-bottom: 1px solid #333;
+    }
+
+    .menu ul li a {
+        display: block !important;
+        padding: 15px 0 !important;
+        font-size: 16px !important;
+    }
+
+    .menu .icon {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .menu .dangky {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .menu .dangky button,
+    .menu .dangky .dropdown-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .search-box {
+        position: relative !important;
+        right: auto !important;
+        top: auto !important;
+        transform: scale(1) !important;
+        width: 100% !important;
+        margin-top: 10px;
+    }
+
+    .search-box input {
+        width: 100% !important;
+    }
+
+    /* --- Logo --- */
+    .logo {
+        display: flex;
+        align-items: center;
+        width: auto !important;
+        flex: 0 0 auto !important;
+    }
+
+    .logo img {
+        width: 130px !important;
+        display: block;
+    }
+
+    /* --- Banner --- */
+    .banner {
+        height: 450px !important;
+    }
+
+    .banner-text {
+        left: 5% !important;
+        max-width: 90% !important;
+    }
+
+    .banner-text h1 {
+        font-size: 28px !important;
+        line-height: 1.2 !important;
+    }
+
+    .banner-text p {
+        font-size: 14px !important;
+        margin: 12px 0 20px 0 !important;
+    }
+
+    .banner-text .btn {
+        padding: 10px 20px !important;
+        font-size: 13px !important;
+    }
+
+    /* --- Dịch vụ section --- */
+    .cacdichvu {
+        flex-direction: column !important;
+        margin-top: -40px !important;
+        padding: 30px 15px !important;
+    }
+
+    .cacdichvu .bentrai img {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 15px !important;
+    }
+
+    .cacdichvu .benphai {
+        margin-bottom: 30px !important;
+    }
+
+    .benphai .noidung {
+        width: 100% !important;
+        margin-right: 0 !important;
+    }
+
+    .baodichvu {
+        grid-template-columns: 1fr !important;
+        margin-right: 0 !important;
+    }
+
+    /* --- Giới thiệu --- */
+    .baogioithieu {
+        flex-direction: column !important;
+        gap: 30px !important;
+        padding: 40px 15px !important;
+    }
+
+    .baogioithieu .benphai img {
+        width: 100% !important;
+        max-width: 300px !important;
+        margin: 0 auto !important;
+        display: block !important;
+    }
+
+    .baogioithieu .chuky img {
+        width: 280px !important;
+    }
+
+    /* --- Giới thiệu 2 --- */
+    .gioithieu2 {
+        height: auto !important;
+        min-height: 120px;
+    }
+
+    .baothongtin {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 15px !important;
+        padding: 20px 15px !important;
+    }
+
+    .baothongtin h2 {
+        font-size: 18px !important;
+    }
+
+    /* --- Báo giá --- */
+    .phanbaogia {
+        height: auto !important;
+        min-height: unset !important;
+        padding-bottom: 40px;
+    }
+
+    /* --- Fix khoảng trắng sections --- */
+    .baodichvubaogia {
+        padding: 20px 15px !important;
+    }
+
+    .baocattoc {
+        padding: 0 !important;
+    }
+
+    /* Các section có height cố định */
+    .gioithieu,
+    .dichvu-section,
+    .baobaogia {
+        height: auto !important;
+    }
+
+    .background3 img {
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+
+    .titlenoidung h2,
+    .titlenoidung1 h2 {
+        font-size: 22px !important;
+    }
+
+    .cattocbo {
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .cattoccon {
+        width: 90% !important;
+        max-width: 320px !important;
+    }
+
+    .cattoccon .infor {
+        width: 100% !important;
+    }
+
+    /* --- Top thợ --- */
+    .baotoptho {
+        margin-top: 30px !important;
+        padding: 0 15px;
+    }
+
+    .baothocattoc {
+        flex-wrap: wrap !important;
+        gap: 15px !important;
+        justify-content: center !important;
+    }
+
+    .tho {
+        width: calc(50% - 10px) !important;
+    }
+
+    .tho img {
+        width: 100% !important;
+    }
+
+    .ten {
+        width: 100% !important;
+    }
+
+    .ten p {
+        font-size: 18px !important;
+    }
+
+    /* --- Chat window --- */
+    .chat-window {
+        width: 100% !important;
+        height: 100vh !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    .chat-launcher {
+        bottom: 80px !important;
+    }
+
+    /* --- Thông báo --- */
+    .baothongbao {
+        width: 100% !important;
+        max-width: 100% !important;
+        right: 0 !important;
+        bottom: 70px !important;
+        padding: 0 10px;
+    }
+
+    /* --- Footer --- */
+    .footer {
+        padding: 40px 15px 80px !important;
+    }
+
+    .footer-container {
+        flex-direction: column !important;
+    }
+
+    .footer-column {
+        flex: 1 1 100% !important;
+    }
+
+    /* --- BOTTOM NAV hiện ra --- */
+    .mobile-bottom-nav {
+        display: block;
+    }
+
+    /* Padding bottom cho body để không bị bottom nav che */
+    body {
+        padding-bottom: 65px;
+    }
+
+    /* ============================
+       ADMIN RESPONSIVE
+    ============================ */
+
+    /* Sidebar ẩn hoàn toàn trên mobile */
+    .sidebar {
+        width: 230px !important;
+        left: -230px !important;
+        transition: left 0.3s ease !important;
+    }
+
+    .sidebar.mobile-open {
+        left: 0 !important;
+    }
+
+    .sidebar.close {
+        width: 230px !important;
+        left: -230px !important;
+    }
+
+    .sidebar.close.mobile-open {
+        left: 0 !important;
+    }
+
+    /* Content chiếm full width */
+    .content {
+        width: 100% !important;
+        left: 0 !important;
+    }
+
+    .sidebar.close~.content {
+        width: 100% !important;
+        left: 0 !important;
+    }
+
+    /* Main padding nhỏ hơn */
+    .content main {
+        padding: 20px 12px !important;
+        max-height: none !important;
+    }
+
+    /* Header admin */
+    .content main .header .left h1 {
+        font-size: 22px !important;
+    }
+
+    /* Tables scroll ngang */
+    .content main .bottom-data .orders {
+        flex-basis: auto !important;
+    }
+
+    .content main .bottom-data .orders table {
+        min-width: 600px;
+    }
+
+    .content main .bottom-data>div {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Admin buttons nhỏ hơn */
+    .btnthem,
+    .btnxem,
+    .btnsua,
+    .btnxoa {
+        padding: 6px 12px !important;
+        font-size: 12px !important;
+    }
+
+    /* Cards grid */
+    .cards {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Chart box */
+    .chart-box {
+        overflow-x: auto !important;
+    }
+
+    /* Admin nav */
+    .content nav {
+        padding: 0 12px 0 0 !important;
+        gap: 12px !important;
+    }
+
+    .content nav form {
+        max-width: 200px !important;
+    }
+
+    /* Phần đặt lịch */
+    .baolichdat {
+        margin-top: 80px !important;
+        padding: 20px 15px !important;
+        width: 95% !important;
+    }
+
+    .baotho {
+        flex-direction: column !important;
+    }
+
+    /* Phần lịch sử đặt */
+    .baodondatlich {
+        padding: 15px !important;
+    }
+
+    /* Phần nhân viên view */
+    .baonhanvien {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+
+    .nhanviencon {
+        width: calc(50% - 15px) !important;
+    }
+
+    /* Phần đăng ký/đăng nhập */
+    .baodangky,
+    .baodangnhap {
+        width: 95% !important;
+        max-width: 400px !important;
+        padding: 25px 20px !important;
+    }
+
+    /* Form dánh giá */
+    .baodanhgia {
+        width: 95% !important;
+        padding: 20px !important;
+    }
+
+    /* Admin quản lý lịch làm việc */
+    .table-box {
+        overflow-x: auto !important;
+    }
+
+    .table-box table {
+        min-width: 500px;
+    }
+
+    /* Phần quản lý chat admin */
+    .chat-admin-container {
+        flex-direction: column !important;
+    }
+
+    .chat-admin-sidebar,
+    .chat-admin-main {
+        width: 100% !important;
+    }
+}
+
+/* ============================================
+   SMALL MOBILE: <= 480px
+============================================ */
+@media (max-width: 480px) {
+
+    /* Banner nhỏ hơn */
+    .banner {
+        height: 350px !important;
+    }
+
+    .banner-text h1 {
+        font-size: 22px !important;
+    }
+
+    .banner-text p {
+        font-size: 13px !important;
+    }
+
+    /* Thợ cắt tóc 1 cột */
+    .tho {
+        width: 100% !important;
+        max-width: 280px;
+    }
+
+    .ten p {
+        font-size: 16px !important;
+    }
+
+    /* Admin header */
+    .content main .header .left h1 {
+        font-size: 18px !important;
+    }
+
+    /* Nhân viên 1 cột */
+    .nhanviencon {
+        width: 100% !important;
+        max-width: 300px;
+    }
+
+    /* Các nút admin xếp dọc */
+    .content main .bottom-data .orders table td {
+        padding: 10px 0 !important;
+    }
+
+    .btnthem,
+    .btnxem,
+    .btnsua,
+    .btnxoa {
+        display: inline-block;
+        margin: 3px 0 !important;
+    }
+
+    /* Phần giới thiệu */
+    .baogioithieu .noidunggiua h3 {
+        font-size: 20px !important;
+    }
+
+    .baogioithieu .noidunggiua p {
+        font-size: 14px !important;
+    }
+}

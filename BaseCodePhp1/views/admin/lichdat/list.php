@@ -10,6 +10,7 @@
     <title>Trang Quản Lý Đặt Lịch | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 <style>
     /* CSS riêng cho trang quản lý lịch để hiển thị đẹp hơn */
@@ -503,7 +504,7 @@
                 </div>
             </div>
         </main>
-        <script src="<?= BASE_URL ?>public/admin.js"></script>
+        <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.79253"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 // --- 2. PHẦN XỬ LÝ NÚT HỦY (SỬA LẠI DÙNG DELEGATION) ---

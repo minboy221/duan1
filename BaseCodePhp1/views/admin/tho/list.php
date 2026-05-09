@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
     <title>Trang Quản Lý Thợ | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -157,7 +158,7 @@
         </main>
     </div>
 
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.84883"></script>
 
 </body>
 

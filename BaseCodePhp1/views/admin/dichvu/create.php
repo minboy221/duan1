@@ -31,6 +31,7 @@
             border-color: #2ecc71;
         }
     </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -143,7 +144,7 @@
             </div>
         </main>
     </div>
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.75583"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

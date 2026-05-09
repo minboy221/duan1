@@ -47,6 +47,7 @@
             background: #0bb3d6;
         }
     </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -182,7 +183,7 @@
         </main>
     </div>
 
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.826"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const toggler = document.getElementById('theme-toggle');

@@ -30,6 +30,7 @@
             border-color: #0a58ca !important;
         }
     </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -173,7 +174,7 @@
         </main>
     </div>
 
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.71614"></script>
     <script>
         // Số user mỗi trang
         const usersPerPage = 5;

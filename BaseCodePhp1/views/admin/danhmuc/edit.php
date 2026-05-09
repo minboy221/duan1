@@ -9,6 +9,7 @@
     <title>Sửa Danh Mục | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -103,7 +104,7 @@
 
         </main>
     </div>
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.73806"></script>
     <script>
         function validateDanhMuc() {
             var nameInput = document.getElementById('danhmuc_name');

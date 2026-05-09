@@ -255,6 +255,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>

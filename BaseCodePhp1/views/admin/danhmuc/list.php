@@ -35,6 +35,7 @@
         }
     </style>
 
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -146,7 +147,7 @@
             </div>
         </main>
     </div>
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=<?= time() ?>"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // ----------------------------------------------------

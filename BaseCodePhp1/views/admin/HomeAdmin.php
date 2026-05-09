@@ -26,6 +26,7 @@ $search = $_GET['search'] ?? '';
     <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
     <title>Trang Quản Trị | 31Shine</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 
@@ -284,7 +285,7 @@ $search = $_GET['search'] ?? '';
                 });
             }
         </script>
-        <script src="<?= BASE_URL ?>public/admin.js"></script>
+        <script src="<?= BASE_URL ?>public/admin.js?v=<?= time() ?>"></script>
 </body>
 
 </html>
