@@ -7,7 +7,7 @@
     <title>Xác Thực OTP Nhân Viên</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
 
     <style>
         /* 1. Thiết lập cơ bản */
@@ -207,6 +207,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>

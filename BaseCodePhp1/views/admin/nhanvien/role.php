@@ -13,6 +13,7 @@ $editing = isset($nv);
     <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -66,7 +67,7 @@ $editing = isset($nv);
             <label for="theme-toggle" class="theme-toggle"></label>
 
             <a href="#" class="profile">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+                <img src="<?= BASE_URL ?>anhmau/logochinh.424Z.png">
             </a>
         </nav>
         <main>
@@ -148,7 +149,7 @@ $editing = isset($nv);
                 </form>
             </div>
         </main>
-        <script src="<?= BASE_URL ?>public/admin.js"></script>
+        <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.83309"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const form = document.getElementById('form-nhanvien');

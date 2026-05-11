@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/createdanhmuc.css">
-    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
     <title>Thêm Cấu Hình Cho Bot | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -24,6 +24,7 @@
             font-style: italic;
         }
     </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -76,7 +77,7 @@
             <label for="theme-toggle" class="theme-toggle"></label>
 
             <a href="<?= BASE_URL ?>?act=logout" class="profile">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+                <img src="<?= BASE_URL ?>anhmau/logochinh.424Z.png">
             </a>
         </nav>
         <!-- End Navbar -->
@@ -112,7 +113,7 @@
             </div>
         </main>
     </div>
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.72016"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('form-bot-answer');

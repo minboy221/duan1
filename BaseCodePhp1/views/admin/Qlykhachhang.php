@@ -30,6 +30,7 @@
             border-color: #0a58ca !important;
         }
     </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -89,7 +90,7 @@
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>
             <a href="#" class="profile">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+                <img src="<?= BASE_URL ?>anhmau/logochinh.424Z.png">
             </a>
         </nav>
         <!-- Main -->
@@ -173,7 +174,7 @@
         </main>
     </div>
 
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.71614"></script>
     <script>
         // Số user mỗi trang
         const usersPerPage = 5;

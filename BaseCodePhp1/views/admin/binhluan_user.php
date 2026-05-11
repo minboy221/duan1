@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>public/qlydanhmuc.css">
     <title>Bình luận người dùng | 31Shine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -63,7 +64,7 @@
             <label for="theme-toggle" class="theme-toggle"></label>
 
             <a href="<?= BASE_URL ?>?act=logout" class="profile">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+                <img src="<?= BASE_URL ?>anhmau/logochinh.424Z.png">
             </a>
         </nav>
 
@@ -119,7 +120,7 @@
         </main>
     </div>
 
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.703"></script>
 </body>
 
 </html>

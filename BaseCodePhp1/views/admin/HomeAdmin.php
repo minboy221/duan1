@@ -23,9 +23,10 @@ $search = $_GET['search'] ?? '';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/homeadmin.css">
-    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
     <title>Trang Quản Trị | 31Shine</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 
@@ -82,7 +83,7 @@ $search = $_GET['search'] ?? '';
             <label for="theme-toggle" class="theme-toggle"></label>
 
             <a href="#" class="profile">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+                <img src="<?= BASE_URL ?>anhmau/logochinh.424Z.png">
             </a>
         </nav>
         <!-- End Navbar -->
@@ -284,7 +285,7 @@ $search = $_GET['search'] ?? '';
                 });
             }
         </script>
-        <script src="<?= BASE_URL ?>public/admin.js"></script>
+        <script src="<?= BASE_URL ?>public/admin.js?v=<?= time() ?>"></script>
 </body>
 
 </html>

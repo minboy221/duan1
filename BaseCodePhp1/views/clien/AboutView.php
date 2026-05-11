@@ -7,8 +7,9 @@
     <title>About | 31Shine</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>public/about.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -33,9 +34,15 @@
             <aside class="aside">
                 <div class="logo">
                     <a href="<?= BASE_URL ?>?act=home">
-                        <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
+                        <img src="<?= BASE_URL ?>anhmau/logochinh.424Z-removebg-preview.png" alt="">
                     </a>
                 </div>
+                                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="mobile-menu-overlay"></div>
                 <div class="menu">
                     <ul>
                         <li>
@@ -87,7 +94,7 @@
                 </div>
             </aside>
             <div class="banner">
-                <img src="/duan1/BaseCodePhp1/anhmau/bannerabout.461Z.png" alt="">
+                <img src="<?= BASE_URL ?>anhmau/bannerabout.461Z.png" alt="">
                 <div class="banner-text">
                     <h1>Về 31SHINE</h1>
                 </div>
@@ -105,7 +112,7 @@
                     Dù anh đang ở đâu trên hành trình ấy – bản lĩnh và sự tự tin luôn có trong chính anh <br>
                     31Shine không tạo ra chúng. Chúng tôi là điểm tựa, giúp anh thể hiện trọn vẹn phong thái, khí chất
                     và sẵn sàng cho những điều quan trọng phía trước</p> <br>
-                <img src="/duan1/BaseCodePhp1/anhmau/anhabout.383Z.png" alt="ảnh giới thiệu">
+                <img src="<?= BASE_URL ?>anhmau/anhabout.383Z.png" alt="ảnh giới thiệu">
                 <h2>KIỂU TÓC ĐẸP KHÔNG PHẢI LÀ ĐÍCH ĐẾN - MÀ LÀ ĐIỂM KHỞI ĐẦU</h2><br>
                 <p>Một kiểu tóc đẹp không chỉ để ngắm nhìn – mà còn để cảm nhận:<br>
                     Cảm nhận sự thoải mái, tự tin, sẵn sàng<br>
@@ -119,7 +126,7 @@
                     ông hiện đại nào. Tên gọi được thể hiện qua Logo nam nhân tỏa sáng cùng font chữ hiện đại và công
                     nghệ như một sự khẳng định mạnh mẽ cho tinh thần chiến thắng, khát vọng thành công.</p><br>
                 <div class="thuonghieu">
-                    <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png" alt="">
+                    <img src="<?= BASE_URL ?>anhmau/logochinh.424Z.png" alt="">
                 </div><br>
                 <p>Nhận diện mới của 31Shine nổi bật với màu vàng đen sang trọng hình mẫu người khởi tạo với ý chí
                     không ngừng đổi mới, luôn nhìn ra cơ hội để thay đổi cuộc chơi, phá bỏ quan niệm cũ.
@@ -150,10 +157,24 @@
             </div>
         </main>
     </div>
-    <footer class="footer">
+    <!-- Bottom Navigation Mobile -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li><a href="<?= BASE_URL ?>?act=home"><i class="fa-solid fa-house"></i><span>Trang chủ</span></a></li>
+            <li><a href="<?= BASE_URL ?>?act=dichvu"><i class="fa-solid fa-scissors"></i><span>Dịch vụ</span></a></li>
+            <li><a href="<?= BASE_URL ?>?act=datlich"><i class="fa-solid fa-calendar-plus"></i><span>Đặt lịch</span></a></li>
+            <li><a href="<?= BASE_URL ?>?act=nhanvien"><i class="fa-solid fa-users"></i><span>Nhân viên</span></a></li>
+            <?php if (isset($_SESSION['username'])): ?>
+                <li><a href="<?= BASE_URL ?>?act=lichsudat"><i class="fa-solid fa-clock-rotate-left"></i><span>Lịch sử</span></a></li>
+            <?php else: ?>
+                <li><a href="<?= BASE_URL ?>?act=dangnhap_khachhang"><i class="fa-solid fa-user"></i><span>Đăng nhập</span></a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+<footer class="footer">
         <div class="footer-container">
             <div class="footer-column">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
+                <img src="<?= BASE_URL ?>anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
                     class="footer-logo">
                 <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam. Chúng tôi giúp bạn luôn tự tin và phong độ
                     mỗi ngày.</p>
@@ -164,7 +185,6 @@
                     <li><a href="#">Trang chủ</a></li>
                     <li><a href="#">Dịch vụ</a></li>
                     <li><a href="#">Thợ cắt tóc</a></li>
-                    <li><a href="#">Đặt lịch</a></li>
                     <li><a href="#">Liên hệ</a></li>
                 </ul>
             </div>

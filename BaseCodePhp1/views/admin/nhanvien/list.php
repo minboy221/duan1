@@ -47,6 +47,7 @@
             background: #0bb3d6;
         }
     </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
@@ -104,7 +105,7 @@
             <label for="theme-toggle" class="theme-toggle"></label>
 
             <a href="#" class="profile">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+                <img src="<?= BASE_URL ?>anhmau/logochinh.424Z.png">
             </a>
         </nav>
         <!-- End of Navbar -->
@@ -182,7 +183,7 @@
         </main>
     </div>
 
-    <script src="<?= BASE_URL ?>public/admin.js"></script>
+    <script src="<?= BASE_URL ?>public/admin.js?v=1778077146.826"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const toggler = document.getElementById('theme-toggle');

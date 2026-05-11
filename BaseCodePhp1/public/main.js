@@ -43,9 +43,58 @@ function closeLoginPopup() { // Đổi tên để tránh trùng
 }
 
 // Đóng khi click ra ngoài popup đăng nhập
-window.onclick = function (event) {
+window.addEventListener('click', function (event) {
     let popup = document.getElementById("login-popup");
-    if (event.target == popup) {
+    if (popup && event.target == popup) {
         popup.style.display = "none";
     }
+});
+
+// ============================================
+// HAMBURGER MENU - MOBILE
+// ============================================
+const hamburger = document.querySelector('.hamburger');
+const mobileMenu = document.querySelector('.menu');
+const mobileOverlay = document.querySelector('.mobile-menu-overlay');
+
+if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        if (mobileOverlay) mobileOverlay.classList.toggle('active');
+        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Đóng menu khi click overlay
+    if (mobileOverlay) {
+        mobileOverlay.addEventListener('click', function () {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
+    // Đóng menu khi click vào link
+    mobileMenu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+            if (window.innerWidth <= 768) {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                if (mobileOverlay) mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+
+    // Reset menu khi resize lên desktop
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            if (mobileOverlay) mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
 }

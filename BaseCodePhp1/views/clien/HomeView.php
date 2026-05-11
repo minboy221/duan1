@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ | 31Shine</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>public/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
 </head>
 
 <body>
@@ -32,9 +33,15 @@
             <aside class="aside">
                 <div class="logo">
                     <a href="<?= BASE_URL ?>?act=home">
-                        <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
+                        <img src="<?= BASE_URL ?>anhmau/logochinh.424Z-removebg-preview.png" alt="">
                     </a>
                 </div>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="mobile-menu-overlay"></div>
                 <div class="menu">
                     <ul>
                         <li>
@@ -86,7 +93,7 @@
                 </div>
             </aside>
             <div class="banner">
-                <img src="/duan1/BaseCodePhp1/anhmau/banner.png" alt="">
+                <img src="<?= BASE_URL ?>anhmau/banner.png" alt="">
                 <div class="banner-text">
                     <h1>BARBERS & HAIR CUTTING</h1>
                     <p>Dịch vụ tạo kiểu tóc chuyên nghiệp 31SHINE, phong cách hiện đại, mang lại sự tự tin và cá tính
@@ -103,7 +110,7 @@
             <div class="background"></div>
             <div class="cacdichvu">
                 <div class="bentrai">
-                    <img src="/duan1/BaseCodePhp1/anhmau/anh2.539Z.png" alt="">
+                    <img src="<?= BASE_URL ?>anhmau/anh2.539Z.png" alt="">
                 </div>
                 <div class="benphai">
                     <div class="noidung">
@@ -218,17 +225,17 @@
                     Có người đang tiến về đích, có người vẫn đang tìm hướng đi
                     Có người biết chính xác điều mình muốn, có người đang từng bước khám phá</p>
                 <div class="chuky">
-                    <img src="/duan1/BaseCodePhp1/anhmau/chuky.png" alt="">
+                    <img src="<?= BASE_URL ?>anhmau/chuky.png" alt="">
                 </div>
             </div>
             <div class="benphai">
-                <img src="/duan1/BaseCodePhp1/anhmau/anhgioithieu2.jpg" alt="">
+                <img src="<?= BASE_URL ?>anhmau/anhgioithieu2.jpg" alt="">
             </div>
         </div>
     </div>
     <div class="gioithieu2">
         <div class="background2">
-            <img src="/duan1/BaseCodePhp1/anhmau/background2.png" alt="">
+            <img src="<?= BASE_URL ?>anhmau/background2.png" alt="">
         </div>
         <div class="baothongtin">
             <div class="tieude">
@@ -242,7 +249,7 @@
     <!-- phần báo giá và dịch vụ -->
     <div class="phanbaogia">
         <div class="background3">
-            <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
+            <img src="<?= BASE_URL ?>anhmau/31SHINEmoi.png" alt="">
         </div>
         <div class="titlenoidung">
             <h2>DỊCH VỤ CHÚNG TÔI CUNG CẤP</h2>
@@ -297,7 +304,7 @@
         </div>
         <div class="baothocattoc">
             <div class="tho">
-                <img src="/duan1/BaseCodePhp1/anhmau/tho1.png" alt="">
+                <img src="<?= BASE_URL ?>anhmau/tho1.png" alt="">
                 <div class="infotho">
                     <div class="ten">
                         <p>Việt Hùng</p>
@@ -305,19 +312,19 @@
                 </div>
             </div>
             <div class="tho">
-                <img src="/duan1/BaseCodePhp1/anhmau/tho2.png" alt="">
+                <img src="<?= BASE_URL ?>anhmau/tho2.png" alt="">
                 <div class="ten">
                     <p>Mạnh Dũng</p>
                 </div>
             </div>
             <div class="tho">
-                <img src="/duan1/BaseCodePhp1/anhmau/tho3.png" alt="">
+                <img src="<?= BASE_URL ?>anhmau/tho3.png" alt="">
                 <div class="ten">
                     <p>Công Huy</p>
                 </div>
             </div>
             <div class="tho">
-                <img src="/duan1/BaseCodePhp1/anhmau/tho4.png" alt="">
+                <img src="<?= BASE_URL ?>anhmau/tho4.png" alt="">
                 <div class="ten">
                     <p>Nhật Minh</p>
                 </div>
@@ -472,10 +479,24 @@
             div.scrollTop = div.scrollHeight;
         }
     </script>
-    <footer class="footer">
+    <!-- Bottom Navigation Mobile -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li><a href="<?= BASE_URL ?>?act=home"><i class="fa-solid fa-house"></i><span>Trang chủ</span></a></li>
+            <li><a href="<?= BASE_URL ?>?act=dichvu"><i class="fa-solid fa-scissors"></i><span>Dịch vụ</span></a></li>
+            <li><a href="<?= BASE_URL ?>?act=datlich"><i class="fa-solid fa-calendar-plus"></i><span>Đặt lịch</span></a></li>
+            <li><a href="<?= BASE_URL ?>?act=nhanvien"><i class="fa-solid fa-users"></i><span>Nhân viên</span></a></li>
+            <?php if (isset($_SESSION['username'])): ?>
+                <li><a href="<?= BASE_URL ?>?act=lichsudat"><i class="fa-solid fa-clock-rotate-left"></i><span>Lịch sử</span></a></li>
+            <?php else: ?>
+                <li><a href="<?= BASE_URL ?>?act=dangnhap_khachhang"><i class="fa-solid fa-user"></i><span>Đăng nhập</span></a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+<footer class="footer">
         <div class="footer-container">
             <div class="footer-column">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
+                <img src="<?= BASE_URL ?>anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
                     class="footer-logo">
                 <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam. Chúng tôi giúp bạn luôn tự tin và
                     phong độ
@@ -487,7 +508,6 @@
                     <li><a href="#">Trang chủ</a></li>
                     <li><a href="#">Dịch vụ</a></li>
                     <li><a href="#">Thợ cắt tóc</a></li>
-                    <li><a href="#">Đặt lịch</a></li>
                     <li><a href="#">Liên hệ</a></li>
                 </ul>
             </div>
