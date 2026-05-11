@@ -7,14 +7,14 @@
     <title>Xác Thực OTP | 31Shine</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>public/dangky-dangnhap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="shortcut icon" href="/duan1/BaseCodePhp1/anhmau/logotron.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>anhmau/logotron.png">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/responsive.css">
 </head>
 
 <body>
     <div class="container">
         <div class="background">
-            <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
+            <img src="<?= BASE_URL ?>anhmau/31SHINEmoi.png" alt="">
         </div>
         <main>
             <div class="dangnhap otp-container">

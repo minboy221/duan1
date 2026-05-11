@@ -33,7 +33,7 @@
             <aside class="aside">
                 <div class="logo">
                     <a href="<?= BASE_URL ?>?act=home">
-                        <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="">
+                        <img src="<?= BASE_URL ?>anhmau/logochinh.424Z-removebg-preview.png" alt="">
                     </a>
                 </div>
                                 <div class="hamburger">
@@ -94,7 +94,7 @@
                 </div>
             </aside>
             <div class="banner">
-                <img src="/duan1/BaseCodePhp1/anhmau/dichvucatoc.076Z.png" alt="">
+                <img src="<?= BASE_URL ?>anhmau/dichvucatoc.076Z.png" alt="">
                 <div class="banner-text">
                     <h1>Dịch Vụ</h1>
                 </div>
@@ -103,7 +103,7 @@
     </div>
     <div class="conten">
         <div class="background">
-            <img src="/duan1/BaseCodePhp1/anhmau/31SHINEmoi.png" alt="">
+            <img src="<?= BASE_URL ?>anhmau/31SHINEmoi.png" alt="">
         </div>
         <main>
             <div class="thanhloc">
@@ -196,7 +196,7 @@
 <footer class="footer">
         <div class="footer-container">
             <div class="footer-column">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
+                <img src="<?= BASE_URL ?>anhmau/logochinh.424Z-removebg-preview.png" alt="31Shine Logo"
                     class="footer-logo">
                 <p>31Shine – Hệ thống salon nam hiện đại hàng đầu Việt Nam. Chúng tôi giúp bạn luôn tự tin và phong độ
                     mỗi ngày.</p>

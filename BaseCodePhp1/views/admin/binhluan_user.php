@@ -64,7 +64,7 @@
             <label for="theme-toggle" class="theme-toggle"></label>
 
             <a href="<?= BASE_URL ?>?act=logout" class="profile">
-                <img src="/duan1/BaseCodePhp1/anhmau/logochinh.424Z.png">
+                <img src="<?= BASE_URL ?>anhmau/logochinh.424Z.png">
             </a>
         </nav>
 
